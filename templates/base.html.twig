@@ -10,6 +10,7 @@
         {% endblock %}
     </head>
     <body>
+        <!-- Navbar horizontale -->
         <nav class="navbar navbar-expand-lg fixed-top navbar-border bg-dark navbar-dark">
             <a class="navbar-brand" href="{{ path('home') }}">
                 <img src="{{ asset('images/Logo.png') }}" alt="Logo" style="height: 60px; width: auto;">
@@ -44,6 +45,31 @@
                 </form>
             </div>
         </nav>
+            <!-- Barre de navigation verticale -->
+    <div class="vertical-navbar d-flex flex-column justify-content-between">
+        <ul class="nav flex-column">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="categoriesDropdown" role="button"
+                    onclick="toggleDropdown(event)">
+                    Catégories
+                </a>
+                <ul class="dropdown-menu w-100" id="categoriesDropdownMenu" aria-labelledby="categoriesDropdown">
+                    <!-- Subcategories will be inserted here by JavaScript -->
+                </ul>
+            </li>
+        </ul>
+        <ul class="nav flex-column mb-3">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="#services"><i class="bi bi-gear"></i> Services</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="#about"><i class="bi bi-info-circle"></i> À propos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="#contact"><i class="bi bi-envelope"></i> Contact</a>
+            </li>
+        </ul>
+    </div>
         {% block body %}{% endblock %}
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
