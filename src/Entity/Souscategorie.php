@@ -21,7 +21,7 @@ class Souscategorie
     private $Libelle_court;
 
     /**
-     * @ORM\Column(type="LONGBLOB")
+     * @ORM\Column(type="VARCHAR(255)")
      */
     private $Photo;
 
