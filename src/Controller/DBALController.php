@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,10 +31,15 @@ class DBALController extends AbstractController
 
             foreach ($columns as $column) {
                 $fieldName = $column->getName();
-                $fieldType = $column->getType()->getSQLDeclaration([], $this->connection->getDatabasePlatform());
+                $fieldType = $this->mapColumnType($column->getType()->getName());
 
                 $entityCode .= "    /**\n     * @ORM\Column(type=\"$fieldType\")\n     */\n";
                 $entityCode .= "    private $" . $fieldName . ";\n\n";
+
+                // Generate getters and setters
+                $camelCaseFieldName = ucfirst($fieldName);
+                $entityCode .= "    public function get$camelCaseFieldName(): $fieldType\n    {\n        return \$this->$fieldName;\n    }\n\n";
+                $entityCode .= "    public function set$camelCaseFieldName($fieldType \$$fieldName): self\n    {\n        \$this->$fieldName = \$$fieldName;\n        return \$this;\n    }\n\n";
             }
 
             $entityCode .= "}\n";
@@ -44,7 +50,27 @@ class DBALController extends AbstractController
 
         return new Response('Entities generated successfully.');
     }
+
+    private function mapColumnType(string $type): string
+    {
+        $typeMap = [
+            Types::INTEGER => 'int',
+            Types::STRING => 'string',
+            Types::TEXT => 'string',
+            Types::DATETIME_MUTABLE => '\DateTime',
+            Types::DATE_MUTABLE => '\DateTime',
+            Types::DECIMAL => 'float',
+            Types::FLOAT => 'float',
+            // Add more mappings as needed
+        ];
+
+        return $typeMap[$type] ?? 'string';
+    }
 }
+
+
+
+
 
 
 
