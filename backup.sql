@@ -173,6 +173,50 @@ INSERT INTO `Fournisseur` VALUES (1,'Guitar World','Michael Johnson','0123456789
 UNLOCK TABLES;
 
 --
+-- Temporary table structure for view `Vue_Produits_Categories`
+--
+
+DROP TABLE IF EXISTS `Vue_Produits_Categories`;
+/*!50001 DROP VIEW IF EXISTS `Vue_Produits_Categories`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `Vue_Produits_Categories` AS SELECT
+ 1 AS `Id_Produit`,
+  1 AS `Produit`,
+  1 AS `Description`,
+  1 AS `Prix_achat_HT`,
+  1 AS `Photo_produit`,
+  1 AS `Stock`,
+  1 AS `Actif`,
+  1 AS `Id_Souscategorie`,
+  1 AS `Souscategorie`,
+  1 AS `Id_Categorie`,
+  1 AS `Categorie` */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `Vue_Produits_Fournisseurs`
+--
+
+DROP TABLE IF EXISTS `Vue_Produits_Fournisseurs`;
+/*!50001 DROP VIEW IF EXISTS `Vue_Produits_Fournisseurs`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `Vue_Produits_Fournisseurs` AS SELECT
+ 1 AS `Id_Produit`,
+  1 AS `Produit`,
+  1 AS `Description`,
+  1 AS `Prix_achat_HT`,
+  1 AS `Photo_produit`,
+  1 AS `Stock`,
+  1 AS `Actif`,
+  1 AS `Id_Fournisseur`,
+  1 AS `Fournisseur`,
+  1 AS `Contact_fournisseur`,
+  1 AS `Telephone_fournisseur` */;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `achete`
 --
 
@@ -302,7 +346,7 @@ DROP TABLE IF EXISTS `souscategorie`;
 CREATE TABLE `souscategorie` (
   `Id_Souscategorie` int(11) NOT NULL AUTO_INCREMENT,
   `Libelle_court` varchar(50) NOT NULL,
-  `Photo` blob DEFAULT NULL,
+  `Photo` varchar(255) DEFAULT NULL,
   `Id_Categorie` int(11) NOT NULL,
   PRIMARY KEY (`Id_Souscategorie`),
   KEY `idx_id_souscategorie` (`Id_Souscategorie`),
@@ -320,6 +364,42 @@ LOCK TABLES `souscategorie` WRITE;
 INSERT INTO `souscategorie` VALUES (1,'Batteries electroniques','/public/assets/images/batterie.jpg',1),(2,'Accordeurs','/public/assets/images/accordeur.jpg',2),(3,'Batterie','/public/assets/images/batterie.jpg',1),(4,'Tambour','/public/assets/images/tambour.jpg',1),(5,'Xylophone','/public/assets/images/xylophone.jpg',1),(7,'Glockenspiel','/public/assets/images/glockenspiel.jpg',1),(8,'Tambourin','/public/assets/images/tambourin.jpg',1),(9,'Congas','/public/assets/images/congas.jpg',1),(10,'Bongos','/public/assets/images/bongos.jpg',1),(11,'Timbales','/public/assets/images/timbales.jpg',1),(12,'Vibraphone','/public/assets/images/vibraphone.jpg',1),(13,'Triangle','/public/assets/images/triangle.jpg',1),(14,'Cymbales','/public/assets/images/cymbales.jpg',1),(15,'Guitare acoustique','/public/assets/images/guitareacoustique.jpg',3),(16,'Guitare electrique','/public/assets/images/guitareelectrique.jpg',3),(17,'Violon','/public/assets/images/violon.jpg',3),(18,'Violoncelle','/public/assets/images/violoncelle.jpg',3),(19,'Contrebasse','/public/assets/images/contrebasse.jpg',3),(20,'Alto','/public/assets/images/alto.jpg',3),(21,'Harpe','/public/assets/images/harpe.jpg',3),(22,'Ukulele','/public/assets/images/ukulele.jpg',3),(23,'Benjo','/public/assets/images/benjo.jpg',3),(24,'Mandoline','/public/assets/images/mandoline.jpg',3),(25,'Flute traversiere','/public/assets/images/flutetraversiere.jpg',4),(26,'Clarinette','/public/assets/images/clarinette.jpg',4),(27,'Hautbois','/public/assets/images/hautbois.jpg',4),(28,'Basson','/public/assets/images/basson.jpg',4),(29,'Piccolo','/public/assets/images/piccolo.jpg',4),(30,'Trompette','/public/assets/images/trompette.jpg',4),(36,'Piano','/public/assets/images/piano.jpg',5),(37,'Clavier electronique','/public/assets/images/clavierelectronique.jpg',5),(38,'Amplificateur','/public/assets/images/amplificateur.jpg',2),(39,'Synthetiseur','/public/assets/images/synthetiseur.jpg',5),(40,'Saxophone','/public/assets/images/saxophone.jpg',4);
 /*!40000 ALTER TABLE `souscategorie` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Final view structure for view `Vue_Produits_Categories`
+--
+
+/*!50001 DROP VIEW IF EXISTS `Vue_Produits_Categories`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_unicode_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`admin`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `Vue_Produits_Categories` AS select `p`.`Id_Produit` AS `Id_Produit`,`p`.`Libelle_court` AS `Produit`,`p`.`Libelle_long` AS `Description`,`p`.`Prix_achat_HT` AS `Prix_achat_HT`,`p`.`Photo` AS `Photo_produit`,`p`.`stock` AS `Stock`,`p`.`Actif` AS `Actif`,`sc`.`Id_Souscategorie` AS `Id_Souscategorie`,`sc`.`Libelle_court` AS `Souscategorie`,`c`.`Id_Categorie` AS `Id_Categorie`,`c`.`Libelle_court` AS `Categorie` from ((`produit` `p` join `souscategorie` `sc` on(`p`.`Id_Souscategorie` = `sc`.`Id_Souscategorie`)) join `categorie` `c` on(`sc`.`Id_Categorie` = `c`.`Id_Categorie`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `Vue_Produits_Fournisseurs`
+--
+
+/*!50001 DROP VIEW IF EXISTS `Vue_Produits_Fournisseurs`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_unicode_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`admin`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `Vue_Produits_Fournisseurs` AS select `p`.`Id_Produit` AS `Id_Produit`,`p`.`Libelle_court` AS `Produit`,`p`.`Libelle_long` AS `Description`,`p`.`Prix_achat_HT` AS `Prix_achat_HT`,`p`.`Photo` AS `Photo_produit`,`p`.`stock` AS `Stock`,`p`.`Actif` AS `Actif`,`f`.`Id_Fournisseur` AS `Id_Fournisseur`,`f`.`Nom` AS `Fournisseur`,`f`.`Contact` AS `Contact_fournisseur`,`f`.`telephone` AS `Telephone_fournisseur` from (`produit` `p` join `Fournisseur` `f` on(`p`.`Id_Fournisseur` = `f`.`Id_Fournisseur`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -330,4 +410,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-12  9:48:02
+-- Dump completed on 2024-06-12 14:52:03
