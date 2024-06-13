@@ -16,10 +16,10 @@ class Commercial
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $Nom = null;
+    private ?string $nom = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $Prenom = null;
+    private ?string $prenom = null;
 
     #[ORM\Column(length: 50)]
     private ?string $telephone = null;
@@ -30,7 +30,7 @@ class Commercial
     /**
      * @var Collection<int, Client>
      */
-    #[ORM\OneToMany(targetEntity: Client::class, mappedBy: 'Commercial')]
+    #[ORM\OneToMany(mappedBy: 'commercial', targetEntity: Client::class)]
     private Collection $clients;
 
     public function __construct()
@@ -45,24 +45,24 @@ class Commercial
 
     public function getNom(): ?string
     {
-        return $this->Nom;
+        return $this->nom;
     }
 
-    public function setNom(string $Nom): static
+    public function setNom(string $nom): static
     {
-        $this->Nom = $Nom;
+        $this->nom = $nom;
 
         return $this;
     }
 
     public function getPrenom(): ?string
     {
-        return $this->Prenom;
+        return $this->prenom;
     }
 
-    public function setPrenom(string $Prenom): static
+    public function setPrenom(string $prenom): static
     {
-        $this->Prenom = $Prenom;
+        $this->prenom = $prenom;
 
         return $this;
     }
@@ -121,3 +121,4 @@ class Commercial
         return $this;
     }
 }
+
