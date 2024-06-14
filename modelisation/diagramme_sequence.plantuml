@@ -1,0 +1,111 @@
+@startuml diagramme_sequence
+!theme toy
+
+actor Client
+participant "Site Web E-commerce" as SW
+participant "Base de Données" as BD
+participant "Système de Paiement" as SP
+participant "Email de Confirmation" as EC
+participant "Gestionnaire de Stocks" as GS
+
+Client -> SW: Consulter le catalogue
+SW -> Client: Afficher produits
+
+Client -> SW: Ajouter produit au panier (avec quantités)
+SW -> Client: Produit ajouté
+
+Client -> SW: Valider son panier
+
+alt Client non connecté
+    SW -> Client: Se connecter
+    Client -> SW: Se connecte ou s'inscrit
+    alt Connexion impossible
+        SW -> Client: Proposer récupération de mot de passe ou afficher un message d'erreur
+        Client -> SW: Réessayer de se connecter ou récupérer mot de passe
+        SW -> BD: Vérifier les identifiants
+        BD --> SW: Identifiants valides
+    else Connexion réussie
+        SW -> Client: Connexion réussie
+    end
+    alt Inscription nécessaire
+        Client -> SW: Demander l'inscription
+        SW -> Client: Afficher formulaire d'inscription
+        Client -> SW: Remplir et soumettre le formulaire d'inscription
+        SW -> BD: Enregistrer les détails du compte
+        BD --> SW: Compte créé
+        SW -> Client: Compte créé, demander connexion
+    end
+else Client connecté
+end
+
+Client -> SW: Valider panier
+
+alt Confirmation de commande
+    SW -> BD: Vérifier disponibilité des produits
+    alt Produits indisponibles
+        BD --> SW: Produits indisponibles
+        SW -> Client: Informer de l'indisponibilité et proposer des alternatives
+        Client -> SW: Modifier ou annuler la commande
+        SW -> GS: Alerter gestionnaire des stocks
+        GS -> BD: Désactiver produit indisponible
+        SW -> BD: Vérifier disponibilité des produits modifiés
+        BD --> SW: Disponibilité confirmée
+    else Produits disponibles
+        BD --> SW: Disponibilité confirmée
+    end
+
+    Client -> SW: Confirmer les adresses de livraison et de facturation
+    SW -> Client: Demander adresse de livraison
+    Client -> SW: Fournir adresse de livraison
+    SW -> BD: Vérifier adresse de livraison
+    alt Adresse de livraison valide
+        BD --> SW: Adresse valide
+    else Adresse de livraison invalide
+        BD --> SW: Adresse invalide
+        SW -> Client: Informer erreur adresse de livraison
+        Client -> SW: Corriger adresse de livraison
+        SW -> BD: Vérifier adresse de livraison corrigée
+        BD --> SW: Adresse valide
+    end
+
+    SW -> Client: Demander adresse de facturation
+    Client -> SW: Fournir adresse de facturation
+    SW -> BD: Vérifier adresse de facturation
+    alt Adresse de facturation valide
+        BD --> SW: Adresse valide
+    else Adresse de facturation invalide
+        BD --> SW: Adresse invalide
+        SW -> Client: Informer erreur adresse de facturation
+        Client -> SW: Corriger adresse de facturation
+        SW -> BD: Vérifier adresse de facturation corrigée
+        BD --> SW: Adresse valide
+    end
+
+    Client -> SW: Choisir le mode de paiement
+    SW -> SP: Demande de paiement
+    alt Paiement réussi
+        SP --> SW: Paiement confirmé
+        SW -> BD: Enregistrer commande
+        SW -> BD: Mettre à jour les stocks
+        SW -> EC: Envoyer confirmation par email
+        EC --> Client: Confirmation de commande reçue
+    else Paiement échoué
+        SP --> SW: Paiement refusé
+        SW -> Client: Informer échec du paiement et proposer de réessayer ou annuler
+        alt Réessayer le paiement
+            Client -> SW: Réessayer le paiement
+            SW -> SP: Nouvelle demande de paiement
+            SP --> SW: Paiement confirmé
+            SW -> BD: Enregistrer commande
+            SW -> BD: Mettre à jour les stocks
+            SW -> EC: Envoyer confirmation par email
+            EC --> Client: Confirmation de commande reçue
+        else Annuler la commande
+            Client -> SW: Annuler la commande
+            SW -> Client: Confirmer annulation
+        end
+    end
+end
+
+@enduml
+
