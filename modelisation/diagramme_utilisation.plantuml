@@ -1,0 +1,49 @@
+@startuml diagramme_utilisation
+!theme toy
+
+actor Client
+actor "Employé" as Employe
+actor "Système" as System
+
+usecase "Consulter le catalogue" as UC1
+usecase "Ajouter produit au panier" as UC2
+usecase "Valider le panier" as UC3
+usecase "Se connecter" as UC4
+usecase "S'inscrire" as UC5
+usecase "Confirmer les adresses" as UC7
+usecase "Choisir le mode de paiement" as UC8
+usecase "Effectuer le paiement" as UC9
+usecase "Recevoir confirmation de commande" as UC11
+
+usecase "Vérifier la disponibilité des produits" as UC6
+usecase "Enregistrer la commande" as UC10
+usecase "Mettre à jour les stocks" as UC12
+usecase "Envoyer confirmation par email" as UC13
+usecase "Vérifier et supprimer les documents de plus de 3 ans" as UC14
+
+Client --> UC1
+Client --> UC2
+Client --> UC3
+Client --> UC4
+Client --> UC5
+Client --> UC7
+Client --> UC8
+Client --> UC9
+Client --> UC11
+
+Employe --> UC6
+Employe --> UC12
+Employe --> UC13
+
+System --> UC9
+System --> UC6
+System --> UC10
+System --> UC12
+System --> UC13
+System --> UC14
+
+UC3 --> UC6 : include
+UC6 --> UC10 : include
+UC10 --> UC13 : include
+
+@enduml
