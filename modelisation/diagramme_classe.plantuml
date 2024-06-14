@@ -1,0 +1,97 @@
+@startuml diagramme_classe
+!theme toy
+
+class Client {
+    - id: int
+    - nom: String
+    - email: String
+    - motDePasse: String
+    - siret: String
+    - entreprise: String
+    - rue: String
+    - ville: String
+    - codePostal: String
+    - pays: String
+    - referenceClient: String
+    - panier: List<Produit>
+    + ajouterProduitAuPanier(produit: Produit, quantite: int): void
+    + supprimerProduit(produit: Produit): void
+    + validerPanier(): void
+    + consulterCatalogue(): void
+    + seConnecter(email: String, motDePasse: String): boolean
+    + sInscrire(nom: String, email: String, motDePasse: String, typeClient: String): void
+    + visualiserCommandes(): List<Commande>
+}
+
+class Produit {
+    - id: int
+    - libelleCourt: String
+    - libelleLong: String
+    - referenceFournisseur: String
+    - prixAchat: double
+    - prixVente: double
+    - stock: int
+    - photo: String
+}
+
+class Categorie {
+    - id: int
+    - nom: String
+    - sousCategorie: List<Categorie>
+    + ajouterSousCategorie(sousCategorie: Categorie): void
+    + ajouterProduit(produit: Produit): void
+}
+
+class Fournisseur {
+    - id: int
+    - nomEntreprise: String
+    - contact: String
+    - telephone: String
+    - siret: String
+}
+
+class Commande {
+    - id: int
+    - date: Date
+    - total: double
+    - statut: String
+    - produits: List<Produit>
+    - adresseLivraison: String
+    - adresseFacturation: String
+    - modeReglement: String
+    - informationReglement: String
+}
+
+class Document {
+    - id: int
+    - date: Date
+    - total: double
+    - adresseLivraison: String
+    - adresseFacturation: String
+    - produits: List<Produit>
+    - type: String
+}
+
+class Employe {
+    - id: int
+    - nom: String
+    - email: String
+    + gererCommandes(): void
+    + assisterClient(client: Client): void
+    + gererProduits(): void
+    + ajouterProduit(produit: Produit): void
+    + supprimerProduit(produit: Produit): void
+    + mettreAJourProduit(produit: Produit): void
+}
+
+Client "1" o-- "1..*" Commande
+Commande "1" *-- "0..*" Produit
+Commande "1" o-- "0..*" Document
+Document "1" *-- "0..*" Produit
+Produit "0..*" -- "1" Fournisseur
+Produit "0..*" -- "1" Categorie
+Categorie "0..*" -- "0..*" Categorie
+Produit "0..*" -- "1" Employe
+Employe "0..*" -- "0..*" Commande
+
+@enduml

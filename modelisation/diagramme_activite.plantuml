@@ -1,6 +1,6 @@
 
 ```plantuml
-@startuml
+@startuml diagramme_activite
 !theme toy
 start
 :Client consulte le catalogue;
