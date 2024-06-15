@@ -23,7 +23,7 @@ class Produit
     private ?string $referenceFournisseur = null;
 
     #[ORM\Column]
-    private ?float $prixAchat = null;
+    private ?float $prixAchatHT = null;
 
     #[ORM\Column]
     private ?float $prixVente = null;
@@ -34,11 +34,17 @@ class Produit
     #[ORM\Column(length: 255)]
     private ?string $photo = null;
 
-    #[ORM\ManyToOne(inversedBy: 'produits')]
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $actif = null;
+
+    #[ORM\ManyToOne(targetEntity: Fournisseur::class, inversedBy: 'produits')]
     private ?Fournisseur $fournisseur = null;
 
-    #[ORM\ManyToOne(inversedBy: 'produits')]
+    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'produits')]
     private ?Categorie $categorie = null;
+
+    #[ORM\ManyToOne(targetEntity: Employe::class, inversedBy: 'produits')]
+    private ?Employe $gestionPar = null;
 
     public function getId(): ?int
     {
@@ -81,14 +87,14 @@ class Produit
         return $this;
     }
 
-    public function getPrixAchat(): ?float
+    public function getPrixAchatHT(): ?float
     {
-        return $this->prixAchat;
+        return $this->prixAchatHT;
     }
 
-    public function setPrixAchat(float $prixAchat): static
+    public function setPrixAchatHT(float $prixAchatHT): static
     {
-        $this->prixAchat = $prixAchat;
+        $this->prixAchatHT = $prixAchatHT;
 
         return $this;
     }
@@ -129,6 +135,18 @@ class Produit
         return $this;
     }
 
+    public function getActif(): ?bool
+    {
+        return $this->actif;
+    }
+
+    public function setActif(bool $actif): static
+    {
+        $this->actif = $actif;
+
+        return $this;
+    }
+
     public function getFournisseur(): ?Fournisseur
     {
         return $this->fournisseur;
@@ -152,5 +170,18 @@ class Produit
 
         return $this;
     }
+
+    public function getGestionPar(): ?Employe
+    {
+        return $this->gestionPar;
+    }
+
+    public function setGestionPar(?Employe $gestionPar): static
+    {
+        $this->gestionPar = $gestionPar;
+
+        return $this;
+    }
 }
+
 
