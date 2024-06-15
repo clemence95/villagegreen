@@ -227,7 +227,6 @@ class Commande
     public function removeDocument(Document $document): static
     {
         if ($this->documents->removeElement($document)) {
-            // set the owning side to null (unless already changed)
             if ($document->getCommande() === $this) {
                 $document->setCommande(null);
             }
@@ -236,4 +235,5 @@ class Commande
         return $this;
     }
 }
+
 
