@@ -48,7 +48,7 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->router->generate('home'));
+        return new RedirectResponse($this->router->generate('accueil'));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
