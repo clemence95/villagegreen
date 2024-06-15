@@ -4,6 +4,7 @@
 class Client {
     - id: int
     - nom: String
+    - prenom: String
     - email: String
     - motDePasse: String
     - siret: String
@@ -28,9 +29,10 @@ class Produit {
     - libelleCourt: String
     - libelleLong: String
     - referenceFournisseur: String
-    - prixAchat: double
+    - prixAchatHT: double
     - prixVente: double
     - stock: int
+    - actif: bool
     - photo: String
 }
 
@@ -55,10 +57,11 @@ class Commande {
     - date: Date
     - total: double
     - statut: String
-    - produits: List<Produit>
+    - produits: List<Produit> 
     - adresseLivraison: String
     - adresseFacturation: String
     - modeReglement: String
+    - reduction: double
     - informationReglement: String
 }
 
@@ -75,6 +78,7 @@ class Document {
 class Employe {
     - id: int
     - nom: String
+    - role: String
     - email: String
     + gererCommandes(): void
     + assisterClient(client: Client): void
@@ -84,6 +88,7 @@ class Employe {
     + mettreAJourProduit(produit: Produit): void
 }
 
+Client "1" o-- "1" Employe : commercial
 Client "1" o-- "1..*" Commande
 Commande "1" *-- "0..*" Produit
 Commande "1" o-- "0..*" Document
