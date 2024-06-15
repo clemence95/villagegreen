@@ -6,9 +6,11 @@ use App\Repository\EmployeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: EmployeRepository::class)]
-class Employe
+class Employe implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -23,6 +25,12 @@ class Employe
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
+
+    #[ORM\Column]
+    private array $roles = [];
+
+    #[ORM\Column]
+    private ?string $password = null;
 
     #[ORM\OneToMany(mappedBy: 'commercial', targetEntity: Client::class)]
     private Collection $clients;
@@ -81,9 +89,44 @@ class Employe
         return $this;
     }
 
-    /**
-     * @return Collection<int, Client>
-     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        $roles[] = 'ROLE_EMPLOYEE';
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+        return $this;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    public function eraseCredentials(): void
+    {
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
     public function getClients(): Collection
     {
         return $this->clients;
@@ -95,25 +138,19 @@ class Employe
             $this->clients->add($client);
             $client->setCommercial($this);
         }
-
         return $this;
     }
 
     public function removeClient(Client $client): static
     {
         if ($this->clients->removeElement($client)) {
-            // set the owning side to null (unless already changed)
             if ($client->getCommercial() === $this) {
                 $client->setCommercial(null);
             }
         }
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Commande>
-     */
     public function getCommandes(): Collection
     {
         return $this->commandes;
@@ -125,25 +162,19 @@ class Employe
             $this->commandes->add($commande);
             $commande->setReductionGereePar($this);
         }
-
         return $this;
     }
 
     public function removeCommande(Commande $commande): static
     {
         if ($this->commandes->removeElement($commande)) {
-            // set the owning side to null (unless already changed)
             if ($commande->getReductionGereePar() === $this) {
                 $commande->setReductionGereePar(null);
             }
         }
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Produit>
-     */
     public function getProduits(): Collection
     {
         return $this->produits;
@@ -155,20 +186,19 @@ class Employe
             $this->produits->add($produit);
             $produit->setGestionPar($this);
         }
-
         return $this;
     }
 
     public function removeProduit(Produit $produit): static
     {
         if ($this->produits->removeElement($produit)) {
-            // set the owning side to null (unless already changed)
             if ($produit->getGestionPar() === $this) {
                 $produit->setGestionPar(null);
             }
         }
-
         return $this;
     }
 }
+
+
 
