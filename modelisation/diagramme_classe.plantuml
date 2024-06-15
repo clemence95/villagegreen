@@ -15,6 +15,7 @@ class Client {
     - pays: String
     - referenceClient: String
     - panier: List<Produit>
+    - typeClient: String
     + ajouterProduitAuPanier(produit: Produit, quantite: int): void
     + supprimerProduit(produit: Produit): void
     + validerPanier(): void
@@ -57,7 +58,8 @@ class Commande {
     - date: Date
     - total: double
     - statut: String
-    - produits: List<Produit> 
+    - produits: List<Produit>
+    - quantites: List<int>
     - adresseLivraison: String
     - adresseFacturation: String
     - modeReglement: String
@@ -71,7 +73,6 @@ class Document {
     - total: double
     - adresseLivraison: String
     - adresseFacturation: String
-    - produits: List<Produit>
     - type: String
 }
 
@@ -80,23 +81,23 @@ class Employe {
     - nom: String
     - role: String
     - email: String
-    + gererCommandes(): void
-    + assisterClient(client: Client): void
-    + gererProduits(): void
-    + ajouterProduit(produit: Produit): void
-    + supprimerProduit(produit: Produit): void
-    + mettreAJourProduit(produit: Produit): void
+    + gererClientParticulier(client: Client): void
+    + appliquerReductionProfessionnelle(commande: Commande, reduction: double): void
+    + gererCatalogue(): void
+    + mettreAJourStock(produit: Produit, quantite: int): void
+    + validerProduit(produit: Produit): void
+    + desactiverProduit(produit: Produit): void
+    + gererRelationFournisseur(fournisseur: Fournisseur): void
 }
 
 Client "1" o-- "1" Employe : commercial
 Client "1" o-- "1..*" Commande
 Commande "1" *-- "0..*" Produit
 Commande "1" o-- "0..*" Document
-Document "1" *-- "0..*" Produit
+Commande "0..*" -- "1" Employe : reductionGereePar
 Produit "0..*" -- "1" Fournisseur
 Produit "0..*" -- "1" Categorie
 Categorie "0..*" -- "0..*" Categorie
-Produit "0..*" -- "1" Employe
-Employe "0..*" -- "0..*" Commande
+Produit "0..*" -- "1" Employe : gestionPar
 
 @enduml
