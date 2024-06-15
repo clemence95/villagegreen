@@ -21,29 +21,29 @@ usecase "Mettre à jour les stocks" as UC12
 usecase "Envoyer confirmation par email" as UC13
 usecase "Vérifier et supprimer les documents de plus de 3 ans" as UC14
 
-Client --> UC1
-Client --> UC2
-Client --> UC3
-Client --> UC4
-Client --> UC5
-Client --> UC7
-Client --> UC8
-Client --> UC9
-Client --> UC11
+Client --> UC1 : "Consulter le catalogue"
+Client --> UC2 : "Ajouter produit au panier"
+Client --> UC3 : "Valider le panier"
+Client --> UC4 : "Se connecter"
+Client --> UC5 : "S'inscrire"
+Client --> UC7 : "Confirmer les adresses"
+Client --> UC8 : "Choisir le mode de paiement"
+Client --> UC9 : "Effectuer le paiement"
+Client --> UC11 : "Recevoir confirmation de commande"
 
-Employe --> UC6
-Employe --> UC12
-Employe --> UC13
+Employe --> UC6 : "Vérifier la disponibilité des produits"
+Employe --> UC12 : "Mettre à jour les stocks"
+Employe --> UC13 : "Envoyer confirmation par email"
 
-System --> UC9
-System --> UC6
-System --> UC10
-System --> UC12
-System --> UC13
-System --> UC14
+System --> UC9 : "Effectuer le paiement"
+System --> UC6 : "Vérifier la disponibilité des produits"
+System --> UC10 : "Enregistrer la commande"
+System --> UC12 : "Mettre à jour les stocks"
+System --> UC13 : "Envoyer confirmation par email"
+System --> UC14 : "Vérifier et supprimer les documents de plus de 3 ans"
 
-UC3 --> UC6 : include
-UC6 --> UC10 : include
-UC10 --> UC13 : include
+UC3 --> UC6 : "include"
+UC6 --> UC10 : "include"
+UC10 --> UC13 : "include"
 
 @enduml
