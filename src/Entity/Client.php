@@ -21,15 +21,9 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
-     */
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
@@ -77,6 +71,8 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         $this->commandes = new ArrayCollection();
     }
 
+    // Getters and setters...
+
     public function getId(): ?int
     {
         return $this->id;
@@ -94,33 +90,19 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     *
-     * @return list<string>
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
@@ -128,9 +110,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
     public function getPassword(): string
     {
         return $this->password;
@@ -143,13 +122,8 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
     }
 
     public function getNom(): ?string
@@ -296,9 +270,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Commande>
-     */
     public function getCommandes(): Collection
     {
         return $this->commandes;
@@ -317,7 +288,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeCommande(Commande $commande): static
     {
         if ($this->commandes->removeElement($commande)) {
-            // set the owning side to null (unless already changed)
             if ($commande->getClient() === $this) {
                 $commande->setClient(null);
             }
@@ -326,5 +296,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 }
+
 
 
