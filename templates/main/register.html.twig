@@ -1,7 +1,7 @@
-{# templates/main/register.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Inscription{% endblock %}
+
 {% block body %}
     <div class="container-registration">
         <h1 class="display-4">Inscription</h1>
@@ -35,13 +35,20 @@
                 </div>
             </div>
             <div class="form-group row">
+                {{ form_label(registrationForm.typeClient, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+                <div class="col-sm-5">
+                    {{ form_widget(registrationForm.typeClient, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(registrationForm.typeClient) }}
+                </div>
+            </div>
+            <div class="form-group row siret-field">
                 {{ form_label(registrationForm.siret, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
                 <div class="col-sm-5">
                     {{ form_widget(registrationForm.siret, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(registrationForm.siret) }}
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row entreprise-field">
                 {{ form_label(registrationForm.entreprise, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
                 <div class="col-sm-5">
                     {{ form_widget(registrationForm.entreprise, {'attr': {'class': 'form-control'}}) }}
@@ -84,13 +91,6 @@
                 </div>
             </div>
             <div class="form-group row">
-                {{ form_label(registrationForm.typeClient, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                <div class="col-sm-5">
-                    {{ form_widget(registrationForm.typeClient, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(registrationForm.typeClient) }}
-                </div>
-            </div>
-            <div class="form-group row">
                 {{ form_label(registrationForm.coefficient, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
                 <div class="col-sm-5">
                     {{ form_widget(registrationForm.coefficient, {'attr': {'class': 'form-control'}}) }}
@@ -105,6 +105,38 @@
         {{ form_end(registrationForm) }}
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const typeClientRadios = document.querySelectorAll('input[name="registration_form[typeClient]"]');
+        const siretField = document.querySelector('.siret-field') ? document.querySelector('.siret-field').closest('.form-group') : null;
+        const entrepriseField = document.querySelector('.entreprise-field') ? document.querySelector('.entreprise-field').closest('.form-group') : null;
+
+        function toggleFields() {
+            const typeClient = document.querySelector('input[name="registration_form[typeClient]"]:checked');
+            if (typeClient && typeClient.value === 'professionnel') {
+                if (siretField) siretField.style.display = 'flex';
+                if (entrepriseField) entrepriseField.style.display = 'flex';
+            } else {
+                if (siretField) siretField.style.display = 'none';
+                if (entrepriseField) entrepriseField.style.display = 'none';
+            }
+        }
+
+        typeClientRadios.forEach(radio => {
+            radio.addEventListener('change', toggleFields);
+        });
+
+        toggleFields(); // Initial call to set the correct state on load
+    });
+    </script>
+{% endblock %}
+
+
+
+
 
 
 
