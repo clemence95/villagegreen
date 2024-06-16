@@ -1,7 +1,7 @@
 html,
 body {
     height: 100%;
-    margin: 0;
+    margin: 20px;
     font-family: Arial, sans-serif;
     background-color: antiquewhite; 
 }
@@ -31,7 +31,7 @@ body {
 
 /* Barre de navigation verticale */
 .vertical-navbar {
-    height: 100vh;
+    height: 90vh;
     width: 20%;
     position: fixed;
     top: 0;
@@ -41,7 +41,6 @@ body {
     padding-top: 80px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
 }
 
 .vertical-navbar ul {
@@ -133,7 +132,7 @@ body {
 }
 
 footer {
-    flex-shrink: 0;
+    flex-shrink: 20%;
 }
 .carousel-caption h5 {
     color: black;
@@ -215,5 +214,36 @@ h1 {
     background-position: center;
     max-width: 80%;
 }
+.container_registration{
+    margin-left: 20%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.container-registration {
+    margin-left: 20%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 20vh;
+}
 
+/* Styles pour les formulaires */
+.form-horizontal .form-group {
+    margin-bottom: 1rem;
+}
+
+.form-horizontal .form-group label {
+    text-align: right;
+}
+
+.form-horizontal .form-group .col-sm-10 {
+    padding-left: 0;
+}
+
+.btn-primary {
+    margin-top: 1rem;
+}
 

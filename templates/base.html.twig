@@ -26,7 +26,7 @@
                         <a class="nav-link" href="{{ path('accueil') }}"><i class="bi bi-house"></i> Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-pencil-square"></i> Inscription</a>
+                        <a class="nav-link" href="{{path('app_register')}}"><i class="bi bi-pencil-square"></i> Inscription</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="bi bi-box-arrow-in-right"></i> Connexion</a>
@@ -78,7 +78,7 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
         
-        <footer class="bg-dark text-white text-center py-3 fixed-bot">
+        <footer class="bg-transparent text-dark text-center py-3 fixed-bottom">
             <p>&copy; 2024 VillageGreen</p>
         </footer>
     </body>
