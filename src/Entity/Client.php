@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -23,18 +24,24 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank(message: "L'email ne peut pas être vide.")]
+    #[Assert\Email(message: "L'adresse email '{{ value }}' n'est pas une adresse email valide.")]
     private ?string $email = null;
 
     #[ORM\Column]
     private array $roles = [];
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le mot de passe ne peut pas être vide.")]
+    #[Assert\Length(min: 6, minMessage: "Le mot de passe doit comporter au moins {{ limit }} caractères.")]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom ne peut pas être vide.")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le prénom ne peut pas être vide.")]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 14, nullable: true)]
@@ -44,15 +51,19 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $entreprise = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "La rue ne peut pas être vide.")]
     private ?string $rue = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "La ville ne peut pas être vide.")]
     private ?string $ville = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le code postal ne peut pas être vide.")]
     private ?string $codePostal = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le pays ne peut pas être vide.")]
     private ?string $pays = null;
 
     #[ORM\Column(length: 255)]
