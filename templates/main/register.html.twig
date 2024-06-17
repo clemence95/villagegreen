@@ -109,14 +109,14 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const typeClientRadios = document.querySelectorAll('input[name="registration_form[typeClient]"]');
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const typeClientRadios = document.querySelectorAll('input[name="client[typeClient]"]');
         const siretField = document.querySelector('.siret-field');
         const entrepriseField = document.querySelector('.entreprise-field');
 
         function toggleFields() {
-            const selectedTypeClient = document.querySelector('input[name="registration_form[typeClient]"]:checked');
-            if (selectedTypeClient && selectedTypeClient.value === 'professionnel') {
+            const typeClient = document.querySelector('input[name="client[typeClient]"]:checked');
+            if (typeClient && typeClient.value === 'professionnel') {
                 siretField.style.display = 'flex';
                 entrepriseField.style.display = 'flex';
             } else {
@@ -133,6 +133,8 @@
     });
     </script>
 {% endblock %}
+
+
 
 
 
