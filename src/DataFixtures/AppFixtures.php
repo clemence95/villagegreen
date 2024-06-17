@@ -47,6 +47,10 @@ class AppFixtures extends Fixture
         $employe->setNom('Alice');
         $employe->setRole('Commercial');
         $employe->setEmail('alice@example.com');
+
+        // Hachage du mot de passe de l'employé
+        $hashedPasswordEmploye = $this->passwordHasher->hashPassword($employe, 'employePassword');
+        $employe->setPassword($hashedPasswordEmploye);
         $manager->persist($employe);
 
         // Create produit
@@ -69,7 +73,11 @@ class AppFixtures extends Fixture
         $client->setNom('Doe');
         $client->setPrenom('John');
         $client->setEmail('john.doe@example.com');
-        $client->setPassword($this->passwordHasher->hashPassword($client, 'password'));
+
+        // Hachage du mot de passe du client
+        $hashedPasswordClient = $this->passwordHasher->hashPassword($client, 'password');
+        $client->setPassword($hashedPasswordClient);
+
         $client->setRue('123 Main St');
         $client->setVille('Paris');
         $client->setCodePostal('75001');
@@ -108,3 +116,4 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 }
+
