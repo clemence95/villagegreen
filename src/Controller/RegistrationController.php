@@ -26,8 +26,11 @@ class RegistrationController extends AbstractController
             if ($client->getTypeClient() === 'particulier') {
                 $client->setCoefficient(Client::COEFFICIENT_PARTICULIER);
             } elseif ($client->getTypeClient() === 'professionnel') {
-                $client->setCoefficient($client->getCoefficient() ?? Client::COEFFICIENT_PROFESSIONNEL);
+                $client->setCoefficient(Client::COEFFICIENT_PROFESSIONNEL);
             }
+
+            // Générer une référence client unique
+            $client->setReferenceClient('REF-' . strtoupper(bin2hex(random_bytes(4))));
 
             // Hash the password
             $client->setPassword(
@@ -49,6 +52,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 }
+
 
 
 

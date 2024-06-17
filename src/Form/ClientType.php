@@ -35,8 +35,6 @@ class ClientType extends AbstractType
             ->add('ville', TextType::class, ['label' => 'Ville'])
             ->add('codePostal', TextType::class, ['label' => 'Code Postal'])
             ->add('pays', TextType::class, ['label' => 'Pays'])
-            ->add('referenceClient', TextType::class, ['label' => 'Référence Client', 'required' => false])
-            ->add('coefficient', TextType::class, ['label' => 'Coefficient', 'required' => false, 'attr' => ['class' => 'coefficient-field']])
             ->add('save', SubmitType::class, ['label' => 'Inscription']);
     }
 
@@ -47,6 +45,7 @@ class ClientType extends AbstractType
         ]);
     }
 }
+
 
 
 

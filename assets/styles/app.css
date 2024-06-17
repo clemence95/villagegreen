@@ -215,10 +215,15 @@ h1 {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-top: 20%;
+    margin-top: 80px; /* Assurez-vous que ce margin-top est suffisamment grand pour compenser la hauteur de la navbar */
+    padding-top: 60px; /* Ajoutez un peu de padding pour espacer encore plus le contenu */
 }
 .container-registration h1{
-    padding-top: 20%;
+    padding-top: 30%;
+    margin-bottom: 30%;
+}
+.form-field {
+    margin-bottom: 50px; /* Ajoutez la marge souhaitée ici */
 }
 
 /* Styles pour les formulaires */

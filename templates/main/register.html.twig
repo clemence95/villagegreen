@@ -3,102 +3,88 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-    <div class="container-registration" style="margin-top: 80px;">
+    <div class="container-registration mt-5 pt-5">
         <h1 class="display-4">Inscription</h1>
         {{ form_start(registrationForm, {'attr': {'class': 'form-horizontal'}}) }}
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 {{ form_label(registrationForm.prenom, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                <div class="col-sm-10">
+                <div class="col-sm-5">
                     {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(registrationForm.prenom) }}
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 {{ form_label(registrationForm.nom, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                <div class="col-sm-10">
+                <div class="col-sm-5">
                     {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(registrationForm.nom) }}
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                <div class="col-sm-10">
+                <div class="col-sm-5">
                     {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(registrationForm.email) }}
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 {{ form_label(registrationForm.password, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                <div class="col-sm-10">
+                <div class="col-sm-5">
                     {{ form_widget(registrationForm.password, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(registrationForm.password) }}
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 {{ form_label(registrationForm.typeClient, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                <div class="col-sm-10">
+                <div class="col-sm-5">
                     {{ form_widget(registrationForm.typeClient, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(registrationForm.typeClient) }}
                 </div>
             </div>
-            <div class="form-group row siret-field" style="display: none;">
+            <div class="form-group row siret-field mb-3" style="display: none;">
                 {{ form_label(registrationForm.siret, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                <div class="col-sm-10">
+                <div class="col-sm-5">
                     {{ form_widget(registrationForm.siret, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(registrationForm.siret) }}
                 </div>
             </div>
-            <div class="form-group row entreprise-field" style="display: none;">
+            <div class="form-group row entreprise-field mb-3" style="display: none;">
                 {{ form_label(registrationForm.entreprise, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                <div class="col-sm-10">
+                <div class="col-sm-5">
                     {{ form_widget(registrationForm.entreprise, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(registrationForm.entreprise) }}
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 {{ form_label(registrationForm.rue, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                <div class="col-sm-10">
+                <div class="col-sm-5">
                     {{ form_widget(registrationForm.rue, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(registrationForm.rue) }}
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 {{ form_label(registrationForm.ville, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                <div class="col-sm-10">
+                <div class="col-sm-5">
                     {{ form_widget(registrationForm.ville, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(registrationForm.ville) }}
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 {{ form_label(registrationForm.codePostal, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                <div class="col-sm-10">
+                <div class="col-sm-5">
                     {{ form_widget(registrationForm.codePostal, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(registrationForm.codePostal) }}
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 {{ form_label(registrationForm.pays, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                <div class="col-sm-10">
+                <div class="col-sm-5">
                     {{ form_widget(registrationForm.pays, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(registrationForm.pays) }}
                 </div>
             </div>
-            <div class="form-group row">
-                {{ form_label(registrationForm.referenceClient, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                <div class="col-sm-10">
-                    {{ form_widget(registrationForm.referenceClient, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(registrationForm.referenceClient) }}
-                </div>
-            </div>
-            <div class="form-group row coefficient-field" style="display: none;">
-                {{ form_label(registrationForm.coefficient, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                <div class="col-sm-10">
-                    {{ form_widget(registrationForm.coefficient, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(registrationForm.coefficient) }}
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-10 offset-sm-2">
+            <div class="form-group row mb-3">
+                <div class="col-sm-5 offset-sm-2">
                     {{ form_widget(registrationForm.save, {'attr': {'class': 'btn btn-primary btn-lg'}}) }}
                 </div>
             </div>
@@ -113,18 +99,15 @@
         const typeClientRadios = document.querySelectorAll('input[name="client[typeClient]"]');
         const siretField = document.querySelector('.siret-field');
         const entrepriseField = document.querySelector('.entreprise-field');
-        const coefficientField = document.querySelector('.coefficient-field');
 
         function toggleFields() {
             const typeClient = document.querySelector('input[name="client[typeClient]"]:checked');
             if (typeClient && typeClient.value === 'professionnel') {
                 siretField.style.display = 'flex';
                 entrepriseField.style.display = 'flex';
-                coefficientField.style.display = 'flex';
             } else {
                 siretField.style.display = 'none';
                 entrepriseField.style.display = 'none';
-                coefficientField.style.display = 'none';
             }
         }
 
@@ -136,6 +119,8 @@
     });
     </script>
 {% endblock %}
+
+
 
 
 
