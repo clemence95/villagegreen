@@ -209,21 +209,16 @@ h1 {
     max-width: 80%;
 }
 
-.container_registration {
+.container-registration {
     margin-left: 20%;
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding-top: 20%;
 }
-
-.container-registration {
-    margin-left: 20%;
-    height: 70%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-bottom: 20vh;
+.container-registration h1{
+    padding-top: 20%;
 }
 
 /* Styles pour les formulaires */
