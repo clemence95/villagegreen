@@ -22,6 +22,13 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Définir le coefficient pour les clients particuliers
+            if ($client->getTypeClient() === 'particulier') {
+                $client->setCoefficient(Client::COEFFICIENT_PARTICULIER);
+            } elseif ($client->getTypeClient() === 'professionnel') {
+                $client->setCoefficient($client->getCoefficient() ?? Client::COEFFICIENT_PROFESSIONNEL);
+            }
+
             // Hash the password
             $client->setPassword(
                 $passwordHasher->hashPassword(
@@ -33,7 +40,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($client);
             $entityManager->flush();
 
-            // Maybe set a flash message or redirect to a different page
+            // Peut-être définir un message flash ou rediriger vers une autre page
             return $this->redirectToRoute('app_register_success');
         }
 
@@ -42,6 +49,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 }
+
 
 
 
