@@ -90,7 +90,7 @@
                     {{ form_errors(registrationForm.referenceClient) }}
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row coefficient-field" style="display: none;">
                 {{ form_label(registrationForm.coefficient, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
                 <div class="col-sm-4">
                     {{ form_widget(registrationForm.coefficient, {'attr': {'class': 'form-control'}}) }}
@@ -113,15 +113,18 @@
         const typeClientRadios = document.querySelectorAll('input[name="client[typeClient]"]');
         const siretField = document.querySelector('.siret-field');
         const entrepriseField = document.querySelector('.entreprise-field');
+        const coefficientField = document.querySelector('.coefficient-field');
 
         function toggleFields() {
             const typeClient = document.querySelector('input[name="client[typeClient]"]:checked');
             if (typeClient && typeClient.value === 'professionnel') {
                 siretField.style.display = 'flex';
                 entrepriseField.style.display = 'flex';
+                coefficientField.style.display = 'flex';
             } else {
                 siretField.style.display = 'none';
                 entrepriseField.style.display = 'none';
+                coefficientField.style.display = 'none';
             }
         }
 
@@ -133,6 +136,7 @@
     });
     </script>
 {% endblock %}
+
 
 
 
