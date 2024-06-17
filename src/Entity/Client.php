@@ -13,6 +13,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class Client implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    // Ajoutez ces constantes pour les coefficients par défaut
+    public const COEFFICIENT_PARTICULIER = 1.0;
+    public const COEFFICIENT_PROFESSIONNEL = 1.2;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -243,6 +247,13 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->typeClient = $typeClient;
 
+        // Définir le coefficient en fonction du type de client
+        if ($typeClient === 'particulier') {
+            $this->coefficient = self::COEFFICIENT_PARTICULIER;
+        } else if ($typeClient === 'professionnel') {
+            $this->coefficient = self::COEFFICIENT_PROFESSIONNEL;
+        }
+
         return $this;
     }
 
@@ -296,6 +307,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 }
+
 
 
 
