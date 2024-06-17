@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class Client implements UserInterface, PasswordAuthenticatedUserInterface
@@ -70,6 +70,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $referenceClient = null;
 
     #[ORM\Column(length: 20)]
+    #[Assert\NotBlank(message: "Le type de client doit être sélectionné.")]
     private ?string $typeClient = null;
 
     #[ORM\Column]
@@ -316,6 +317,25 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+        /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context): void
+    {
+        if ($this->typeClient === 'professionnel') {
+            if (empty($this->siret)) {
+                $context->buildViolation('Le SIRET ne peut pas être vide.')
+                    ->atPath('siret')
+                    ->addViolation();
+            }
+            if (empty($this->entreprise)) {
+                $context->buildViolation("Le nom de l'entreprise ne peut pas être vide.")
+                    ->atPath('entreprise')
+                    ->addViolation();
+            }
+        }
     }
 }
 

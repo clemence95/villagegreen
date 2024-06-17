@@ -2,6 +2,28 @@
 
 {% block title %}Inscription{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .was-validated .form-control:invalid {
+            border-color: #dc3545;
+        }
+
+        .was-validated .form-control:invalid:focus {
+            box-shadow: none;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .text-danger {
+            color: red;
+            margin-top: 0.5rem;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <div class="container-registration mt-5 pt-5">
         <h1 class="display-4">Inscription</h1>
@@ -10,7 +32,7 @@
                 {{ form_label(registrationForm.prenom, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
                 <div class="col-sm-5">
                     {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control'}}) }}
-                    <div class="form-error">
+                    <div class="text-danger">
                         {{ form_errors(registrationForm.prenom) }}
                     </div>
                 </div>
@@ -19,7 +41,7 @@
                 {{ form_label(registrationForm.nom, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
                 <div class="col-sm-5">
                     {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control'}}) }}
-                    <div class="form-error">
+                    <div class="text-danger">
                         {{ form_errors(registrationForm.nom) }}
                     </div>
                 </div>
@@ -28,7 +50,7 @@
                 {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
                 <div class="col-sm-5">
                     {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'type': 'email'}}) }}
-                    <div class="form-error">
+                    <div class="text-danger">
                         {{ form_errors(registrationForm.email) }}
                     </div>
                 </div>
@@ -37,7 +59,7 @@
                 {{ form_label(registrationForm.password, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
                 <div class="col-sm-5">
                     {{ form_widget(registrationForm.password, {'attr': {'class': 'form-control'}}) }}
-                    <div class="form-error">
+                    <div class="text-danger">
                         {{ form_errors(registrationForm.password) }}
                     </div>
                 </div>
@@ -46,7 +68,7 @@
                 {{ form_label(registrationForm.typeClient, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
                 <div class="col-sm-5">
                     {{ form_widget(registrationForm.typeClient, {'attr': {'class': 'form-control'}}) }}
-                    <div class="form-error">
+                    <div class="text-danger">
                         {{ form_errors(registrationForm.typeClient) }}
                     </div>
                 </div>
@@ -55,7 +77,7 @@
                 {{ form_label(registrationForm.siret, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
                 <div class="col-sm-5">
                     {{ form_widget(registrationForm.siret, {'attr': {'class': 'form-control'}}) }}
-                    <div class="form-error">
+                    <div class="text-danger">
                         {{ form_errors(registrationForm.siret) }}
                     </div>
                 </div>
@@ -64,7 +86,7 @@
                 {{ form_label(registrationForm.entreprise, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
                 <div class="col-sm-5">
                     {{ form_widget(registrationForm.entreprise, {'attr': {'class': 'form-control'}}) }}
-                    <div class="form-error">
+                    <div class="text-danger">
                         {{ form_errors(registrationForm.entreprise) }}
                     </div>
                 </div>
@@ -73,7 +95,7 @@
                 {{ form_label(registrationForm.rue, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
                 <div class="col-sm-5">
                     {{ form_widget(registrationForm.rue, {'attr': {'class': 'form-control'}}) }}
-                    <div class="form-error">
+                    <div class="text-danger">
                         {{ form_errors(registrationForm.rue) }}
                     </div>
                 </div>
@@ -82,7 +104,7 @@
                 {{ form_label(registrationForm.ville, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
                 <div class="col-sm-5">
                     {{ form_widget(registrationForm.ville, {'attr': {'class': 'form-control'}}) }}
-                    <div class="form-error">
+                    <div class="text-danger">
                         {{ form_errors(registrationForm.ville) }}
                     </div>
                 </div>
@@ -91,7 +113,7 @@
                 {{ form_label(registrationForm.codePostal, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
                 <div class="col-sm-5">
                     {{ form_widget(registrationForm.codePostal, {'attr': {'class': 'form-control'}}) }}
-                    <div class="form-error">
+                    <div class="text-danger">
                         {{ form_errors(registrationForm.codePostal) }}
                     </div>
                 </div>
@@ -100,7 +122,7 @@
                 {{ form_label(registrationForm.pays, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
                 <div class="col-sm-5">
                     {{ form_widget(registrationForm.pays, {'attr': {'class': 'form-control'}}) }}
-                    <div class="form-error">
+                    <div class="text-danger">
                         {{ form_errors(registrationForm.pays) }}
                     </div>
                 </div>
@@ -118,7 +140,6 @@
     {{ parent() }}
     <script>
     document.addEventListener('DOMContentLoaded', (event) => {
-        const form = document.querySelector('form');
         const typeClientRadios = document.querySelectorAll('input[name="client[typeClient]"]');
         const siretField = document.querySelector('.siret-field');
         const entrepriseField = document.querySelector('.entreprise-field');
@@ -139,38 +160,15 @@
         });
 
         toggleFields(); // Initial call to set the correct state on load
-
-        form.addEventListener('submit', function(event) {
-            // Remove previous error messages
-            const errorElements = document.querySelectorAll('.form-error');
-            errorElements.forEach(el => el.innerText = '');
-
-            let isValid = true;
-
-            // Check email field
-            const emailField = form.querySelector('input[type="email"]');
-            if (emailField && !emailField.validity.valid) {
-                isValid = false;
-                const errorElement = emailField.closest('.form-group').querySelector('.form-error');
-                if (emailField.validity.valueMissing) {
-                    errorElement.innerText = "L'email ne peut pas être vide.";
-                } else if (emailField.validity.typeMismatch) {
-                    errorElement.innerText = "L'adresse email n'est pas valide.";
-                }
-            }
-
-            // Add other custom validations as needed
-
-            if (!isValid) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-
-            form.classList.add('was-validated');
-        }, false);
     });
     </script>
 {% endblock %}
+
+
+
+
+
+
 
 
 
