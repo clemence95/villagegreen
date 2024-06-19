@@ -1,7 +1,7 @@
 @startuml diagramme_classe
 !theme toy
 
-class Client {
+class Utilisateur {
     - id: int
     - nom: String
     - prenom: String
@@ -14,15 +14,22 @@ class Client {
     - codePostal: String
     - pays: String
     - referenceClient: String
-    - panier: List<Produit>
-    - typeClient: String
-    + ajouterProduitAuPanier(produit: Produit, quantite: int): void
-    + supprimerProduit(produit: Produit): void
-    + validerPanier(): void
+    - role: String <<Employe, Particulier, Professionnel>>
+    - commercial: Utilisateur
     + consulterCatalogue(): void
     + seConnecter(email: String, motDePasse: String): boolean
     + sInscrire(nom: String, email: String, motDePasse: String, typeClient: String): void
     + visualiserCommandes(): List<Commande>
+    + ajouterProduitAuPanier(produit: Produit, quantite: int): void
+    + supprimerProduitDuPanier(produit: Produit): void
+    + validerPanier(): void
+    + gererClientParticulier(client: Utilisateur): void
+    + appliquerReductionProfessionnelle(commande: Commande, reduction: double): void
+    + gererCatalogue(): void
+    + mettreAJourStock(produit: Produit, quantite: int): void
+    + validerProduit(produit: Produit): void
+    + desactiverProduit(produit: Produit): void
+    + gererRelationFournisseur(fournisseur: Fournisseur): void
 }
 
 class Produit {
@@ -40,7 +47,7 @@ class Produit {
 class Categorie {
     - id: int
     - nom: String
-    - sousCategorie: List<Categorie>
+    - sousCategories: List<Categorie>
     + ajouterSousCategorie(sousCategorie: Categorie): void
     + ajouterProduit(produit: Produit): void
 }
@@ -58,46 +65,24 @@ class Commande {
     - date: Date
     - total: double
     - statut: String
-    - produits: List<Produit>
-    - quantites: List<int>
     - adresseLivraison: String
     - adresseFacturation: String
     - modeReglement: String
     - reduction: double
     - informationReglement: String
+    - produits: List<Produit>
+    - quantites: List<int>
+    + ajouterProduit(produit: Produit, quantite: int): void
+    + supprimerProduit(produit: Produit): void
+    + validerCommande(): void
 }
 
-class Document {
-    - id: int
-    - date: Date
-    - total: double
-    - adresseLivraison: String
-    - adresseFacturation: String
-    - type: String
-}
-
-class Employe {
-    - id: int
-    - nom: String
-    - role: String
-    - email: String
-    + gererClientParticulier(client: Client): void
-    + appliquerReductionProfessionnelle(commande: Commande, reduction: double): void
-    + gererCatalogue(): void
-    + mettreAJourStock(produit: Produit, quantite: int): void
-    + validerProduit(produit: Produit): void
-    + desactiverProduit(produit: Produit): void
-    + gererRelationFournisseur(fournisseur: Fournisseur): void
-}
-
-Client "1" o-- "1" Employe : commercial
-Client "1" o-- "1..*" Commande
-Commande "1" *-- "0..*" Produit
-Commande "1" o-- "0..*" Document
-Commande "0..*" -- "1" Employe : reductionGereePar
+Utilisateur "1" o-- "1..*" Commande
+Commande "0..*" -- "1" Utilisateur : reductionGereePar
+Commande "1" o-- "0..*" Produit : contient
 Produit "0..*" -- "1" Fournisseur
 Produit "0..*" -- "1" Categorie
 Categorie "0..*" -- "0..*" Categorie
-Produit "0..*" -- "1" Employe : gestionPar
+Produit "0..*" -- "1" Utilisateur : gestionPar
 
 @enduml
