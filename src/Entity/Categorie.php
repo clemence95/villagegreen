@@ -19,12 +19,12 @@ class Categorie
     private ?string $nom = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'sousCategories')]
-    private ?self $categorie = null;
+    private ?self $sousCategorie = null;
 
-    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: self::class)]
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'sousCategorie')]
     private Collection $sousCategories;
 
-    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Produit::class)]
+    #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'sousCategorie')]
     private Collection $produits;
 
     public function __construct()
@@ -50,18 +50,21 @@ class Categorie
         return $this;
     }
 
-    public function getCategorie(): ?self
+    public function getSousCategorie(): ?self
     {
-        return $this->categorie;
+        return $this->sousCategorie;
     }
 
-    public function setCategorie(?self $categorie): static
+    public function setSousCategorie(?self $sousCategorie): static
     {
-        $this->categorie = $categorie;
+        $this->sousCategorie = $sousCategorie;
 
         return $this;
     }
 
+    /**
+     * @return Collection<int, self>
+     */
     public function getSousCategories(): Collection
     {
         return $this->sousCategories;
@@ -71,7 +74,7 @@ class Categorie
     {
         if (!$this->sousCategories->contains($sousCategorie)) {
             $this->sousCategories->add($sousCategorie);
-            $sousCategorie->setCategorie($this);
+            $sousCategorie->setSousCategorie($this);
         }
 
         return $this;
@@ -80,14 +83,18 @@ class Categorie
     public function removeSousCategorie(self $sousCategorie): static
     {
         if ($this->sousCategories->removeElement($sousCategorie)) {
-            if ($sousCategorie->getCategorie() === $this) {
-                $sousCategorie->setCategorie(null);
+            // set the owning side to null (unless already changed)
+            if ($sousCategorie->getSousCategorie() === $this) {
+                $sousCategorie->setSousCategorie(null);
             }
         }
 
         return $this;
     }
 
+    /**
+     * @return Collection<int, Produit>
+     */
     public function getProduits(): Collection
     {
         return $this->produits;
@@ -96,8 +103,8 @@ class Categorie
     public function addProduit(Produit $produit): static
     {
         if (!$this->produits->contains($produit)) {
-            $this->produits->add($produit);
-            $produit->setCategorie($this);
+            $this->produits[] = $produit;
+            $produit->setSousCategorie($this);
         }
 
         return $this;
@@ -106,12 +113,14 @@ class Categorie
     public function removeProduit(Produit $produit): static
     {
         if ($this->produits->removeElement($produit)) {
-            if ($produit->getCategorie() === $this) {
-                $produit->setCategorie(null);
+            // set the owning side to null (unless already changed)
+            if ($produit->getSousCategorie() === $this) {
+                $produit->setSousCategorie(null);
             }
         }
 
         return $this;
     }
 }
+
 

@@ -21,15 +21,12 @@ class Fournisseur
     #[ORM\Column(length: 255)]
     private ?string $contact = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 10)]
     private ?string $telephone = null;
 
     #[ORM\Column(length: 14)]
     private ?string $siret = null;
 
-    /**
-     * @var Collection<int, Produit>
-     */
     #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'fournisseur')]
     private Collection $produits;
 
@@ -37,6 +34,8 @@ class Fournisseur
     {
         $this->produits = new ArrayCollection();
     }
+
+    // Getters and setters...
 
     public function getId(): ?int
     {
@@ -102,7 +101,7 @@ class Fournisseur
     public function addProduit(Produit $produit): static
     {
         if (!$this->produits->contains($produit)) {
-            $this->produits->add($produit);
+            $this->produits[] = $produit;
             $produit->setFournisseur($this);
         }
 
@@ -121,4 +120,3 @@ class Fournisseur
         return $this;
     }
 }
-

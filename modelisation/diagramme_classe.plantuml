@@ -1,6 +1,12 @@
 @startuml diagramme_classe
 !theme toy
 
+enum Role {
+    Employe
+    Particulier
+    Professionnel
+}
+
 class Utilisateur {
     - id: int
     - nom: String
@@ -14,15 +20,15 @@ class Utilisateur {
     - codePostal: String
     - pays: String
     - referenceClient: String
-    - role: String <<Employe, Particulier, Professionnel>>
+    - role: Role
     - commercial: Utilisateur
     + consulterCatalogue(): void
-    + seConnecter(email: String, motDePasse: String): boolean
-    + sInscrire(nom: String, email: String, motDePasse: String, typeClient: String): void
+    + static seConnecter(email: String, motDePasse: String): boolean
+    + static sInscrire(nom: String, email: String, motDePasse: String, typeClient: Role): void
     + visualiserCommandes(): List<Commande>
     + ajouterProduitAuPanier(produit: Produit, quantite: int): void
     + supprimerProduitDuPanier(produit: Produit): void
-    + validerPanier(): void
+    + validerCommande(): void
     + gererClientParticulier(client: Utilisateur): void
     + appliquerReductionProfessionnelle(commande: Commande, reduction: double): void
     + gererCatalogue(): void
@@ -42,6 +48,8 @@ class Produit {
     - stock: int
     - actif: bool
     - photo: String
+    + augmenterStock(quantite: int): void
+    + reduireStock(quantite: int): void
 }
 
 class Categorie {
@@ -58,6 +66,7 @@ class Fournisseur {
     - contact: String
     - telephone: String
     - siret: String
+    + gererProduit(produit: Produit): void
 }
 
 class Commande {
@@ -74,10 +83,10 @@ class Commande {
     - quantites: List<int>
     + ajouterProduit(produit: Produit, quantite: int): void
     + supprimerProduit(produit: Produit): void
-    + validerCommande(): void
+    + validerCommande(): boolean
 }
 
-Utilisateur "1" o-- "1..*" Commande
+Utilisateur "0..1" o-- "0..*" Commande
 Commande "0..*" -- "1" Utilisateur : reductionGereePar
 Commande "1" o-- "0..*" Produit : contient
 Produit "0..*" -- "1" Fournisseur

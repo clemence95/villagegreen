@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
@@ -15,7 +16,7 @@ class Commande
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column]
@@ -33,28 +34,23 @@ class Commande
     #[ORM\Column(length: 255)]
     private ?string $modeReglement = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $reduction = null;
+
     #[ORM\Column(length: 255)]
     private ?string $informationReglement = null;
 
-    #[ORM\Column]
-    private ?float $reduction = null;
-
-    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'commandes')]
-    private ?Client $client = null;
+    #[ORM\ManyToOne(inversedBy: 'commandes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateur $utilisateur = null;
 
     #[ORM\ManyToMany(targetEntity: Produit::class)]
+    #[ORM\JoinTable(name: 'commande_produit')]
     private Collection $produits;
-
-    #[ORM\ManyToOne(targetEntity: Employe::class, inversedBy: 'commandes')]
-    private ?Employe $reductionGereePar = null;
-
-    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: Document::class)]
-    private Collection $documents;
 
     public function __construct()
     {
         $this->produits = new ArrayCollection();
-        $this->documents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,6 +130,18 @@ class Commande
         return $this;
     }
 
+    public function getReduction(): ?float
+    {
+        return $this->reduction;
+    }
+
+    public function setReduction(?float $reduction): static
+    {
+        $this->reduction = $reduction;
+
+        return $this;
+    }
+
     public function getInformationReglement(): ?string
     {
         return $this->informationReglement;
@@ -146,26 +154,14 @@ class Commande
         return $this;
     }
 
-    public function getReduction(): ?float
+    public function getUtilisateur(): ?Utilisateur
     {
-        return $this->reduction;
+        return $this->utilisateur;
     }
 
-    public function setReduction(float $reduction): static
+    public function setUtilisateur(?Utilisateur $utilisateur): static
     {
-        $this->reduction = $reduction;
-
-        return $this;
-    }
-
-    public function getClient(): ?Client
-    {
-        return $this->client;
-    }
-
-    public function setClient(?Client $client): static
-    {
-        $this->client = $client;
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }
@@ -181,7 +177,7 @@ class Commande
     public function addProduit(Produit $produit): static
     {
         if (!$this->produits->contains($produit)) {
-            $this->produits->add($produit);
+            $this->produits[] = $produit;
         }
 
         return $this;
@@ -190,47 +186,6 @@ class Commande
     public function removeProduit(Produit $produit): static
     {
         $this->produits->removeElement($produit);
-
-        return $this;
-    }
-
-    public function getReductionGereePar(): ?Employe
-    {
-        return $this->reductionGereePar;
-    }
-
-    public function setReductionGereePar(?Employe $reductionGereePar): static
-    {
-        $this->reductionGereePar = $reductionGereePar;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Document>
-     */
-    public function getDocuments(): Collection
-    {
-        return $this->documents;
-    }
-
-    public function addDocument(Document $document): static
-    {
-        if (!$this->documents->contains($document)) {
-            $this->documents->add($document);
-            $document->setCommande($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDocument(Document $document): static
-    {
-        if ($this->documents->removeElement($document)) {
-            if ($document->getCommande() === $this) {
-                $document->setCommande(null);
-            }
-        }
 
         return $this;
     }

@@ -2,46 +2,41 @@
 
 namespace App\Entity;
 
-use App\Repository\ClientRepository;
+use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-#[ORM\Entity(repositoryClass: ClientRepository::class)]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-class Client implements UserInterface, PasswordAuthenticatedUserInterface
-{
-    // Ajoutez ces constantes pour les coefficients par défaut
-    public const COEFFICIENT_PARTICULIER = 1.0;
-    public const COEFFICIENT_PROFESSIONNEL = 1.2;
 
+#[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
-    #[Assert\NotBlank(message: "L'email ne peut pas être vide.")]
-    #[Assert\Email(message: "L'adresse email '{{ value }}' n'est pas une adresse email valide.")]
     private ?string $email = null;
 
+    /**
+     * @var list<string> The user roles
+     */
     #[ORM\Column]
     private array $roles = [];
 
+    /**
+     * @var string The hashed password
+     */
     #[ORM\Column]
-    #[Assert\NotBlank(message: "Le mot de passe ne peut pas être vide.")]
-    #[Assert\Length(min: 6, minMessage: "Le mot de passe doit comporter au moins {{ limit }} caractères.")]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le nom ne peut pas être vide.")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le prénom ne peut pas être vide.")]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 14, nullable: true)]
@@ -51,43 +46,30 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $entreprise = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "La rue ne peut pas être vide.")]
     private ?string $rue = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "La ville ne peut pas être vide.")]
     private ?string $ville = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le code postal ne peut pas être vide.")]
+    #[ORM\Column(length: 10)]
     private ?string $codePostal = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le pays ne peut pas être vide.")]
     private ?string $pays = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $referenceClient = null;
 
-    #[ORM\Column(length: 20)]
-    #[Assert\NotBlank(message: "Le type de client doit être sélectionné.")]
-    private ?string $typeClient = null;
-
-    #[ORM\Column]
-    private ?float $coefficient = null;
-
-    #[ORM\ManyToOne(targetEntity: Employe::class, inversedBy: 'clients')]
-    private ?Employe $commercial = null;
-
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Commande::class)]
+    /**
+     * @var Collection<int, Commande>
+     */
+    #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'utilisateur', orphanRemoval: true)]
     private Collection $commandes;
 
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
     }
-
-    // Getters and setters...
 
     public function getId(): ?int
     {
@@ -106,19 +88,33 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
+    /**
+     * @see UserInterface
+     *
+     * @return list<string>
+     */
     public function getRoles(): array
     {
         $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
 
+    /**
+     * @param list<string> $roles
+     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
@@ -126,6 +122,9 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
     public function getPassword(): string
     {
         return $this->password;
@@ -138,8 +137,13 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @see UserInterface
+     */
     public function eraseCredentials(): void
     {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getNom(): ?string
@@ -243,56 +247,16 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->referenceClient;
     }
 
-    public function setReferenceClient(string $referenceClient): static
+    public function setReferenceClient(?string $referenceClient): static
     {
         $this->referenceClient = $referenceClient;
 
         return $this;
     }
 
-    public function getTypeClient(): ?string
-    {
-        return $this->typeClient;
-    }
-
-    public function setTypeClient(string $typeClient): static
-    {
-        $this->typeClient = $typeClient;
-
-        // Définir le coefficient en fonction du type de client
-        if ($typeClient === 'particulier') {
-            $this->coefficient = self::COEFFICIENT_PARTICULIER;
-        } else if ($typeClient === 'professionnel') {
-            $this->coefficient = self::COEFFICIENT_PROFESSIONNEL;
-        }
-
-        return $this;
-    }
-
-    public function getCoefficient(): ?float
-    {
-        return $this->coefficient;
-    }
-
-    public function setCoefficient(float $coefficient): static
-    {
-        $this->coefficient = $coefficient;
-
-        return $this;
-    }
-
-    public function getCommercial(): ?Employe
-    {
-        return $this->commercial;
-    }
-
-    public function setCommercial(?Employe $commercial): static
-    {
-        $this->commercial = $commercial;
-
-        return $this;
-    }
-
+    /**
+     * @return Collection<int, Commande>
+     */
     public function getCommandes(): Collection
     {
         return $this->commandes;
@@ -302,7 +266,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->commandes->contains($commande)) {
             $this->commandes->add($commande);
-            $commande->setClient($this);
+            $commande->setUtilisateur($this);
         }
 
         return $this;
@@ -311,34 +275,12 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeCommande(Commande $commande): static
     {
         if ($this->commandes->removeElement($commande)) {
-            if ($commande->getClient() === $this) {
-                $commande->setClient(null);
+            // set the owning side to null (unless already changed)
+            if ($commande->getUtilisateur() === $this) {
+                $commande->setUtilisateur(null);
             }
         }
 
         return $this;
     }
-
-        /**
-     * @Assert\Callback
-     */
-    public function validate(ExecutionContextInterface $context): void
-    {
-        if ($this->typeClient === 'professionnel') {
-            if (empty($this->siret)) {
-                $context->buildViolation('Le SIRET ne peut pas être vide.')
-                    ->atPath('siret')
-                    ->addViolation();
-            }
-            if (empty($this->entreprise)) {
-                $context->buildViolation("Le nom de l'entreprise ne peut pas être vide.")
-                    ->atPath('entreprise')
-                    ->addViolation();
-            }
-        }
-    }
 }
-
-
-
-

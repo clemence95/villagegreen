@@ -22,29 +22,30 @@ class Produit
     #[ORM\Column(length: 255)]
     private ?string $referenceFournisseur = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'float')]
     private ?float $prixAchatHT = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'float')]
     private ?float $prixVente = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $stock = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $photo = null;
 
     #[ORM\Column(type: 'boolean')]
     private ?bool $actif = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $photo = null;
 
     #[ORM\ManyToOne(targetEntity: Fournisseur::class, inversedBy: 'produits')]
     private ?Fournisseur $fournisseur = null;
 
     #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'produits')]
-    private ?Categorie $categorie = null;
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Categorie $sousCategorie = null;
 
-    #[ORM\ManyToOne(targetEntity: Employe::class, inversedBy: 'produits')]
-    private ?Employe $gestionPar = null;
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
+    private ?Utilisateur $gestionPar = null;
 
     public function getId(): ?int
     {
@@ -123,6 +124,18 @@ class Produit
         return $this;
     }
 
+    public function isActif(): ?bool
+    {
+        return $this->actif;
+    }
+
+    public function setActif(bool $actif): static
+    {
+        $this->actif = $actif;
+
+        return $this;
+    }
+
     public function getPhoto(): ?string
     {
         return $this->photo;
@@ -131,18 +144,6 @@ class Produit
     public function setPhoto(string $photo): static
     {
         $this->photo = $photo;
-
-        return $this;
-    }
-
-    public function getActif(): ?bool
-    {
-        return $this->actif;
-    }
-
-    public function setActif(bool $actif): static
-    {
-        $this->actif = $actif;
 
         return $this;
     }
@@ -159,24 +160,24 @@ class Produit
         return $this;
     }
 
-    public function getCategorie(): ?Categorie
+    public function getSousCategorie(): ?Categorie
     {
-        return $this->categorie;
+        return $this->sousCategorie;
     }
 
-    public function setCategorie(?Categorie $categorie): static
+    public function setSousCategorie(?Categorie $sousCategorie): static
     {
-        $this->categorie = $categorie;
+        $this->sousCategorie = $sousCategorie;
 
         return $this;
     }
 
-    public function getGestionPar(): ?Employe
+    public function getGestionPar(): ?Utilisateur
     {
         return $this->gestionPar;
     }
 
-    public function setGestionPar(?Employe $gestionPar): static
+    public function setGestionPar(?Utilisateur $gestionPar): static
     {
         $this->gestionPar = $gestionPar;
 
