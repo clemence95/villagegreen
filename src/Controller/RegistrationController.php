@@ -3,8 +3,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Client;
-use App\Form\ClientType;
+use App\Entity\Utilisateur;
+use App\Form\UtilisateurType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,30 +17,30 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
-        $client = new Client();
-        $form = $this->createForm(ClientType::class, $client);
+        $utilisateur = new Utilisateur();
+        $form = $this->createForm(UtilisateurType::class, $utilisateur);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Définir le coefficient pour les clients particuliers
-            if ($client->getTypeClient() === 'particulier') {
-                $client->setCoefficient(Client::COEFFICIENT_PARTICULIER);
-            } elseif ($client->getTypeClient() === 'professionnel') {
-                $client->setCoefficient(Client::COEFFICIENT_PROFESSIONNEL);
+            // Définir le coefficient pour les utilisateurs particuliers
+            if ($utilisateur->getTypeClient() === 'particulier') {
+                $utilisateur->setCoefficient(Utilisateur::COEFFICIENT_PARTICULIER);
+            } elseif ($utilisateur->getTypeClient() === 'professionnel') {
+                $utilisateur->setCoefficient(Utilisateur::COEFFICIENT_PROFESSIONNEL);
             }
 
-            // Générer une référence client unique
-            $client->setReferenceClient('REF-' . strtoupper(bin2hex(random_bytes(4))));
+            // Générer une référence utilisateur unique
+            $utilisateur->setReferenceClient('REF-' . strtoupper(bin2hex(random_bytes(4))));
 
             // Hash the password
-            $client->setPassword(
+            $utilisateur->setPassword(
                 $passwordHasher->hashPassword(
-                    $client,
-                    $form->get('password')->getData()
+                    $utilisateur,
+                    $form->get('plainPassword')->getData()
                 )
             );
 
-            $entityManager->persist($client);
+            $entityManager->persist($utilisateur);
             $entityManager->flush();
 
             // Peut-être définir un message flash ou rediriger vers une autre page
@@ -52,6 +52,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 }
+
 
 
 

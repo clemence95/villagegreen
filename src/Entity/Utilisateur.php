@@ -13,6 +13,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public const COEFFICIENT_PARTICULIER = 1.0;
+    public const COEFFICIENT_PROFESSIONNEL = 0.85;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -21,15 +24,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
-     */
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
@@ -60,9 +57,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $referenceClient = null;
 
-    /**
-     * @var Collection<int, Commande>
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $coefficient = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $typeClient = null;
+
     #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'utilisateur', orphanRemoval: true)]
     private Collection $commandes;
 
@@ -88,33 +88,19 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     *
-     * @return list<string>
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
@@ -122,9 +108,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
     public function getPassword(): string
     {
         return $this->password;
@@ -137,13 +120,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        // Si vous stockez des données temporaires sensibles sur l'utilisateur, effacez-les ici
     }
 
     public function getNom(): ?string
@@ -254,9 +233,30 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Commande>
-     */
+    public function getCoefficient(): ?float
+    {
+        return $this->coefficient;
+    }
+
+    public function setCoefficient(?float $coefficient): static
+    {
+        $this->coefficient = $coefficient;
+
+        return $this;
+    }
+
+    public function getTypeClient(): ?string
+    {
+        return $this->typeClient;
+    }
+
+    public function setTypeClient(string $typeClient): static
+    {
+        $this->typeClient = $typeClient;
+
+        return $this;
+    }
+
     public function getCommandes(): Collection
     {
         return $this->commandes;
@@ -284,3 +284,4 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 }
+
