@@ -15,8 +15,8 @@ class Client {
     + seConnecter(email: string, password: string): boolean
     + sInscrire(nom: string, email: string, password: string, typeClient: string): void
     + visualiserCommandes(): List<Commande>
-    + ajouterProduitPanier(produit: Produit, quantite: int): void
-    + supprimerProduitPanier(produit: Produit): void
+    + ajouterProduitCommande(produit: Produit, quantite: int): void
+    + supprimerProduitCommande(produit: Produit): void
     + validerCommande(): void
 }
 
