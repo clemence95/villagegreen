@@ -67,16 +67,18 @@ class Fournisseur {
     - contact: string
     - telephone: string
     - siret: string
+    - importateurs: boolean
+    - fabricant: boolean
     + gererProduit(produit: Produit): void
 }
 
 class Commande {
     - id: int
-    - date: DateTime
-    - total: decimal
-    - statut: string
-    - modeReglement: string
+    - dateCommande: DateTime
     - reduction: decimal
+    - total: decimal
+    - statutCommande: string
+    - modeReglement: string
     - informationReglement: string
     + ajouterProduit(produit: Produit, quantite: int): void
     + supprimerProduit(produit: Produit): void
@@ -91,6 +93,37 @@ class Panier {
     + viderPanier(): void
 }
 
+class BonCommande {
+    - id: int
+    - date: DateTime
+    - type: string
+    - adresse: Adresse
+    - total: decimal
+    - produits: List<Produit>
+}
+
+class CommandeProduit {
+    - idClient: int
+    - idProduit: int
+    - idCommande: int
+}
+
+class Commercial {
+    - idClient: int
+    - reductionPro: decimal
+    - idEmploye: int
+}
+
+class GestionnaireProduit {
+    - idEmploye: int
+    - idProduit: int
+}
+
+class GestionArborescence {
+    - idEmploye: int
+    - idCategorie: int
+}
+
 Client "1" -- "0..*" Commande
 Commande "1" -- "1" Adresse : adresseLivraison
 Commande "1" -- "1" Adresse : adresseFacturation
@@ -101,10 +134,25 @@ Employe "1" -- "0..*" Produit : gerer
 Employe "1" -- "0..*" Categorie : gerer
 
 Produit "1" -- "0..*" Fournisseur
-Produit "1" -- "0..*" Categorie
+Produit "0..*" -- "0..*" Categorie
 Categorie "0..*" -- "0..*" Categorie : sousCategories
 Categorie "1" -- "0..*" Produit
 Fournisseur "1" -- "0..*" Adresse
 Panier "0..*" -- "0..*" Produit
+Commande "0..*" -- "0..*" BonCommande
+BonCommande "1" -- "1" Adresse
+
+Client "1" -- "0..*" CommandeProduit
+Commande "1" -- "0..*" CommandeProduit
+Produit "1" -- "0..*" CommandeProduit
+
+Client "1" -- "0..1" Commercial
+Employe "1" -- "0..1" Commercial
+
+Employe "1" -- "0..*" GestionnaireProduit
+Produit "1" -- "0..*" GestionnaireProduit
+
+Employe "1" -- "0..*" GestionArborescence
+Categorie "1" -- "0..*" GestionArborescence
 
 @enduml
