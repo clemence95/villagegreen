@@ -31,6 +31,39 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $nom = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $prenom = null;
+
+    #[ORM\Column(type: 'string', length: 14, nullable: true)]
+    private ?string $siret = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $entreprise = null;
+
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    private ?string $reference_client = null;
+
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    private ?float $coefficient = null;
+
+    #[ORM\Column(type: 'string', length: 50)]
+    private ?string $telephone = null;
+
+    #[ORM\Column(type: 'string', length: 50)]
+    private ?string $type_client = null;
+
+    #[ORM\ManyToOne(targetEntity: Adresse::class)]
+    private ?Adresse $id_adresse_facturation = null;
+
+    #[ORM\ManyToOne(targetEntity: Adresse::class)]
+    private ?Adresse $id_adresse_livraison = null;
+
+    #[ORM\ManyToOne(targetEntity: Employe::class)]
+    private ?Employe $id_commercial = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -97,6 +130,138 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getSiret(): ?string
+    {
+        return $this->siret;
+    }
+
+    public function setSiret(?string $siret): self
+    {
+        $this->siret = $siret;
+
+        return $this;
+    }
+
+    public function getEntreprise(): ?string
+    {
+        return $this->entreprise;
+    }
+
+    public function setEntreprise(?string $entreprise): self
+    {
+        $this->entreprise = $entreprise;
+
+        return $this;
+    }
+
+    public function getReferenceClient(): ?string
+    {
+        return $this->reference_client;
+    }
+
+    public function setReferenceClient(string $reference_client): self
+    {
+        $this->reference_client = $reference_client;
+
+        return $this;
+    }
+
+    public function getCoefficient(): ?float
+    {
+        return $this->coefficient;
+    }
+
+    public function setCoefficient(float $coefficient): self
+    {
+        $this->coefficient = $coefficient;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getTypeClient(): ?string
+    {
+        return $this->type_client;
+    }
+
+    public function setTypeClient(string $type_client): self
+    {
+        $this->type_client = $type_client;
+
+        return $this;
+    }
+
+    public function getIdAdresseFacturation(): ?Adresse
+    {
+        return $this->id_adresse_facturation;
+    }
+
+    public function setIdAdresseFacturation(?Adresse $id_adresse_facturation): self
+    {
+        $this->id_adresse_facturation = $id_adresse_facturation;
+
+        return $this;
+    }
+
+    public function getIdAdresseLivraison(): ?Adresse
+    {
+        return $this->id_adresse_livraison;
+    }
+
+    public function setIdAdresseLivraison(?Adresse $id_adresse_livraison): self
+    {
+        $this->id_adresse_livraison = $id_adresse_livraison;
+
+        return $this;
+    }
+
+    public function getIdCommercial(): ?Employe
+    {
+        return $this->id_commercial;
+    }
+
+    public function setIdCommercial(?Employe $id_commercial): self
+    {
+        $this->id_commercial = $id_commercial;
+
+        return $this;
+    }
+
     /**
      * @see UserInterface
      */
@@ -106,3 +271,4 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 }
+
