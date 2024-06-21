@@ -99,11 +99,6 @@ class ProduitCommande {
     - quantite: int
 }
 
-class ProduitPanier {
-    - Id_Client: int
-    - Id_Produit: int
-    - quantite: int
-}
 
 Client "1" -- "0..*" Commande
 Commande "1" -- "1" Adresse : adresseLivraison
