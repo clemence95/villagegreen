@@ -1,97 +1,110 @@
 @startuml diagramme_classe
-!theme toy
 
-enum Role {
-    Employe
-    Particulier
-    Professionnel
+class Client {
+    - id: int
+    - nom: string
+    - prenom: string
+    - email: string
+    - password: string
+    - typeClient: string
+    - siret: string
+    - entreprise: string
+    - referenceClient: string
+    - coefficient: decimal
+    + consulterCatalogue(): void
+    + seConnecter(email: string, password: string): boolean
+    + sInscrire(nom: string, email: string, password: string, typeClient: string): void
+    + visualiserCommandes(): List<Commande>
+    + ajouterProduitPanier(produit: Produit, quantite: int): void
+    + supprimerProduitPanier(produit: Produit): void
+    + validerCommande(): void
 }
 
-class Utilisateur {
+class Adresse {
     - id: int
-    - nom: String
-    - prenom: String
-    - email: String
-    - motDePasse: String
-    - siret: String
-    - entreprise: String
-    - rue: String
-    - ville: String
-    - codePostal: String
-    - pays: String
-    - referenceClient: String
-    - role: Role
-    - commercial: Utilisateur
-    + consulterCatalogue(): void
-    + static seConnecter(email: String, motDePasse: String): boolean
-    + static sInscrire(nom: String, email: String, motDePasse: String, typeClient: Role): void
-    + visualiserCommandes(): List<Commande>
-    + ajouterProduitAuPanier(produit: Produit, quantite: int): void
-    + supprimerProduitDuPanier(produit: Produit): void
-    + validerCommande(): void
-    + gererClientParticulier(client: Utilisateur): void
-    + appliquerReductionProfessionnelle(commande: Commande, reduction: double): void
-    + gererCatalogue(): void
-    + mettreAJourStock(produit: Produit, quantite: int): void
-    + validerProduit(produit: Produit): void
-    + desactiverProduit(produit: Produit): void
-    + gererRelationFournisseur(fournisseur: Fournisseur): void
+    - rue: string
+    - ville: string
+    - codePostal: string
+    - pays: string
+    + getAdresseComplete(): string
+}
+
+class Employe {
+    - id: int
+    - nom: string
+    - prenom: string
+    - email: string
+    - password: string
+    - role: string
 }
 
 class Produit {
     - id: int
-    - libelleCourt: String
-    - libelleLong: String
-    - referenceFournisseur: String
-    - prixAchatHT: double
-    - prixVente: double
+    - libelleCourt: string
+    - libelleLong: string
+    - referenceFournisseur: string
+    - prixAchatHT: decimal
+    - prixVente: decimal
     - stock: int
     - actif: bool
-    - photo: String
+    - photo: string
     + augmenterStock(quantite: int): void
     + reduireStock(quantite: int): void
 }
 
 class Categorie {
     - id: int
-    - nom: String
+    - nom: string
     - sousCategories: List<Categorie>
+    - produits: List<Produit>
     + ajouterSousCategorie(sousCategorie: Categorie): void
     + ajouterProduit(produit: Produit): void
 }
 
 class Fournisseur {
     - id: int
-    - nomEntreprise: String
-    - contact: String
-    - telephone: String
-    - siret: String
+    - nomEntreprise: string
+    - contact: string
+    - telephone: string
+    - siret: string
     + gererProduit(produit: Produit): void
 }
 
 class Commande {
     - id: int
-    - date: Date
-    - total: double
-    - statut: String
-    - adresseLivraison: String
-    - adresseFacturation: String
-    - modeReglement: String
-    - reduction: double
-    - informationReglement: String
-    - produits: List<Produit>
-    - quantites: List<int>
+    - date: DateTime
+    - total: decimal
+    - statut: string
+    - modeReglement: string
+    - reduction: decimal
+    - informationReglement: string
     + ajouterProduit(produit: Produit, quantite: int): void
     + supprimerProduit(produit: Produit): void
     + validerCommande(): boolean
 }
 
-Utilisateur "0..1" o-- "0..*" Commande
-Commande "0..*" -- "1" Utilisateur : reductionGereePar
-Commande "1" o-- "0..*" Produit : contient
-Produit "0..*" -- "1" Fournisseur
-Produit "0..*" -- "1" Categorie
-Categorie "0..*" -- "0..*" Categorie
-Produit "0..*" -- "1" Utilisateur : gestionPar
+class Panier {
+    - id: int
+    - dateCreation: DateTime
+    + ajouterProduit(produit: Produit, quantite: int): void
+    + supprimerProduit(produit: Produit): void
+    + viderPanier(): void
+}
+
+Client "1" -- "0..*" Commande
+Commande "1" -- "1" Adresse : adresseLivraison
+Commande "1" -- "1" Adresse : adresseFacturation
+Client "1" -- "0..*" Adresse
+Client "1" -- "1" Panier
+Employe "1" -- "0..*" Client
+Employe "1" -- "0..*" Produit : gerer
+Employe "1" -- "0..*" Categorie : gerer
+
+Produit "1" -- "0..*" Fournisseur
+Produit "1" -- "0..*" Categorie
+Categorie "0..*" -- "0..*" Categorie : sousCategories
+Categorie "1" -- "0..*" Produit
+Fournisseur "1" -- "0..*" Adresse
+Panier "0..*" -- "0..*" Produit
 
 @enduml
