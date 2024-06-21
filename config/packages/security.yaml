@@ -5,8 +5,10 @@ security:
     providers:
         app_user_provider:
             entity:
-                class: App\Entity\Utilisateur
-                property: email
+                class: App\Entity\Employe
+                property: username
+        # used to reload user from session & other features (e.g. switch_user)
+        # used to reload user from session & other features (e.g. switch_user)
         # used to reload user from session & other features (e.g. switch_user)
 
     firewalls:
