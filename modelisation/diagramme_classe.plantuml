@@ -24,6 +24,7 @@ class Adresse {
     - id: int
     - rue: string
     - ville: string
+    - typeAdresse: string
     - codePostal: string
     - pays: string
     + getAdresseComplete(): string
@@ -83,14 +84,6 @@ class Commande {
     + validerCommande(): boolean
 }
 
-class Panier {
-    - id: int
-    - dateCreation: DateTime
-    + ajouterProduit(produit: Produit, quantite: int): void
-    + supprimerProduit(produit: Produit): void
-    + viderPanier(): void
-}
-
 class BonCommande {
     - id: int
     - date: DateTime
@@ -100,11 +93,22 @@ class BonCommande {
     - produits: List<Produit>
 }
 
+class ProduitCommande {
+    - Id_Produit: int
+    - Id_Commande: int
+    - quantite: int
+}
+
+class ProduitPanier {
+    - Id_Client: int
+    - Id_Produit: int
+    - quantite: int
+}
+
 Client "1" -- "0..*" Commande
 Commande "1" -- "1" Adresse : adresseLivraison
 Commande "1" -- "1" Adresse : adresseFacturation
 Client "1" -- "0..*" Adresse
-Client "1" -- "1" Panier
 Employe "1" -- "0..*" Client
 Employe "1" -- "0..*" Produit : gerer
 Employe "1" -- "0..*" Categorie : gerer
@@ -114,8 +118,12 @@ Produit "0..*" -- "0..*" Categorie
 Categorie "0..*" -- "0..*" Categorie : sousCategories
 Categorie "1" -- "0..*" Produit
 Fournisseur "1" -- "0..*" Adresse
-Panier "0..*" -- "0..*" Produit
 Commande "0..*" -- "0..*" BonCommande
 BonCommande "1" -- "1" Adresse
+
+Client "1" -- "0..*" ProduitCommande
+Commande "1" -- "0..*" ProduitCommande
+Produit "1" -- "0..*" ProduitCommande
+
 
 @enduml
