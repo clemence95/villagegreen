@@ -55,8 +55,6 @@ class Produit {
 class Categorie {
     - id: int
     - nom: string
-    - sousCategories: List<Categorie>
-    - produits: List<Produit>
     + ajouterSousCategorie(sousCategorie: Categorie): void
     + ajouterProduit(produit: Produit): void
 }
@@ -102,28 +100,6 @@ class BonCommande {
     - produits: List<Produit>
 }
 
-class CommandeProduit {
-    - idClient: int
-    - idProduit: int
-    - idCommande: int
-}
-
-class Commercial {
-    - idClient: int
-    - reductionPro: decimal
-    - idEmploye: int
-}
-
-class GestionnaireProduit {
-    - idEmploye: int
-    - idProduit: int
-}
-
-class GestionArborescence {
-    - idEmploye: int
-    - idCategorie: int
-}
-
 Client "1" -- "0..*" Commande
 Commande "1" -- "1" Adresse : adresseLivraison
 Commande "1" -- "1" Adresse : adresseFacturation
@@ -141,18 +117,5 @@ Fournisseur "1" -- "0..*" Adresse
 Panier "0..*" -- "0..*" Produit
 Commande "0..*" -- "0..*" BonCommande
 BonCommande "1" -- "1" Adresse
-
-Client "1" -- "0..*" CommandeProduit
-Commande "1" -- "0..*" CommandeProduit
-Produit "1" -- "0..*" CommandeProduit
-
-Client "1" -- "0..1" Commercial
-Employe "1" -- "0..1" Commercial
-
-Employe "1" -- "0..*" GestionnaireProduit
-Produit "1" -- "0..*" GestionnaireProduit
-
-Employe "1" -- "0..*" GestionArborescence
-Categorie "1" -- "0..*" GestionArborescence
 
 @enduml
