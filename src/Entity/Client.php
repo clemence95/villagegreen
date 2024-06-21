@@ -55,10 +55,10 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $type_client = null;
 
-    #[ORM\ManyToOne(targetEntity: Adresse::class)]
+    #[ORM\ManyToOne(targetEntity: Adresse::class, inversedBy: 'clients_facturation')]
     private ?Adresse $id_adresse_facturation = null;
 
-    #[ORM\ManyToOne(targetEntity: Adresse::class)]
+    #[ORM\ManyToOne(targetEntity: Adresse::class, inversedBy: 'clients_livraison')]
     private ?Adresse $id_adresse_livraison = null;
 
     #[ORM\ManyToOne(targetEntity: Employe::class)]
@@ -271,4 +271,5 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 }
+
 
