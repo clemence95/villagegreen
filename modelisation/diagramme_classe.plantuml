@@ -1,124 +1,147 @@
 @startuml diagramme_classe
 
-class Client {
-    - id: int
-    - nom: string
-    - prenom: string
-    - email: string
-    - password: string
-    - typeClient: string
-    - siret: string
-    - entreprise: string
-    - referenceClient: string
-    - coefficient: decimal
-    + consulterCatalogue(): void
-    + seConnecter(email: string, password: string): boolean
-    + sInscrire(nom: string, email: string, password: string, typeClient: string): void
-    + visualiserCommandes(): List<Commande>
-    + ajouterProduitCommande(produit: Produit, quantite: int): void
-    + supprimerProduitCommande(produit: Produit): void
-    + validerCommande(): void
+class Adresse {
+  rue: VARCHAR(255)
+  ville: VARCHAR(255)
+  code_postal: VARCHAR(50)
+  pays: VARCHAR(255)
+  +id_adresse: INT
 }
 
-class Adresse {
-    - id: int
-    - rue: string
-    - ville: string
-    - typeAdresse: string
-    - codePostal: string
-    - pays: string
-    + getAdresseComplete(): string
+class Client {
+  nom: VARCHAR(255)
+  prenom: VARCHAR(255)
+  email: VARCHAR(50)
+  password: VARCHAR(255)
+  siret: VARCHAR(14)
+  entreprise: VARCHAR(255)
+  reference_client: VARCHAR(255) // Référence unique pour identifier le client
+  coefficient: DECIMAL(10,2)
+  telephone: VARCHAR(50)
+  id_adresse_facturation: INT
+  id_adresse_livraison: INT
+  type_client: VARCHAR(50) // Particulier ou Professionnel
+  id_commercial: INT
+  +id_client: INT
 }
 
 class Employe {
-    - id: int
-    - nom: string
-    - prenom: string
-    - email: string
-    - password: string
-    - role: string
+  nom: VARCHAR(255)
+  prenom: VARCHAR(255)
+  role: VARCHAR(255)
+  email: VARCHAR(50)
+  telephone: VARCHAR(50)
+  +id_employe: INT
 }
 
-class Produit {
-    - id: int
-    - libelleCourt: string
-    - libelleLong: string
-    - referenceFournisseur: string
-    - prixAchatHT: decimal
-    - prixVente: decimal
-    - stock: int
-    - actif: bool
-    - photo: string
-    + augmenterStock(quantite: int): void
-    + reduireStock(quantite: int): void
-}
-
-class Categorie {
-    - id: int
-    - nom: string
-    + ajouterSousCategorie(sousCategorie: Categorie): void
-    + ajouterProduit(produit: Produit): void
+class Commercial {
+  nom: VARCHAR(255)
+  prenom: VARCHAR(255)
+  email: VARCHAR(50)
+  telephone: VARCHAR(50)
+  +id_commercial: INT
+  type_commercial: VARCHAR(50) // Particulier ou Professionnel
 }
 
 class Fournisseur {
-    - id: int
-    - nomEntreprise: string
-    - contact: string
-    - telephone: string
-    - siret: string
-    - importateurs: boolean
-    - fabricant: boolean
-    + gererProduit(produit: Produit): void
+  nom_entreprise: VARCHAR(255)
+  contact: VARCHAR(255)
+  telephone: VARCHAR(50)
+  siret: VARCHAR(14)
+  importateur: BOOLEAN
+  fabricant: BOOLEAN
+  id_adresse: INT
+  +id_fournisseur: INT
+}
+
+class Produit {
+  libelle_court: VARCHAR(255)
+  libelle_long: TEXT
+  reference_fournisseur: VARCHAR(255)
+  prix_achat: DECIMAL(10,2)
+  prix_vente: DECIMAL(10,2)
+  photo: VARCHAR(255)
+  stock: INT
+  actif: BOOLEAN
+  id_fournisseur: INT
+  id_categorie: INT
+  +id_produit: INT
+}
+
+class Categorie {
+  nom: VARCHAR(50)
+  id_sousCategorie: INT
+  +id_categorie: INT
 }
 
 class Commande {
-    - id: int
-    - dateCommande: DateTime
-    - reduction: decimal
-    - total: decimal
-    - statutCommande: string
-    - modeReglement: string
-    - informationReglement: string
-    + ajouterProduit(produit: Produit, quantite: int): void
-    + supprimerProduit(produit: Produit): void
-    + validerCommande(): boolean
+  date_commande: DATETIME
+  statut: VARCHAR(50)
+  montant_total: DECIMAL(10,2)
+  reduction_supplementaire: DECIMAL(10,2) // Réduction négociée pour les clients professionnels
+  mode_paiement: VARCHAR(50) // Virement, Chèque, ou Paiement à la commande
+  information_reglement: TEXT
+  id_adresse_facturation: INT
+  id_adresse_livraison: INT
+  id_client: INT
+  +id_commande: INT
 }
 
-class BonCommande {
-    - id: int
-    - date: DateTime
-    - type: string
-    - adresse: Adresse
-    - total: decimal
-    - produits: List<Produit>
+class LigneCommande {
+  quantite: INT
+  prix_unitaire: DECIMAL(10,2)
+  id_commande: INT
+  id_produit: INT
+  +id_ligne_commande: INT
 }
 
-class ProduitCommande {
-    - Id_Produit: int
-    - Id_Commande: int
-    - quantite: int
+class BonDeLivraison {
+  id_commande: INT
+  date_livraison: DATETIME
+  id_adresse_livraison: INT
+  +id_bon_de_livraison: INT
 }
 
+class Facture {
+  id_commande: INT
+  date_facture: DATETIME
+  montant_total: DECIMAL(10,2)
+  statut_paiement: VARCHAR(50)
+  id_adresse_facturation: INT
+  +id_facture: INT
+}
 
-Client "1" -- "0..*" Commande
-Commande "1" -- "1" Adresse : adresseLivraison
-Commande "1" -- "1" Adresse : adresseFacturation
-Client "1" -- "0..*" Adresse
-Employe "1" -- "0..*" Client
-Employe "1" -- "0..*" Produit : gerer
-Employe "1" -- "0..*" Categorie : gerer
+class Coefficient {
+  type_client: VARCHAR(50) // Particulier ou Professionnel
+  coefficient: DECIMAL(10,2)
+  +id_coefficient: INT
+}
 
-Produit "1" -- "0..*" Fournisseur
-Produit "0..*" -- "0..*" Categorie
-Categorie "0..*" -- "0..*" Categorie : sousCategories
-Categorie "1" -- "0..*" Produit
-Fournisseur "1" -- "0..*" Adresse
-Commande "0..*" -- "0..*" BonCommande
-BonCommande "1" -- "1" Adresse
+note "Les commandes et les documents associés (bons de livraison et factures) sont conservés pendant trois ans." as N1
 
-Client "1" -- "0..*" ProduitCommande
-Commande "1" -- "0..*" ProduitCommande
-Produit "1" -- "0..*" ProduitCommande
+Client -- Adresse: id_adresse_facturation, id_adresse_livraison
+Client --> Employe: id_employe
+Client --> Commercial: id_commercial
+Commande -- Client: id_client
+Commande -- Adresse: id_adresse_facturation, id_adresse_livraison
+Commande -- BonDeLivraison: id_commande
+Fournisseur -- Adresse: id_adresse
+Produit -- Fournisseur: id_fournisseur
+Produit -- Categorie: id_categorie
+LigneCommande -- Commande: id_commande
+LigneCommande -- Produit: id_produit
+BonDeLivraison -- Adresse: id_adresse_livraison
+Facture -- Commande: id_commande
+Facture -- Adresse: id_adresse_facturation
+Categorie -- Categorie: id_sousCategorie
+Employe --|> Produit: gestion
+Employe --|> Categorie: gestion
+Client -- Coefficient: coefficient
+Employe -- Coefficient: ajuste
+Commercial -- Commande: négocie
 
+N1 .. Commande
+N1 .. BonDeLivraison
+N1 .. Facture
 
 @enduml
