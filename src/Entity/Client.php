@@ -13,22 +13,22 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
     private ?string $email = null;
 
     /**
      * @var list<string> The user roles
      */
-    #[ORM\Column]
+    #[ORM\Column(type: 'json')]
     private array $roles = [];
 
     /**
-     * @var string The hashed password
+     * @var string|null The hashed password
      */
-    #[ORM\Column]
+    #[ORM\Column(type: 'string')]
     private ?string $password = null;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -77,7 +77,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -88,7 +87,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
     /**
@@ -111,14 +110,13 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
-
         return $this;
     }
 
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -126,7 +124,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -138,7 +135,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
         return $this;
     }
 
@@ -150,7 +146,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
-
         return $this;
     }
 
@@ -162,7 +157,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSiret(?string $siret): self
     {
         $this->siret = $siret;
-
         return $this;
     }
 
@@ -174,7 +168,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEntreprise(?string $entreprise): self
     {
         $this->entreprise = $entreprise;
-
         return $this;
     }
 
@@ -186,7 +179,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setReferenceClient(string $reference_client): self
     {
         $this->reference_client = $reference_client;
-
         return $this;
     }
 
@@ -198,7 +190,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCoefficient(float $coefficient): self
     {
         $this->coefficient = $coefficient;
-
         return $this;
     }
 
@@ -210,7 +201,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTelephone(string $telephone): self
     {
         $this->telephone = $telephone;
-
         return $this;
     }
 
@@ -222,7 +212,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTypeClient(string $type_client): self
     {
         $this->type_client = $type_client;
-
         return $this;
     }
 
@@ -234,7 +223,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIdAdresseFacturation(?Adresse $id_adresse_facturation): self
     {
         $this->id_adresse_facturation = $id_adresse_facturation;
-
         return $this;
     }
 
@@ -246,7 +234,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIdAdresseLivraison(?Adresse $id_adresse_livraison): self
     {
         $this->id_adresse_livraison = $id_adresse_livraison;
-
         return $this;
     }
 
@@ -258,7 +245,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIdCommercial(?Employe $id_commercial): self
     {
         $this->id_commercial = $id_commercial;
-
         return $this;
     }
 
