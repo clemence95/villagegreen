@@ -9,27 +9,30 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    #[Route(path: '/login', name: 'app_login')]
+    #[Route('/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // Récupère l'erreur de connexion s'il y en a une
+        // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-        // Dernier nom d'utilisateur entré par l'utilisateur
-        $lastUsername = $authenticationUtils->getLastUsername();
+
+        // last email entered by the user
+        $lastEmail = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', [
-            'last_username' => $lastUsername,
+            'last_email' => $lastEmail,
             'error' => $error,
         ]);
     }
 
-    #[Route(path: '/logout', name: 'app_logout')]
+    #[Route('/logout', name: 'app_logout')]
     public function logout(): void
     {
-        // Le contrôleur peut être vide : il ne sera jamais exécuté !
-        throw new \Exception('N\'oubliez pas d\'activer la déconnexion dans security.yaml');
+        // controller can be blank: it will never be executed!
+        throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
 }
+
+
 
 
 
