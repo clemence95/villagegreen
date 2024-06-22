@@ -19,12 +19,15 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
+                default_target_path: /secure  # Redirection après connexion
                 enable_csrf: true
             logout:
                 path: app_logout
                 target: /
 
     access_control:
+        - { path: ^/secure, roles: ROLE_USER }  # Protection de la page sécurisée
+
 
 
 
