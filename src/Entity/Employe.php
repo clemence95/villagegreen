@@ -43,7 +43,7 @@ class Employe implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $telephone = null;
 
-    public function getId(): ?int
+    public function getId(): ?int 
     {
         return $this->id;
     }
