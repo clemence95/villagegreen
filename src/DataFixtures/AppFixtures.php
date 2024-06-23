@@ -1,39 +1,63 @@
 <?php
 // src/DataFixtures/AppFixtures.php
-
 namespace App\DataFixtures;
 
-use App\Entity\Employe;
+use App\Entity\Client;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
-    private $passwordHasher;
+    private UserPasswordHasherInterface $passwordHasher;
 
     public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
         $this->passwordHasher = $passwordHasher;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        $admin = new Employe();
-        $admin->setNom('admin');
-        $admin->setRoles(['ROLE_ADMIN']);
-        $admin->setPassword($this->passwordHasher->hashPassword(
-            $admin,
-            'adminpassword'
-        ));
+        $client = new Client();
+        
+        $email = 'test@example.com';
+        $password = 'password123';
+        $nom = 'Doe';
+        $prenom = 'John';
+        $siret = '12345678901234';
+        $entreprise = 'Acme Corp';
+        $referenceClient = 'REF123456';
+        $coefficient = 1.5;
+        $telephone = '0123456789';
+        $typeClient = 'standard';
 
-        $admin->setPrenom('Admin');
-        $admin->setEmail('admin@example.com');
-        $admin->setTelephone('1234567890');
+        $client->setEmail($email);
+        $client->setRoles(['ROLE_USER']);
+        $client->setPassword($this->passwordHasher->hashPassword($client, $password));
+        $client->setNom($nom);
+        $client->setPrenom($prenom);
+        $client->setSiret($siret);
+        $client->setEntreprise($entreprise);
+        $client->setReferenceClient($referenceClient);
+        $client->setCoefficient($coefficient);
+        $client->setTelephone($telephone);
+        $client->setTypeClient($typeClient);
+        
+        // Vous pouvez définir les adresses et le commercial ici si nécessaire
+        // $client->setIdAdresseFacturation($adresseFacturation);
+        // $client->setIdAdresseLivraison($adresseLivraison);
+        // $client->setIdCommercial($commercial);
 
-        $manager->persist($admin);
-        $manager->flush();
+        // Vérification des champs obligatoires avant de persister
+        if ($client->getEmail() !== null && $client->getPassword() !== null) {
+            $manager->persist($client);
+            $manager->flush();
+        } else {
+            throw new \Exception('Les champs obligatoires ne sont pas définis.');
+        }
     }
 }
+
+
 
 

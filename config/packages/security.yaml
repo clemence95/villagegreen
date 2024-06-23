@@ -1,12 +1,23 @@
+# config/packages/security.yaml
 security:
     password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        App\Entity\Client:
+            algorithm: auto
+        App\Entity\Employe:
+            algorithm: auto
 
     providers:
-        app_user_provider:
+        chain_provider:
+            chain:
+                providers: [client_provider, employe_provider]
+        client_provider:
+            entity:
+                class: App\Entity\Client
+                property: email
+        employe_provider:
             entity:
                 class: App\Entity\Employe
-                property: username
+                property: nom
 
     firewalls:
         dev:
@@ -14,19 +25,28 @@ security:
             security: false
 
         main:
-            lazy: true
-            provider: app_user_provider
+            provider: chain_provider
             form_login:
-                login_path: app_login
-                check_path: app_login
-                default_target_path: /secure  # Redirection après connexion
-                enable_csrf: true
+                login_path: login
+                check_path: login
+                default_target_path: dashboard
             logout:
-                path: app_logout
-                target: /
+                path: logout
+                target: login
+            lazy: true
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800  # 1 semaine en secondes
+                path: /
+                name: REMEMBERME
 
     access_control:
-        - { path: ^/secure, roles: ROLE_USER }  # Protection de la page sécurisée
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/dashboard, roles: ROLE_USER }
+
+
+
+
 
 
 
