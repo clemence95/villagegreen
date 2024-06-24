@@ -1,3 +1,5 @@
+{# templates/security/login.html.twig #}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Connexion{% endblock %}
@@ -9,7 +11,7 @@
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <form action="{{ path('app_login') }}" method="post">
+    <form action="{{ path('login') }}" method="post">
         <label for="username">Email or Username:</label>
         <input type="text" id="username" name="_username" value="{{ last_username }}" required autofocus />
 
@@ -19,6 +21,8 @@
         <button type="submit">Login</button>
     </form>
 {% endblock %}
+
+
 
 
 

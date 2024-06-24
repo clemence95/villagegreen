@@ -1,14 +1,27 @@
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
+# services.yaml
 
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
-parameters:
+# config/services.yaml
 
 services:
-    App\DataFixtures\AppFixtures:
+    App\Controller\LoginController:
+        autowire: true
+        autoconfigure: true
+        public: false # Assurez-vous que ce service n'est pas public pour des raisons de sécurité (par défaut)
+    App\Controller\MainController:
+        autowire: true
+        autoconfigure: true
+    App\Repository\ClientRepository:
         arguments:
-            $passwordHasher: '@security.password_hasher'
-        tags:
-            - { name: doctrine.fixture.orm }
+            $registry: '@doctrine'
+        tags: ['doctrine.repository_service']
+    App\Repository\EmployeRepository:
+        arguments:
+            $registry: '@doctrine'
+        tags: ['doctrine.repository_service']
+    App\Controller\DashboardController:
+        autowire: true
+        autoconfigure: true
+        public: false  # Assurez-vous que ce service n'est pas public pour des raisons de sécurité
+
+
 

@@ -13,5 +13,9 @@ app_login:
     controller: App\Controller\LoginController::login
     methods: ['GET', 'POST']
 
+app_profil:
+    path: /profil
+    controller: App\Controller\ProfilController::index
+    # Remplacez le controller et path par les valeurs réelles de votre application
 
 

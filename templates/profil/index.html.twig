@@ -1,0 +1,14 @@
+{# templates/profil/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+    <h1>Profil de {{ user.username }}</h1>
+
+    <dl>
+        <dt>Email:</dt>
+        <dd>{{ user.email }}</dd>
+        {# Ajoutez d'autres champs de profil ici #}
+    </dl>
+{% endblock %}

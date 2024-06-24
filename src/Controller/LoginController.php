@@ -1,5 +1,5 @@
 <?php
-
+// src/Controller/LoginController.php
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -9,29 +9,32 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
-    #[Route('/login', name: 'app_login')]
+    #[Route('/login', name: 'login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // Si l'utilisateur est déjà connecté, le rediriger vers le tableau de bord
-        if ($this->getUser()) {
-            return $this->redirectToRoute('dashboard');
-        }
-
+        // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
+
+        // Redirection if the user is already authenticated
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_dashboard');
+        }
 
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
-            'error' => $error
+            'error' => $error,
         ]);
     }
 
-    #[Route('/logout', name: 'app_logout')]
+    #[Route('/logout', name: 'logout')]
     public function logout(): void
     {
-        // Cette méthode ne sera jamais exécutée car la déconnexion est gérée par Symfony
-        throw new \Exception('This should not be reached!');
+        // controller can be blank: it will never be called!
+        throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
 }
+
 
 
