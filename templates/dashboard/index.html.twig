@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {# Bouton de déconnexion #}
+    {% if app.user %}
+        <form action="{{ path('app_logout') }}" method="post">
+            <button type="submit">Déconnexion</button>
+        </form>
+    {% endif %}
+
+    {# Redirection vers le dashboard après la connexion #}
+    {% if app.user %}
+        {% if app.user.roles is not empty %}
+            {% if 'ROLE_ADMIN' in app.user.roles %}
+                <a href="{{ path('dashboard') }}">Dashboard</a>
+            {% elseif 'ROLE_USER' in app.user.roles %}
+                <a href="{{ path('accueil') }}">Accueil</a>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+

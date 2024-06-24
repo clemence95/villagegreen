@@ -1,4 +1,5 @@
 # config/packages/security.yaml
+
 security:
     password_hashers:
         App\Entity\Client:
@@ -43,6 +44,7 @@ security:
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/dashboard, roles: ROLE_USER }
+
 
 
 

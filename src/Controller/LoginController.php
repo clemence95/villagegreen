@@ -1,5 +1,5 @@
 <?php
-// src/Controller/LoginController.php
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -9,9 +9,14 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
-    #[Route('/login', name: 'login')]
+    #[Route('/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        // Si l'utilisateur est déjà connecté, le rediriger vers le tableau de bord
+        if ($this->getUser()) {
+            return $this->redirectToRoute('dashboard');
+        }
+
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
@@ -21,9 +26,12 @@ class LoginController extends AbstractController
         ]);
     }
 
-    #[Route('/logout', name: 'logout')]
+    #[Route('/logout', name: 'app_logout')]
     public function logout(): void
     {
-        throw new \Exception('Don\'t forget to activate logout in security.yaml');
+        // Cette méthode ne sera jamais exécutée car la déconnexion est gérée par Symfony
+        throw new \Exception('This should not be reached!');
     }
 }
+
+
