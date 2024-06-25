@@ -1,12 +1,11 @@
 <?php
-// src/DataFixtures/AppFixtures.php
 
 namespace App\DataFixtures;
 
 use App\Entity\Client;
 use App\Entity\Employe;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
@@ -17,7 +16,7 @@ class AppFixtures extends Fixture
     {
         $this->passwordHasher = $passwordHasher;
     }
-
+    
     public function load(ObjectManager $manager): void
     {
         // Création d'un employé (Employe)
@@ -54,10 +53,7 @@ class AppFixtures extends Fixture
         } else {
             throw new \Exception('Les champs obligatoires ne sont pas définis.');
         }
+
+        $manager->flush();
     }
 }
-
-
-
-
-

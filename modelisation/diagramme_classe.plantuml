@@ -69,9 +69,11 @@ class Produit {
 }
 
 class Categorie {
-  nom: VARCHAR(50)
-  id_sousCategorie: INT
-  +id_categorie: INT
+  **id** : int
+  nom: string
+  image: string
+  sousCategories: INT
+  parent: INT
 }
 
 class Commande {

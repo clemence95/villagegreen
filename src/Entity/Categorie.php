@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CategorieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
@@ -16,9 +18,24 @@ class Categorie
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $nom = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class)]
-    private ?Categorie $id_sousCategorie = null;
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'sousCategories')]
+    private ?self $parent = null;
 
+    /**
+     * @var Collection<int, self>
+     */
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
+    private Collection $sousCategories;
+
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
+
+    public function __construct()
+    {
+        $this->sousCategories = new ArrayCollection();
+    }
+
+    
     // Getters and Setters
     public function getId(): ?int
     {
@@ -37,16 +54,59 @@ class Categorie
         return $this;
     }
 
-    public function getIdSousCategorie(): ?self
+    public function getParent(): ?self
     {
-        return $this->id_sousCategorie;
+        return $this->parent;
     }
 
-    public function setIdSousCategorie(?self $id_sousCategorie): self
+    public function setParent(?self $parent): static
     {
-        $this->id_sousCategorie = $id_sousCategorie;
+        $this->parent = $parent;
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getSousCategories(): Collection
+    {
+        return $this->sousCategories;
+    }
+
+    public function addSousCategorie(self $sousCategory): static
+    {
+        if (!$this->sousCategories->contains($sousCategory)) {
+            $this->sousCategories->add($sousCategory);
+            $sousCategory->setParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSousCategorie(self $sousCategory): static
+    {
+        if ($this->sousCategories->removeElement($sousCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($sousCategory->getParent() === $this) {
+                $sousCategory->setParent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
 }
 

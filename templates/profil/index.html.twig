@@ -1,14 +1,21 @@
-{# templates/profil/index.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Profil{% endblock %}
 
 {% block body %}
-    <h1>Profil de {{ user.username }}</h1>
-
-    <dl>
-        <dt>Email:</dt>
-        <dd>{{ user.email }}</dd>
-        {# Ajoutez d'autres champs de profil ici #}
-    </dl>
+<div class="container-profil mt-5"> <!-- Augmenté la classe mt-5 à mt-5 -->
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">Profil de {{ user.nom }}</h1>
+            <dl class="row">
+                <dt class="col-sm-3">Email:</dt>
+                <dd class="col-sm-9">{{ user.email }}</dd>
+                {# Ajoutez d'autres champs de profil ici si nécessaire #}
+            </dl>
+        </div>
+    </div>
+</div>
 {% endblock %}
+
+
+
