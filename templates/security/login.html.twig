@@ -5,22 +5,30 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
-    <h1>Connexion</h1>
+    <div class="container mt-5">
+        <h1>Connexion</h1>
 
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
 
-    <form action="{{ path('login') }}" method="post">
-        <label for="username">Email or Username:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" required autofocus />
+        <form action="{{ path('login') }}" method="post">
+            <div class="mb-3">
+                <label for="username" class="form-label">Email or Username:</label>
+                <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" required autofocus />
+            </div>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password" required />
+            <div class="mb-3">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" id="password" name="_password" class="form-control" required />
+            </div>
 
-        <button type="submit">Login</button>
-    </form>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
 {% endblock %}
+
+
 
 
 

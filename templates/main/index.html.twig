@@ -1,16 +1,28 @@
 {# templates/main/index.html.twig #}
-{# templates/main/index.html.twig #}
+
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Bienvenue sur la page d'accueil</h1>
+<div class="container my-4 mt-5">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <h1 class="mb-4">Bienvenue sur la page d'accueil</h1>
 
-    {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('app_dashboard') }}">Accéder au tableau de bord</a>
-    {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="mb-3">
+                    <a href="{{ path('app_dashboard') }}" class="btn btn-primary">Accéder au tableau de bord</a>
+                </div>
+            {% endif %}
 
-    {% if is_granted('ROLE_USER') %}
-        <a href="{{ path('app_profil') }}">Accéder à votre profil</a>
-    {% endif %}
+            {% if is_granted('ROLE_USER') %}
+                <div class="mb-3">
+                    <a href="{{ path('app_profil') }}" class="btn btn-primary">Accéder à votre profil</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}
+
+
 
