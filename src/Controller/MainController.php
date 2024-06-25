@@ -1,6 +1,5 @@
 <?php
 // src/Controller/MainController.php
-
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +15,24 @@ class MainController extends AbstractController
             'controller_name' => 'MainController',
         ]);
     }
+
+    #[Route('/dashboard', name: 'app_dashboard')]
+    public function dashboard(): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        return $this->render('dashboard/index.html.twig');
+    }
+
+    #[Route('/profil', name: 'app_profil')]
+    public function profil(): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        return $this->render('user/profil.html.twig');
+    }
 }
+
 
 
 

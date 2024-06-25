@@ -1,10 +1,16 @@
 {# templates/main/index.html.twig #}
+{# templates/main/index.html.twig #}
 {% extends 'base.html.twig' %}
-
-{% block title %}Accueil{% endblock %}
 
 {% block body %}
     <h1>Bienvenue sur la page d'accueil</h1>
-    <p>Cette page est accessible à tout le monde.</p>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('app_dashboard') }}">Accéder au tableau de bord</a>
+    {% endif %}
+
+    {% if is_granted('ROLE_USER') %}
+        <a href="{{ path('app_profil') }}">Accéder à votre profil</a>
+    {% endif %}
 {% endblock %}
 

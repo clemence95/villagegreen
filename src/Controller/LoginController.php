@@ -19,7 +19,12 @@ class LoginController extends AbstractController
 
         // Redirection if the user is already authenticated
         if ($this->getUser()) {
-            return $this->redirectToRoute('app_dashboard');
+            // Check user roles and redirect accordingly
+            if ($this->isGranted('ROLE_ADMIN')) {
+                return $this->redirectToRoute('app_dashboard');
+            } elseif ($this->isGranted('ROLE_USER')) {
+                return $this->redirectToRoute('app_profil');
+            }
         }
 
         return $this->render('security/login.html.twig', [
@@ -35,6 +40,8 @@ class LoginController extends AbstractController
         throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
 }
+
+
 
 
 
