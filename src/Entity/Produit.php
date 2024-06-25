@@ -43,6 +43,9 @@ class Produit
     #[ORM\ManyToOne(targetEntity: Categorie::class)]
     private ?Categorie $id_categorie = null;
 
+    #[ORM\ManyToOne(targetEntity: Categorie::class)]
+    private ?Categorie $sousCategorie = null;  // Ajouter la relation pour la sous-catégorie
+
     // Getters and Setters
     public function getId(): ?int
     {
@@ -57,7 +60,6 @@ class Produit
     public function setLibelleCourt(string $libelle_court): self
     {
         $this->libelle_court = $libelle_court;
-
         return $this;
     }
 
@@ -69,7 +71,6 @@ class Produit
     public function setLibelleLong(string $libelle_long): self
     {
         $this->libelle_long = $libelle_long;
-
         return $this;
     }
 
@@ -81,7 +82,6 @@ class Produit
     public function setReferenceFournisseur(string $reference_fournisseur): self
     {
         $this->reference_fournisseur = $reference_fournisseur;
-
         return $this;
     }
 
@@ -93,7 +93,6 @@ class Produit
     public function setPrixAchat(float $prix_achat): self
     {
         $this->prix_achat = $prix_achat;
-
         return $this;
     }
 
@@ -105,7 +104,6 @@ class Produit
     public function setPrixVente(float $prix_vente): self
     {
         $this->prix_vente = $prix_vente;
-
         return $this;
     }
 
@@ -117,7 +115,6 @@ class Produit
     public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
-
         return $this;
     }
 
@@ -129,7 +126,6 @@ class Produit
     public function setStock(int $stock): self
     {
         $this->stock = $stock;
-
         return $this;
     }
 
@@ -141,7 +137,6 @@ class Produit
     public function setActif(bool $actif): self
     {
         $this->actif = $actif;
-
         return $this;
     }
 
@@ -153,7 +148,6 @@ class Produit
     public function setIdFournisseur(?Fournisseur $id_fournisseur): self
     {
         $this->id_fournisseur = $id_fournisseur;
-
         return $this;
     }
 
@@ -165,8 +159,20 @@ class Produit
     public function setIdCategorie(?Categorie $id_categorie): self
     {
         $this->id_categorie = $id_categorie;
+        return $this;
+    }
 
+    public function getSousCategorie(): ?Categorie
+    {
+        return $this->sousCategorie;
+    }
+
+    public function setSousCategorie(?Categorie $sousCategorie): self
+    {
+        $this->sousCategorie = $sousCategorie;
         return $this;
     }
 }
+
+
 

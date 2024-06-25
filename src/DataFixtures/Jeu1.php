@@ -2,39 +2,50 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Produit;
 use App\Entity\Categorie;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
 
 class Jeu1 extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // Categorie Guitares
-        $c1 = new Categorie();
-        $c1->setNom("Guitares");
-        $c1->setImage("guitares.png");
-        $manager->persist($c1);
+        // Génération de 5 catégories
+        for ($i = 1; $i <= 5; $i++) {
+            $categorie = new Categorie();
+            $categorie->setNom("Catégorie $i");
+            $categorie->setImage("categorie_$i.png");
+            $manager->persist($categorie);
 
-        $sc1 = new Categorie();
-        $sc1->setNom("Guitares Accoustiques");
-        $sc1->setImage("guitares_accoustiques.png");
-        $sc1->setParent($c1);
-        // $c1->addSousCategorie($sc1);
-        $manager->persist($sc1);
+            // Génération de 5 sous-catégories pour chaque catégorie
+            for ($j = 1; $j <= 5; $j++) {
+                $sousCategorie = new Categorie();
+                $sousCategorie->setNom("Sous-catégorie $j de Catégorie $i");
+                $sousCategorie->setImage("sous_categorie_$j.png");
+                $categorie->addSousCategorie($sousCategorie); // Ajouter la sous-catégorie à la catégorie parente
+                $manager->persist($sousCategorie);
 
-        $sc2 = new Categorie();
-        $sc2->setNom("Guitares Electriques");
-        $sc2->setImage("guitares_electriques.png");
-        $sc2->setParent($c1);
-        // $c1->addSousCategorie($sc2);
-        $manager->persist($sc2);
-
-        $c2 = new Categorie();
-        $c2->setNom("Sonorisation");
-        $c2->setImage("guitares.png");
-        $manager->persist($c2);
+                // Génération de 5 produits pour chaque sous-catégorie
+                for ($k = 1; $k <= 5; $k++) {
+                    $produit = new Produit();
+                    $produit->setLibelleCourt("Produit $k de Sous-catégorie $j de Catégorie $i");
+                    $produit->setLibelleLong("Description détaillée du Produit $k");
+                    $produit->setReferenceFournisseur("REF-$i-$j-$k");
+                    $produit->setPrixAchat(10.0 * $k); // Exemple de prix d'achat calculé
+                    $produit->setPrixVente(15.0 * $k); // Exemple de prix de vente calculé
+                    $produit->setStock(100); // Exemple de stock initial
+                    $produit->setActif(true); // Exemple de produit actif par défaut
+                    $produit->setIdCategorie($categorie); // Associer le produit à la catégorie
+                    $produit->setSousCategorie($sousCategorie); // Associer le produit à la sous-catégorie
+                    $manager->persist($produit);
+                }
+            }
+        }
 
         $manager->flush();
     }
 }
+
+
+

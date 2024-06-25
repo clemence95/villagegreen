@@ -18,13 +18,11 @@ class Categorie
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $nom = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'sousCategories')]
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'sousCategories', cascade: ["persist", "remove"])]
+    #[ORM\JoinColumn(onDelete: "CASCADE")]
     private ?self $parent = null;
 
-    /**
-     * @var Collection<int, self>
-     */
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent', cascade: ["persist", "remove"])]
     private Collection $sousCategories;
 
     #[ORM\Column(length: 255)]
@@ -35,7 +33,6 @@ class Categorie
         $this->sousCategories = new ArrayCollection();
     }
 
-    
     // Getters and Setters
     public function getId(): ?int
     {
@@ -50,7 +47,6 @@ class Categorie
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
         return $this;
     }
 
@@ -62,7 +58,6 @@ class Categorie
     public function setParent(?self $parent): static
     {
         $this->parent = $parent;
-
         return $this;
     }
 
@@ -80,7 +75,6 @@ class Categorie
             $this->sousCategories->add($sousCategory);
             $sousCategory->setParent($this);
         }
-
         return $this;
     }
 
@@ -92,7 +86,6 @@ class Categorie
                 $sousCategory->setParent(null);
             }
         }
-
         return $this;
     }
 
@@ -104,9 +97,8 @@ class Categorie
     public function setImage(string $image): static
     {
         $this->image = $image;
-
         return $this;
     }
-
 }
+
 
