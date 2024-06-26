@@ -23,10 +23,10 @@ class Produit
     private ?string $reference_fournisseur = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    private ?float $prix_achat = null;
+    private ?string $prix_achat = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    private ?float $prix_vente = null;
+    private ?string $prix_vente = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $photo = null;
