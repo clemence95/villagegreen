@@ -175,6 +175,7 @@ class Produit
         $this->sousCategorie = $sousCategorie;
         return $this;
     }
+    
 }
 
 
