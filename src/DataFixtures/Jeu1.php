@@ -34,7 +34,7 @@ class Jeu1 extends Fixture
                 $sousCategorie = new Categorie();
                 $sousCategorie->setNom("Sous-catégorie $j de Catégorie $i");
                 $sousCategorie->setImage($this->getRandomImageUrl()); // Utilisation de l'API Picsum pour les images aléatoires
-                $categorie->addSousCategorie($sousCategorie);
+                $sousCategorie->setCategorieParent($categorie); // Définir la catégorie parente
                 $manager->persist($sousCategorie);
 
                 // Génération de 5 produits pour chaque sous-catégorie
@@ -47,7 +47,6 @@ class Jeu1 extends Fixture
                     $produit->setPrixVente(15.0 * $k);
                     $produit->setStock(100);
                     $produit->setActif(true);
-                    $produit->setSousCategorie($categorie); // Associer le produit à la catégorie
                     $produit->setSousCategorie($sousCategorie); // Associer le produit à la sous-catégorie
                     $produit->setPhoto($this->getRandomImageUrl()); // Utilisation de l'API Picsum pour les images aléatoires
                     $produit->setIdFournisseur($fournisseur1); // Exemple d'association avec un fournisseur
@@ -64,6 +63,7 @@ class Jeu1 extends Fixture
         return 'https://picsum.photos/200/300';
     }
 }
+
 
 
 

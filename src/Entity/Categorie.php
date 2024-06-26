@@ -21,12 +21,12 @@ class Categorie
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'categorieParent')]
     private Collection $sousCategories;
-
+    
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'sousCategories')]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?self $parent = null;
+    private ?self $categorieParent = null; // Renommage de la propriété parent
 
     #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'categorie')]
     private Collection $produits;
@@ -55,14 +55,14 @@ class Categorie
         return $this;
     }
 
-    public function getParent(): ?self
+    public function getCategorieParent(): ?self
     {
-        return $this->parent;
+        return $this->categorieParent;
     }
 
-    public function setParent(?self $parent): self
+    public function setCategorieParent(?self $categorieParent): self
     {
-        $this->parent = $parent;
+        $this->categorieParent = $categorieParent;
         return $this;
     }
 
@@ -75,7 +75,7 @@ class Categorie
     {
         if (!$this->sousCategories->contains($sousCategory)) {
             $this->sousCategories->add($sousCategory);
-            $sousCategory->setParent($this);
+            $sousCategory->setCategorieParent($this); // Mise à jour de la relation
         }
         return $this;
     }
@@ -84,8 +84,8 @@ class Categorie
     {
         if ($this->sousCategories->removeElement($sousCategory)) {
             // set the owning side to null (unless already changed)
-            if ($sousCategory->getParent() === $this) {
-                $sousCategory->setParent(null);
+            if ($sousCategory->getCategorieParent() === $this) {
+                $sousCategory->setCategorieParent(null); // Mise à jour de la relation
             }
         }
         return $this;

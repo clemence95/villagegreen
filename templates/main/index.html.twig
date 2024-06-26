@@ -1,5 +1,3 @@
-{# templates/main/index.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block body %}
@@ -23,9 +21,13 @@
                                                 <li>{{ produit.libelleCourt }} - Prix: {{ produit.prixVente }}</li>
                                             {% endfor %}
                                         </ul>
+                                    {% else %}
+                                        <li>Aucun produit disponible pour cette sous-catégorie.</li>
                                     {% endif %}
                                 {% endfor %}
                             </ul>
+                        {% else %}
+                            <li>Aucune sous-catégorie disponible pour cette catégorie.</li>
                         {% endif %}
                     {% endfor %}
                 </ul>
@@ -34,20 +36,27 @@
             {% endif %}
 
             {% if is_granted('ROLE_ADMIN') %}
-                <div class="mb-3">
-                    <a href="{{ path('app_dashboard') }}" class="btn btn-primary">Accéder au tableau de bord</a>
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <a href="{{ path('app_dashboard') }}" class="btn btn-primary">Accéder au tableau de bord</a>
+                    </div>
                 </div>
             {% endif %}
 
             {% if is_granted('ROLE_USER') %}
-                <div class="mb-3">
-                    <a href="{{ path('app_profil') }}" class="btn btn-primary">Accéder à votre profil</a>
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <a href="{{ path('app_profil') }}" class="btn btn-primary">Accéder à votre profil</a>
+                    </div>
                 </div>
             {% endif %}
         </div>
     </div>
 </div>
 {% endblock %}
+
+
+
 
 
 

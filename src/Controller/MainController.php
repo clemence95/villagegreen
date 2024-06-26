@@ -20,8 +20,14 @@ class MainController extends AbstractController
     #[Route('/', name: 'accueil')]
     public function index(): Response
     {
-        // Récupérer les 5 premières catégories avec leurs sous-catégories et produits associés
-        $categories = $this->entityManager->getRepository(Categorie::class)->findBy([], [], 5);
+        // Récupérer les catégories avec leurs sous-catégories
+        $categories = $this->entityManager->getRepository(Categorie::class)
+            ->createQueryBuilder('c')
+            ->leftJoin('c.sousCategories', 'sousCat')
+            ->addSelect('sousCat')
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult();
 
         return $this->render('main/index.html.twig', [
             'categories' => $categories,
@@ -44,10 +50,3 @@ class MainController extends AbstractController
         return $this->render('user/profil.html.twig');
     }
 }
-
-
-
-
-
-
-
