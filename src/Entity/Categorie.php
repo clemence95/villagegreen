@@ -18,22 +18,26 @@ class Categorie
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $nom = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'sousCategories', cascade: ["persist", "remove"])]
-    #[ORM\JoinColumn(onDelete: "CASCADE")]
-    private ?self $parent = null;
-
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent', cascade: ["persist", "remove"])]
-    private Collection $sousCategories;
-
     #[ORM\Column(length: 255)]
     private ?string $image = null;
+
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
+    private Collection $sousCategories;
+
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'sousCategories')]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private ?self $parent = null;
+
+    #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'categorie')]
+    private Collection $produits;
 
     public function __construct()
     {
         $this->sousCategories = new ArrayCollection();
+        $this->produits = new ArrayCollection(); // Initialisation de la collection de produits
     }
 
-    // Getters and Setters
+    // Getters and Setters ...
 
     public function getId(): ?int
     {
@@ -56,21 +60,18 @@ class Categorie
         return $this->parent;
     }
 
-    public function setParent(?self $parent): static
+    public function setParent(?self $parent): self
     {
         $this->parent = $parent;
         return $this;
     }
 
-    /**
-     * @return Collection<int, self>
-     */
     public function getSousCategories(): Collection
     {
         return $this->sousCategories;
     }
 
-    public function addSousCategorie(self $sousCategory): static
+    public function addSousCategorie(self $sousCategory): self
     {
         if (!$this->sousCategories->contains($sousCategory)) {
             $this->sousCategories->add($sousCategory);
@@ -79,7 +80,7 @@ class Categorie
         return $this;
     }
 
-    public function removeSousCategorie(self $sousCategory): static
+    public function removeSousCategorie(self $sousCategory): self
     {
         if ($this->sousCategories->removeElement($sousCategory)) {
             // set the owning side to null (unless already changed)
@@ -95,12 +96,41 @@ class Categorie
         return $this->image;
     }
 
-    public function setImage(string $image): static
+    public function setImage(string $image): self
     {
         $this->image = $image;
         return $this;
     }
+
+    public function getProduits(): Collection
+    {
+        return $this->produits;
+    }
+
+    public function addProduit(Produit $produit): self
+    {
+        if (!$this->produits->contains($produit)) {
+            $this->produits[] = $produit;
+            $produit->setCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(Produit $produit): self
+    {
+        if ($this->produits->removeElement($produit)) {
+            // set the owning side to null (unless already changed)
+            if ($produit->getCategorie() === $this) {
+                $produit->setCategorie(null);
+            }
+        }
+
+        return $this;
+    }
 }
+
+
 
 
 

@@ -10,7 +10,7 @@ class Produit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -38,15 +38,18 @@ class Produit
     private ?bool $actif = null;
 
     #[ORM\ManyToOne(targetEntity: Fournisseur::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Fournisseur $id_fournisseur = null;
 
-    #[ORM\ManyToOne(targetEntity: Categorie::class)]
-    private ?Categorie $id_categorie = null;
+    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'produits')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Categorie $categorie = null;
 
-    #[ORM\ManyToOne(targetEntity: Categorie::class)]
-    private ?Categorie $sousCategorie = null;  // Ajouter la relation pour la sous-catégorie
+    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'sousCategories')]
+    private ?Categorie $sousCategorie = null;
 
     // Getters and Setters
+
     public function getId(): ?int
     {
         return $this->id;
@@ -151,14 +154,14 @@ class Produit
         return $this;
     }
 
-    public function getIdCategorie(): ?Categorie
+    public function getCategorie(): ?Categorie
     {
-        return $this->id_categorie;
+        return $this->categorie;
     }
 
-    public function setIdCategorie(?Categorie $id_categorie): self
+    public function setCategorie(?Categorie $categorie): self
     {
-        $this->id_categorie = $id_categorie;
+        $this->categorie = $categorie;
         return $this;
     }
 
@@ -173,6 +176,9 @@ class Produit
         return $this;
     }
 }
+
+
+
 
 
 
