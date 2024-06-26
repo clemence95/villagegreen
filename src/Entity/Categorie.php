@@ -34,6 +34,7 @@ class Categorie
     }
 
     // Getters and Setters
+
     public function getId(): ?int
     {
         return $this->id;
@@ -100,5 +101,6 @@ class Categorie
         return $this;
     }
 }
+
 
 

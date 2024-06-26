@@ -5,8 +5,33 @@
 {% block body %}
 <div class="container my-4 mt-5">
     <div class="row">
-        <div class="col-md-6 mx-auto">
+        <div class="col-md-12">
             <h1 class="mb-4">Bienvenue sur la page d'accueil</h1>
+
+            {% if categories is not empty %}
+                <h2>Catégories</h2>
+                <ul>
+                    {% for categorie in categories %}
+                        <li>{{ categorie.nom }}</li>
+                        {% if categorie.sousCategories is not empty %}
+                            <ul>
+                                {% for sousCategorie in categorie.sousCategories %}
+                                    <li>{{ sousCategorie.nom }}</li>
+                                    {% if sousCategorie.produits is not empty %}
+                                        <ul>
+                                            {% for produit in sousCategorie.produits %}
+                                                <li>{{ produit.libelleCourt }} - Prix: {{ produit.prixVente }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Aucune catégorie n'est disponible pour le moment.</p>
+            {% endif %}
 
             {% if is_granted('ROLE_ADMIN') %}
                 <div class="mb-3">
