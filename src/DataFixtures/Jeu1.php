@@ -47,7 +47,7 @@ class Jeu1 extends Fixture
                     $produit->setPrixVente(15.0 * $k);
                     $produit->setStock(100);
                     $produit->setActif(true);
-                    $produit->setCategorie($categorie); // Associer le produit à la catégorie
+                    $produit->setSousCategorie($categorie); // Associer le produit à la catégorie
                     $produit->setSousCategorie($sousCategorie); // Associer le produit à la sous-catégorie
                     $produit->setPhoto($this->getRandomImageUrl()); // Utilisation de l'API Picsum pour les images aléatoires
                     $produit->setIdFournisseur($fournisseur1); // Exemple d'association avec un fournisseur

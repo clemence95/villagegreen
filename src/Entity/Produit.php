@@ -41,9 +41,6 @@ class Produit
     #[ORM\JoinColumn(nullable: false)]
     private ?Fournisseur $id_fournisseur = null;
 
-    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'produits')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Categorie $categorie = null;
 
     #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'sousCategories')]
     private ?Categorie $sousCategorie = null;
@@ -151,17 +148,6 @@ class Produit
     public function setIdFournisseur(?Fournisseur $id_fournisseur): self
     {
         $this->id_fournisseur = $id_fournisseur;
-        return $this;
-    }
-
-    public function getCategorie(): ?Categorie
-    {
-        return $this->categorie;
-    }
-
-    public function setCategorie(?Categorie $categorie): self
-    {
-        $this->categorie = $categorie;
         return $this;
     }
 

@@ -111,7 +111,7 @@ class Categorie
     {
         if (!$this->produits->contains($produit)) {
             $this->produits[] = $produit;
-            $produit->setCategorie($this);
+            $produit->setSousCategorie($this);
         }
 
         return $this;
@@ -121,8 +121,8 @@ class Categorie
     {
         if ($this->produits->removeElement($produit)) {
             // set the owning side to null (unless already changed)
-            if ($produit->getCategorie() === $this) {
-                $produit->setCategorie(null);
+            if ($produit->getSousCategorie() === $this) {
+                $produit->setSousCategorie(null);
             }
         }
 
