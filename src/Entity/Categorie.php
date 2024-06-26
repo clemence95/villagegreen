@@ -25,8 +25,8 @@ class Categorie
     private Collection $sousCategories;
     
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'sousCategories')]
-    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?self $categorieParent = null; // Renommage de la propriété parent
+    #[ORM\JoinColumn(name: 'categorie_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private ?self $categorieParent = null;
 
     #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'categorie')]
     private Collection $produits;

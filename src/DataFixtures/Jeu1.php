@@ -22,7 +22,7 @@ class Jeu1 extends Fixture
         $fournisseur1->setFabricant(false); // Exemple de valeur pour le champ fabricant
         $manager->persist($fournisseur1);
 
-        // Création de catégories
+        // Création de catégories et sous-catégories
         for ($i = 1; $i <= 5; $i++) {
             $categorie = new Categorie();
             $categorie->setNom("Catégorie $i");
