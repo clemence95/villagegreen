@@ -1,3 +1,5 @@
+{# templates/main/index.html.twig #}
+
 {% extends 'base.html.twig' %}
 
 {% block body %}
@@ -6,34 +8,20 @@
         <div class="col-md-12">
             <h1 class="mb-4">Bienvenue sur la page d'accueil</h1>
 
-            {% if categories is not empty %}
-                <h2>Catégories</h2>
-                <ul>
-                    {% for categorie in categories %}
-                        <li>{{ categorie.nom }}</li>
-                        {% if categorie.sousCategories is not empty %}
-                            <ul>
-                                {% for sousCategorie in categorie.sousCategories %}
-                                    <li>{{ sousCategorie.nom }}</li>
-                                    {% if sousCategorie.produits is not empty %}
-                                        <ul>
-                                            {% for produit in sousCategorie.produits %}
-                                                <li>{{ produit.libelleCourt }} - Prix: {{ produit.prixVente }}</li>
-                                            {% endfor %}
-                                        </ul>
-                                    {% else %}
-                                        <li>Aucun produit disponible pour cette sous-catégorie.</li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <li>Aucune sous-catégorie disponible pour cette catégorie.</li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>Aucune catégorie n'est disponible pour le moment.</p>
-            {% endif %}
+<div class="row">
+
+    {% for categorie in categories %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 ">
+            <div class="my-3 mx-3 text-center">
+                <a href="/categorie/{{categorie.id}}">
+                    {{ categorie.nom }}<br>
+                    <img src="https://picsum.photos/200/150" alt="" class="img-fluid w-100">
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+
+</div>
 
             {% if is_granted('ROLE_ADMIN') %}
                 <div class="row mt-4">
@@ -54,6 +42,7 @@
     </div>
 </div>
 {% endblock %}
+
 
 
 

@@ -2,34 +2,28 @@
 // src/Controller/MainController.php
 namespace App\Controller;
 
-use App\Entity\Categorie;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\CategorieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
-    private $entityManager;
+    private CategorieRepository $categorieRepository;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(CategorieRepository $categorieRepository)
     {
-        $this->entityManager = $entityManager;
+        $this->categorieRepository = $categorieRepository;
     }
 
     #[Route('/', name: 'accueil')]
-    public function index(): Response
+    public function index(CategorieRepository $repo): Response
     {
-        // Récupérer les catégories avec leurs sous-catégories
-        $categories = $this->entityManager->getRepository(Categorie::class)
-            ->createQueryBuilder('c')
-            ->leftJoin('c.sousCategories', 'sousCat')
-            ->addSelect('sousCat')
-            ->orderBy('c.id', 'ASC')
-            ->getQuery()
-            ->getResult();
+        $categories = $repo->findBy([ "categorieParent" => null ]);
 
-        return $this->render('main/index.html.twig', [
+        // dd($categories);
+
+        return $this->render('catalogue/index.html.twig', [
             'categories' => $categories,
         ]);
     }
@@ -50,3 +44,4 @@ class MainController extends AbstractController
         return $this->render('user/profil.html.twig');
     }
 }
+
