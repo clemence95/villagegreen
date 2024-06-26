@@ -12,7 +12,7 @@ class Categorie
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 50)]
@@ -23,21 +23,19 @@ class Categorie
 
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'categorieParent')]
     private Collection $sousCategories;
-    
+
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'sousCategories')]
-    #[ORM\JoinColumn(name: 'categorie_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'categorie_parent_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?self $categorieParent = null;
 
-    #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'categorie')]
+    #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'sousCategorie')]
     private Collection $produits;
 
     public function __construct()
     {
         $this->sousCategories = new ArrayCollection();
-        $this->produits = new ArrayCollection(); // Initialisation de la collection de produits
+        $this->produits = new ArrayCollection();
     }
-
-    // Getters and Setters ...
 
     public function getId(): ?int
     {
@@ -71,21 +69,20 @@ class Categorie
         return $this->sousCategories;
     }
 
-    public function addSousCategorie(self $sousCategory): self
+    public function addSousCategorie(self $sousCategorie): self
     {
-        if (!$this->sousCategories->contains($sousCategory)) {
-            $this->sousCategories->add($sousCategory);
-            $sousCategory->setCategorieParent($this); // Mise à jour de la relation
+        if (!$this->sousCategories->contains($sousCategorie)) {
+            $this->sousCategories->add($sousCategorie);
+            $sousCategorie->setCategorieParent($this);
         }
         return $this;
     }
 
-    public function removeSousCategorie(self $sousCategory): self
+    public function removeSousCategorie(self $sousCategorie): self
     {
-        if ($this->sousCategories->removeElement($sousCategory)) {
-            // set the owning side to null (unless already changed)
-            if ($sousCategory->getCategorieParent() === $this) {
-                $sousCategory->setCategorieParent(null); // Mise à jour de la relation
+        if ($this->sousCategories->removeElement($sousCategorie)) {
+            if ($sousCategorie->getCategorieParent() === $this) {
+                $sousCategorie->setCategorieParent(null);
             }
         }
         return $this;
@@ -120,7 +117,6 @@ class Categorie
     public function removeProduit(Produit $produit): self
     {
         if ($this->produits->removeElement($produit)) {
-            // set the owning side to null (unless already changed)
             if ($produit->getSousCategorie() === $this) {
                 $produit->setSousCategorie(null);
             }
@@ -129,6 +125,7 @@ class Categorie
         return $this;
     }
 }
+
 
 
 

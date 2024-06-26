@@ -22,27 +22,31 @@ class Jeu1 extends Fixture
         $fournisseur1->setFabricant(false); // Exemple de valeur pour le champ fabricant
         $manager->persist($fournisseur1);
 
-        // Création de catégories et sous-catégories
+        // Création de 5 catégories principales
+        $categories = [];
         for ($i = 1; $i <= 5; $i++) {
             $categorie = new Categorie();
             $categorie->setNom("Catégorie $i");
-            $categorie->setImage($this->getRandomImageUrl()); // Utilisation de l'API Picsum pour les images aléatoires
+            $categorie->setImage($this->getRandomImageUrl());
             $manager->persist($categorie);
+            $categories[] = $categorie; // Sauvegarde de la catégorie principale dans un tableau
+        }
 
-            // Génération de 5 sous-catégories pour chaque catégorie
+        // Création de sous-catégories pour chaque catégorie principale
+        foreach ($categories as $categorie) {
             for ($j = 1; $j <= 5; $j++) {
                 $sousCategorie = new Categorie();
-                $sousCategorie->setNom("Sous-catégorie $j de Catégorie $i");
-                $sousCategorie->setImage($this->getRandomImageUrl()); // Utilisation de l'API Picsum pour les images aléatoires
+                $sousCategorie->setNom("Sous-catégorie $j de " . $categorie->getNom());
+                $sousCategorie->setImage($this->getRandomImageUrl());
                 $sousCategorie->setCategorieParent($categorie); // Définir la catégorie parente
                 $manager->persist($sousCategorie);
 
                 // Génération de 5 produits pour chaque sous-catégorie
                 for ($k = 1; $k <= 5; $k++) {
                     $produit = new Produit();
-                    $produit->setLibelleCourt("Produit $k de Sous-catégorie $j de Catégorie $i");
+                    $produit->setLibelleCourt("Produit $k de " . $sousCategorie->getNom());
                     $produit->setLibelleLong("Description détaillée du Produit $k");
-                    $produit->setReferenceFournisseur("REF-$i-$j-$k");
+                    $produit->setReferenceFournisseur("REF-" . $categorie->getNom() . "-$j-$k");
                     $produit->setPrixAchat(10.0 * $k);
                     $produit->setPrixVente(15.0 * $k);
                     $produit->setStock(100);
@@ -63,6 +67,7 @@ class Jeu1 extends Fixture
         return 'https://picsum.photos/200/300';
     }
 }
+
 
 
 

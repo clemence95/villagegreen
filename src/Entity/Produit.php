@@ -13,23 +13,20 @@ class Produit
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $libelle_court = null;
+    #[ORM\Column(length: 255)]
+    private ?string $libelleCourt = null;
 
-    #[ORM\Column(type: 'text')]
-    private ?string $libelle_long = null;
+    #[ORM\Column(length: 255)]
+    private ?string $libelleLong = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $reference_fournisseur = null;
+    #[ORM\Column(length: 50)]
+    private ?string $referenceFournisseur = null;
 
-    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    private ?string $prix_achat = null;
+    #[ORM\Column(type: 'float')]
+    private ?float $prixAchat = null;
 
-    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    private ?string $prix_vente = null;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $photo = null;
+    #[ORM\Column(type: 'float')]
+    private ?float $prixVente = null;
 
     #[ORM\Column(type: 'integer')]
     private ?int $stock = null;
@@ -37,15 +34,16 @@ class Produit
     #[ORM\Column(type: 'boolean')]
     private ?bool $actif = null;
 
-    #[ORM\ManyToOne(targetEntity: Fournisseur::class)]
+    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'produits')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Fournisseur $id_fournisseur = null;
-
-
-    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'sousCategories')]
     private ?Categorie $sousCategorie = null;
 
-    // Getters and Setters
+    #[ORM\Column(length: 255)]
+    private ?string $photo = null;
+
+    #[ORM\ManyToOne(targetEntity: Fournisseur::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Fournisseur $idFournisseur = null;
 
     public function getId(): ?int
     {
@@ -54,67 +52,56 @@ class Produit
 
     public function getLibelleCourt(): ?string
     {
-        return $this->libelle_court;
+        return $this->libelleCourt;
     }
 
-    public function setLibelleCourt(string $libelle_court): self
+    public function setLibelleCourt(string $libelleCourt): self
     {
-        $this->libelle_court = $libelle_court;
+        $this->libelleCourt = $libelleCourt;
         return $this;
     }
 
     public function getLibelleLong(): ?string
     {
-        return $this->libelle_long;
+        return $this->libelleLong;
     }
 
-    public function setLibelleLong(string $libelle_long): self
+    public function setLibelleLong(string $libelleLong): self
     {
-        $this->libelle_long = $libelle_long;
+        $this->libelleLong = $libelleLong;
         return $this;
     }
 
     public function getReferenceFournisseur(): ?string
     {
-        return $this->reference_fournisseur;
+        return $this->referenceFournisseur;
     }
 
-    public function setReferenceFournisseur(string $reference_fournisseur): self
+    public function setReferenceFournisseur(string $referenceFournisseur): self
     {
-        $this->reference_fournisseur = $reference_fournisseur;
+        $this->referenceFournisseur = $referenceFournisseur;
         return $this;
     }
 
     public function getPrixAchat(): ?float
     {
-        return $this->prix_achat;
+        return $this->prixAchat;
     }
 
-    public function setPrixAchat(float $prix_achat): self
+    public function setPrixAchat(float $prixAchat): self
     {
-        $this->prix_achat = $prix_achat;
+        $this->prixAchat = $prixAchat;
         return $this;
     }
 
     public function getPrixVente(): ?float
     {
-        return $this->prix_vente;
+        return $this->prixVente;
     }
 
-    public function setPrixVente(float $prix_vente): self
+    public function setPrixVente(float $prixVente): self
     {
-        $this->prix_vente = $prix_vente;
-        return $this;
-    }
-
-    public function getPhoto(): ?string
-    {
-        return $this->photo;
-    }
-
-    public function setPhoto(?string $photo): self
-    {
-        $this->photo = $photo;
+        $this->prixVente = $prixVente;
         return $this;
     }
 
@@ -129,7 +116,7 @@ class Produit
         return $this;
     }
 
-    public function getActif(): ?bool
+    public function isActif(): ?bool
     {
         return $this->actif;
     }
@@ -137,17 +124,6 @@ class Produit
     public function setActif(bool $actif): self
     {
         $this->actif = $actif;
-        return $this;
-    }
-
-    public function getIdFournisseur(): ?Fournisseur
-    {
-        return $this->id_fournisseur;
-    }
-
-    public function setIdFournisseur(?Fournisseur $id_fournisseur): self
-    {
-        $this->id_fournisseur = $id_fournisseur;
         return $this;
     }
 
@@ -161,8 +137,30 @@ class Produit
         $this->sousCategorie = $sousCategorie;
         return $this;
     }
-    
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(string $photo): self
+    {
+        $this->photo = $photo;
+        return $this;
+    }
+
+    public function getIdFournisseur(): ?Fournisseur
+    {
+        return $this->idFournisseur;
+    }
+
+    public function setIdFournisseur(?Fournisseur $idFournisseur): self
+    {
+        $this->idFournisseur = $idFournisseur;
+        return $this;
+    }
 }
+
 
 
 
