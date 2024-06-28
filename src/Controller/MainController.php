@@ -1,12 +1,12 @@
 <?php
 // src/Controller/MainController.php
+
 namespace App\Controller;
 
 use App\Entity\Categorie;
 use App\Repository\CategorieRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MainController extends AbstractController
@@ -21,19 +21,28 @@ class MainController extends AbstractController
     #[Route('/', name: 'accueil')]
     public function index(): Response
     {
-        $categories = $this->categorieRepository->findAll();
+        // Récupérer 5 catégories principales
+        $categories = $this->categorieRepository->findBy([], [], 5);
 
-        // Mélanger les sous-catégories pour chaque catégorie
-        foreach ($categories as $categorie) {
-            $sousCategories = $categorie->getSousCategories()->toArray();
-            shuffle($sousCategories); // Mélange aléatoire des sous-catégories
-            foreach ($sousCategories as $sousCategorie) {
-                $categorie->addSousCategorie($sousCategorie);
+        // Récupérer toutes les sous-catégories
+        $allSousCategories = [];
+        $allCategories = $this->categorieRepository->findAll();
+
+        foreach ($allCategories as $categorie) {
+            foreach ($categorie->getSousCategories() as $sousCategorie) {
+                $allSousCategories[] = $sousCategorie;
             }
         }
 
+        // Mélanger toutes les sous-catégories
+        shuffle($allSousCategories);
+
+        // Limiter à 5 sous-catégories aléatoires
+        $randomSousCategories = array_slice($allSousCategories, 0, 5);
+
         return $this->render('main/index.html.twig', [
             'categories' => $categories,
+            'randomSousCategories' => $randomSousCategories,
         ]);
     }
     
@@ -91,4 +100,6 @@ class MainController extends AbstractController
         return $this->render('user/profil.html.twig');
     }
 }
+
+
 

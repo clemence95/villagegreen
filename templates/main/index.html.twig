@@ -7,12 +7,15 @@
             <h1 class="mb-4">Bienvenue sur la page d'accueil</h1>
 
             <div class="row">
-                {% set totalDisplayed = 0 %}
                 {% for categorie in categories %}
                     <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
                         <div class="my-3 mx-auto text-center border rounded p-4">
                             <a href="{{ path('categorie', {'id': categorie.id}) }}">
-                                <img src="https://picsum.photos/400/300" alt="" class="img-fluid mb-3 rounded-lg">
+                                {% if categorie.image is not null %}
+                                    <img src="{{ categorie.image }}" alt="" class="img-fluid mb-3 rounded-lg">
+                                {% else %}
+                                    <img src="https://picsum.photos/400/300" alt="" class="img-fluid mb-3 rounded-lg">
+                                {% endif %}
                                 <br>
                                 <span class="fw-bold">{{ categorie.nom }}</span>
                             </a>
@@ -20,21 +23,23 @@
                                 <div class="mt-3">
                                     <h5>Sous-catégories</h5>
                                     <ul class="list-unstyled">
-                                        {% for sousCategorie in categorie.sousCategories %}
-                                            {% if totalDisplayed < 5 %}
-                                                <li>
-                                                    <a href="{{ path('sous_categorie', {'categorieId': categorie.id, 'sousCategorieId': sousCategorie.id}) }}">
-                                                        {% if sousCategorie.image is not null %}
-                                                            <img src="{{ sousCategorie.image }}" alt="" class="img-fluid mb-3 rounded-lg">
-                                                        {% else %}
-                                                            <img src="https://picsum.photos/400/300" alt="" class="img-fluid mb-3 rounded-lg">
-                                                        {% endif %}
-                                                        {{ sousCategorie.nom }}
-                                                    </a>
-                                                </li>
-                                                {% set totalDisplayed = totalDisplayed + 1 %}
-                                            {% endif %}
+                                        {% for sousCategorie in categorie.sousCategories|slice(0, 5) %}
+                                            <li>
+                                                <a href="{{ path('sous_categorie', {'categorieId': categorie.id, 'sousCategorieId': sousCategorie.id}) }}">
+                                                    {% if sousCategorie.image is not null %}
+                                                        <img src="{{ sousCategorie.image }}" alt="" class="img-fluid mb-3 rounded-lg">
+                                                    {% else %}
+                                                        <img src="https://picsum.photos/400/300" alt="" class="img-fluid mb-3 rounded-lg">
+                                                    {% endif %}
+                                                    {{ sousCategorie.nom }}
+                                                </a>
+                                            </li>
                                         {% endfor %}
+                                        {% if categorie.sousCategories|length > 5 %}
+                                            <li>
+                                                <a href="{{ path('categorie', {'id': categorie.id}) }}">Voir plus...</a>
+                                            </li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                             {% endif %}
@@ -62,6 +67,7 @@
     </div>
 </div>
 {% endblock %}
+
 
 
 
