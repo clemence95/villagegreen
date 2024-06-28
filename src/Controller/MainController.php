@@ -2,6 +2,7 @@
 // src/Controller/MainController.php
 namespace App\Controller;
 
+use App\Entity\Categorie;
 use App\Repository\CategorieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,14 +18,26 @@ class MainController extends AbstractController
     }
 
     #[Route('/', name: 'accueil')]
-    public function index(CategorieRepository $repo): Response
+    public function index(): Response
     {
-        $categories = $repo->findBy([ "categorieParent" => null ]);
-
-        // dd($categories);
+        $categories = $this->categorieRepository->findBy(['categorieParent' => null]);
 
         return $this->render('main/index.html.twig', [
             'categories' => $categories,
+        ]);
+    }
+
+    #[Route('/categorie/{id}', name: 'categorie')]
+    public function categorie(int $id): Response
+    {
+        $categorie = $this->categorieRepository->find($id);
+
+        if (!$categorie) {
+            throw $this->createNotFoundException('La catégorie demandée n\'existe pas.');
+        }
+
+        return $this->render('main/categorie.html.twig', [
+            'categorie' => $categorie,
         ]);
     }
 

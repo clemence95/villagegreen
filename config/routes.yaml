@@ -16,6 +16,10 @@ app_login:
 app_profil:
     path: /profil
     controller: App\Controller\ProfilController::index
-    # Remplacez le controller et path par les valeurs réelles de votre application
+
+categorie_show:
+    path: /categorie/{id}
+    controller: App\Controller\MainController::showCategorie
+
 
 

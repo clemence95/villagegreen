@@ -1,103 +1,136 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Welcome!{% endblock %}</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><text y='1.2em' font-size='96'>⚫️</text><text y='1.3em' x='0.2em' font-size='76' fill='#fff'>sf</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><text y='1.2em' font-size='96'>⚫️</text><text y='1.3em' x='0.2em' font-size='76' fill='#fff'>sf</text></svg>'>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
 </head>
 <body>
     <!-- Navbar horizontale -->
-    <nav class="navbar navbar-expand-lg fixed-top navbar-border bg-dark navbar-dark">
-        <a class="navbar-brand" href="{{ path('accueil') }}">
-            <img src="{{ asset('build/images/Logo.png') }}" alt="Logo" style="height: 60px; width: auto;">
-            VillageGreen
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHorizontal"
-            aria-controls="navbarHorizontal" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-between" id="navbarHorizontal">
-            <ul class="navbar-nav mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('accueil') }}"><i class="bi bi-house"></i> Accueil</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_register') }}"><i class="bi bi-pencil-square"></i> Inscription</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_login') }}"><i class="bi bi-box-arrow-in-right"></i> Connexion</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-box-seam"></i> Produits</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-cart"></i> Panier <span id="cart-count" class="badge bg-primary">0</span></a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Recherche</button>
-            </form>
-            <!-- Bouton de déconnexion -->
-            {% if app.user %}
-                <form class="d-flex" action="{{ path('logout') }}" method="post">
-                    <button class="btn btn-outline-danger ms-2" type="submit">Déconnexion</button>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ path('accueil') }}">
+                <img src="{{ asset('build/images/Logo.png') }}" alt="Logo" style="height: 60px; width: auto;">
+                VillageGreen
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('accueil') }}"><i class="bi bi-house"></i> Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_register') }}"><i class="bi bi-pencil-square"></i> Inscription</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_login') }}"><i class="bi bi-box-arrow-in-right"></i> Connexion</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-box-seam"></i> Produits</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-cart"></i> Panier <span id="cart-count" class="badge bg-primary">0</span></a>
+                    </li>
+                    <!-- Insérez les autres liens de la barre verticale ici pour petits écrans -->
+                    <li class="nav-item dropdown d-lg-none">
+                        <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdownMobile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Catégories
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="categoriesDropdownMobile">
+                            <!-- Subcategories will be inserted here by JavaScript -->
+                        </ul>
+                    </li>
+                    <li class="nav-item d-lg-none">
+                        <a class="nav-link" href="#services"><i class="bi bi-gear"></i> Services</a>
+                    </li>
+                    <li class="nav-item d-lg-none">
+                        <a class="nav-link" href="#about"><i class="bi bi-info-circle"></i> À propos</a>
+                    </li>
+                    <li class="nav-item d-lg-none">
+                        <a class="nav-link" href="#contact"><i class="bi bi-envelope"></i> Contact</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Recherche</button>
                 </form>
-            {% endif %}
+                <!-- Bouton de déconnexion -->
+                {% if app.user %}
+                    <form class="d-flex" action="{{ path('logout') }}" method="post">
+                        <button class="btn btn-outline-danger ms-2" type="submit">Déconnexion</button>
+                    </form>
+                {% endif %}
+            </div>
         </div>
     </nav>
 
-    <!-- Barre de navigation verticale -->
-    <div class="vertical-navbar d-flex flex-column justify-content-between">
+    <!-- Barre de navigation verticale (affichée uniquement sur les grands écrans) -->
+    <div class="vertical-navbar d-none d-lg-block">
         <ul class="nav flex-column">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-white" href="#" id="categoriesDropdown" role="button" onclick="toggleDropdown(event)">
+                <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" onclick="toggleDropdown(event)">
                     Catégories
                 </a>
-                <ul class="dropdown-menu w-100" id="categoriesDropdownMenu" aria-labelledby="categoriesDropdown">
+                <ul class="dropdown-menu" id="categoriesDropdownMenu" aria-labelledby="categoriesDropdown">
                     <!-- Subcategories will be inserted here by JavaScript -->
                 </ul>
             </li>
-        </ul>
-        <ul class="nav flex-column mb-2">
             <li class="nav-item">
-                <a class="nav-link text-white" href="#services"><i class="bi bi-gear"></i> Services</a>
+                <a class="nav-link" href="#services"><i class="bi bi-gear"></i> Services</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="#about"><i class="bi bi-info-circle"></i> À propos</a>
+                <a class="nav-link" href="#about"><i class="bi bi-info-circle"></i> À propos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="#contact"><i class="bi bi-envelope"></i> Contact</a>
+                <a class="nav-link" href="#contact"><i class="bi bi-envelope"></i> Contact</a>
             </li>
         </ul>
     </div>
 
+    {% block body %}
     <!-- Contenu principal -->
-    <div class="main-content" style="margin-left: 20%;">
-        {% block body %}{% endblock %}
+    <div class="container-fluid mt-5">
+        {{ block('body') }}
     </div>
+    {% endblock %}
 
     <!-- Footer -->
-    <footer class="bg-transparent text-dark text-center py-3">
+    <footer class="bg-transparent text-dark text-center py-3 fixed-bottom">
         <p>&copy; 2024 VillageGreen</p>
     </footer>
 
+    <!-- Bootstrap JS et JS personnalisé -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
         {{ encore_entry_script_tags('app') }}
         <script>
             function toggleDropdown(event) {
                 const dropdownMenu = document.getElementById('categoriesDropdownMenu');
                 dropdownMenu.classList.toggle('show');
             }
+
+            // Activer le menu hamburger sur les petits appareils
+            const navbarToggle = document.getElementById('navbarToggle');
+            const navbarMenu = document.getElementById('navbarMenu');
+
+            navbarToggle.addEventListener('click', function() {
+                navbarMenu.classList.toggle('show');
+            });
         </script>
     {% endblock %}
 </body>
 </html>
+
 
 
 

@@ -1,27 +1,24 @@
-{# templates/main/index.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block body %}
 <div class="container my-4 mt-5">
-    <div class="row">
-        <div class="col-md-12">
+    <div class="row justify-content-center">
+        <div class="col-md-10 text-center mt-5">
             <h1 class="mb-4">Bienvenue sur la page d'accueil</h1>
 
-<div class="row">
-
-    {% for categorie in categories %}
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 ">
-            <div class="my-3 mx-3 text-center">
-                <a href="/categorie/{{categorie.id}}">
-                    {{ categorie.nom }}<br>
-                    <img src="https://picsum.photos/200/150" alt="" class="img-fluid w-100">
-                </a>
+            <div class="row">
+                {% for categorie in categories %}
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 ">
+                        <div class="my-3 mx-auto text-center border rounded p-4">
+                            <a href="{{ path('categorie', {'id': categorie.id}) }}">
+                                <img src="https://picsum.photos/400/300" alt="" class="img-fluid mb-3 rounded-lg">
+                                <br>
+                                <span class="fw-bold">{{ categorie.nom }}</span>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-        </div>
-    {% endfor %}
-
-</div>
 
             {% if is_granted('ROLE_ADMIN') %}
                 <div class="row mt-4">
@@ -42,6 +39,17 @@
     </div>
 </div>
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
