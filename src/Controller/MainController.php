@@ -23,23 +23,16 @@ class MainController extends AbstractController
     {
         // Récupérer 5 catégories principales
         $categories = $this->categorieRepository->findBy([], [], 5);
-
+    
         // Récupérer toutes les sous-catégories
-        $allSousCategories = [];
-        $allCategories = $this->categorieRepository->findAll();
-
-        foreach ($allCategories as $categorie) {
-            foreach ($categorie->getSousCategories() as $sousCategorie) {
-                $allSousCategories[] = $sousCategorie;
-            }
-        }
-
+        $allSousCategories = $this->categorieRepository->getAllSousCategories();
+    
         // Mélanger toutes les sous-catégories
         shuffle($allSousCategories);
-
+    
         // Limiter à 5 sous-catégories aléatoires
         $randomSousCategories = array_slice($allSousCategories, 0, 5);
-
+    
         return $this->render('main/index.html.twig', [
             'categories' => $categories,
             'randomSousCategories' => $randomSousCategories,

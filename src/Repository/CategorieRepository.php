@@ -25,5 +25,16 @@ class CategorieRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getAllSousCategories(): array
+    {
+        $qb = $this->createQueryBuilder('categorie')
+            ->leftJoin('categorie.sousCategories', 'sc')
+            ->addSelect('sc')
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+    
 }
 
