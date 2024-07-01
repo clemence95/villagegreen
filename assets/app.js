@@ -2,6 +2,5 @@
 import './styles/app.css';  // Note the relative path './' instead of '/assets/'
 
 // Import Bootstrap CSS and JS
-import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
