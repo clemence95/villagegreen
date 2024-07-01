@@ -97,9 +97,70 @@
     </div>
 
     {% block body %}
-    <!-- Contenu principal -->
-    <div class="container-fluid mt-5">
-        {{ block('body') }}
+    <div class="container my-4 mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10 text-center mt-5">
+                <h1 class="mb-4">Bienvenue sur la page d'accueil</h1>
+
+                <div class="row">
+                    {# Section des catégories principales #}
+                    <div class="col-12">
+                        <h2 class="mb-4">Catégories</h2>
+                        <div class="row">
+                            {% for categorie in categories %}
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
+                                    <div class="card my-3 mx-auto border rounded">
+                                        <a href="{{ path('categorie', {'id': categorie.id}) }}">
+                                            <img src="https://picsum.photos/400/300" alt="" class="card-img-top">
+                                            <div class="card-body">
+                                                <h5 class="card-title fw-bold">{{ categorie.nom }}</h5>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {# Section des sous-catégories aléatoires #}
+                    <div class="col-12">
+                        <h2 class="mt-5 mb-4">Sous-catégories</h2>
+                        <div class="row">
+                            {% for sousCategorie in randomSousCategories %}
+                                <div class="col-12 col-sm-6 col-md-2 col-lg-3 col-xl-3">
+                                    <div class="card my-3 mx-auto border rounded">
+                                        <a href="{{ path('sous_categorie', {'categorieId': 1, 'sousCategorieId': 10}) }}">
+                                            {% if sousCategorie.image is not null %}
+                                                <img src="{{ sousCategorie.image }}" alt="" class="card-img-top">
+                                            {% else %}
+                                                <img src="https://picsum.photos/400/300" alt="" class="card-img-top">
+                                            {% endif %}
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ sousCategorie.nom }}</h5>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                {# Liens vers le dashboard et le profil #}
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') %}
+                    <div class="row mt-4 justify-content-center">
+                        <div class="col-md-4">
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('app_dashboard') }}" class="btn btn-primary btn-block">Accéder au tableau de bord</a>
+                            {% endif %}
+                            {% if is_granted('ROLE_USER') %}
+                                <a href="{{ path('app_profil') }}" class="btn btn-primary btn-block">Accéder à votre profil</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
     {% endblock %}
 
@@ -130,6 +191,7 @@
     {% endblock %}
 </body>
 </html>
+
 
 
 

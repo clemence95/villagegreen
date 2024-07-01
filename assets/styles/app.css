@@ -64,7 +64,7 @@ footer {
 
 .vertical-navbar {
     height: 100vh; /* Hauteur de 100% de la hauteur de la vue */
-    width: 20%; /* Largeur de 20% de la largeur de la fenêtre */
+    width: 15%; /* Largeur de 20% de la largeur de la fenêtre */
     position: fixed; /* Position fixée pour rester en place lors du défilement */
     top: 0; /* Position à partir du haut */
     left: 0; /* Position à partir de la gauche */

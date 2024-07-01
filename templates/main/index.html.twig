@@ -7,39 +7,50 @@
             <h1 class="mb-4">Bienvenue sur la page d'accueil</h1>
 
             <div class="row">
-                {# Afficher les 5 catégories principales #}
-                {% for categorie in categories %}
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
-                        <div class="my-3 mx-auto text-center border rounded p-4">
-                            <a href="{{ path('categorie', {'id': categorie.id}) }}">
-                                <img src="https://picsum.photos/400/300" alt="" class="img-fluid mb-3 rounded-lg">
-                                <br>
-                                <span class="fw-bold">{{ categorie.nom }}</span>
-                            </a>
-                        </div>
+                {# Section des catégories principales #}
+                <div class="col-12">
+                    <h2 class="mb-4">Catégories</h2>
+                    <div class="row">
+                        {% for categorie in categories %}
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
+                                <div class="card my-3 mx-auto border rounded">
+                                    <a href="{{ path('categorie', {'id': categorie.id}) }}">
+                                        <img src="https://picsum.photos/400/300" alt="" class="card-img-top">
+                                        <div class="card-body">
+                                            <h5 class="card-title fw-bold">{{ categorie.nom }}</h5>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
+                </div>
 
-                {# Afficher les 5 sous-catégories aléatoires #}
-                {% for sousCategorie in randomSousCategories %}
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
-                        <div class="my-3 mx-auto text-center border rounded p-4">
-                            <a href="{{ path('sous_categorie', {'categorieId': 1, 'sousCategorieId': 10}) }}">
-                                {% if sousCategorie.image is not null %}
-                                    <img src="{{ sousCategorie.image }}" alt="" class="img-fluid mb-3 rounded-lg">
-                                {% else %}
-                                    <img src="https://picsum.photos/400/300" alt="" class="img-fluid mb-3 rounded-lg">
-                                {% endif %}
-                                <br>
-                                {{ sousCategorie.nom }}
-                            </a>
-                        </div>
+                {# Saut de ligne clair avant les sous-catégories #}
+                <div class="w-100"></div>
+
+                {# Section des sous-catégories aléatoires #}
+                <div class="col-12">
+                    <h2 class="mt-5 mb-4">Sous-catégories</h2>
+                    <div class="row">
+                        {% for sousCategorie in randomSousCategories %}
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                                <div class="card my-3 mx-auto border rounded">
+                                    <a href="{{ path('sous_categorie', {'categorieId': 1, 'sousCategorieId': 10}) }}">
+                                        {% if sousCategorie.image is not null %}
+                                            <img src="{{ sousCategorie.image }}" alt="" class="card-img-top">
+                                        {% else %}
+                                            <img src="https://picsum.photos/400/300" alt="" class="card-img-top">
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ sousCategorie.nom }}</h5>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
-                    {# Ajoutez un div pour mettre à la ligne après chaque 5e sous-catégorie #}
-                    {% if loop.index % 5 == 0 %}
-                        <div class="w-100"></div>
-                    {% endif %}
-                {% endfor %}
+                </div>
             </div>
 
             {# Liens vers le dashboard et le profil #}
@@ -62,6 +73,9 @@
     </div>
 </div>
 {% endblock %}
+
+
+
 
 
 
