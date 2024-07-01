@@ -1,71 +1,100 @@
-   {% extends 'base.html.twig' %} 
-    {% block body %}
-    <div class="container my-4 mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-10 text-center mt-5">
-                <h1 class="mb-4">Bienvenue sur la page d'accueil</h1>
+{% extends 'base.html.twig' %} 
 
-                <div class="row">
-                    {# Section des catégories principales #}
-                    <div class="col-12">
-                        <h2 class="mb-4">Catégories</h2>
-                        <div class="row">
-                            {% for categorie in categories %}
-                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
-                                    <div class="card my-3 mx-auto border rounded">
-                                        <a href="{{ path('categorie', {'id': categorie.id}) }}">
-                                            <img src="https://picsum.photos/400/300" alt="" class="card-img-top">
-                                            <div class="card-body">
-                                                <h5 class="card-title fw-bold">{{ categorie.nom }}</h5>
-                                            </div>
-                                        </a>
+{% block body %}
+<div class="container my-4 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 text-center mt-5">
+            <h1 class="mb-4">Bienvenue sur la page d'accueil</h1>
+
+            <div class="row">
+
+
+                {# Carrousel des produits #}
+                <div class="col-12 mt-5">
+                    <h2 class="mb-4">Produits en vedette</h2>
+                    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for produit in produits %}
+                                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                    <img src="https://picsum.photos/800/400?random={{ loop.index }}" class="d-block w-100" alt="...">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5>{{ produit.libelleCourt }}</h5>
+                                        <p>{{ produit.libelleLong }}</p>
                                     </div>
                                 </div>
                             {% endfor %}
                         </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
-
-                    {# Section des sous-catégories aléatoires #}
-                    <div class="col-12">
-                        <h2 class="mt-5 mb-4">Sous-catégories</h2>
-                        <div class="row">
-                            {% for sousCategorie in randomSousCategories %}
-                                <div class="col-12 col-sm-6 col-md-2 col-lg-3 col-xl-3">
-                                    <div class="card my-3 mx-auto border rounded">
-                                        <a href="{{ path('sous_categorie', {'categorieId': 1, 'sousCategorieId': 10}) }}">
-                                            {% if sousCategorie.image is not null %}
-                                                <img src="{{ sousCategorie.image }}" alt="" class="card-img-top">
-                                            {% else %}
-                                                <img src="https://picsum.photos/400/300" alt="" class="card-img-top">
-                                            {% endif %}
-                                            <div class="card-body">
-                                                <h5 class="card-title">{{ sousCategorie.nom }}</h5>
-                                            </div>
-                                        </a>
-                                    </div>
+                </div>
+            </div>
+                {# Section des catégories principales #}
+                <div class="col-12">
+                    <h2 class="mb-4">Catégories</h2>
+                    <div class="row">
+                        {% for categorie in categories %}
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
+                                <div class="card my-3 mx-auto border rounded">
+                                    <a href="{{ path('categorie', {'id': categorie.id}) }}">
+                                        <img src="https://picsum.photos/400/300" alt="" class="card-img-top">
+                                        <div class="card-body">
+                                            <h5 class="card-title fw-bold">{{ categorie.nom }}</h5>
+                                        </div>
+                                    </a>
                                 </div>
-                            {% endfor %}
-                        </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
 
-                {# Liens vers le dashboard et le profil #}
-                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') %}
-                    <div class="row mt-4 justify-content-center">
-                        <div class="col-md-4">
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <a href="{{ path('app_dashboard') }}" class="btn btn-primary btn-block">Accéder au tableau de bord</a>
-                            {% endif %}
-                            {% if is_granted('ROLE_USER') %}
-                                <a href="{{ path('app_profil') }}" class="btn btn-primary btn-block">Accéder à votre profil</a>
-                            {% endif %}
-                        </div>
+                {# Section des sous-catégories aléatoires #}
+                <div class="col-12">
+                    <h2 class="mt-5 mb-4">Sous-catégories</h2>
+                    <div class="row">
+                        {% for sousCategorie in randomSousCategories %}
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
+                                <div class="card my-3 mx-auto border rounded">
+                                    <a href="{{ path('sous_categorie', {'categorieId': 1, 'sousCategorieId': 10}) }}">
+                                        {% if sousCategorie.image is not null %}
+                                            <img src="{{ sousCategorie.image }}" alt="" class="card-img-top">
+                                        {% else %}
+                                            <img src="https://picsum.photos/400/300" alt="" class="card-img-top">
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ sousCategorie.nom }}</h5>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endif %}
-            </div>
+                </div>
+
+
+            {# Liens vers le dashboard et le profil #}
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') %}
+                <div class="row mt-4 justify-content-center">
+                    <div class="col-md-4">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('app_dashboard') }}" class="btn btn-primary btn-block">Accéder au tableau de bord</a>
+                        {% endif %}
+                        {% if is_granted('ROLE_USER') %}
+                            <a href="{{ path('app_profil') }}" class="btn btn-primary btn-block">Accéder à votre profil</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
-    {% endblock %}
+</div>
+{% endblock %}
 
 
 

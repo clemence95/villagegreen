@@ -81,7 +81,9 @@
                     Catégories
                 </a>
                 <ul class="dropdown-menu" id="categoriesDropdownMenu" aria-labelledby="categoriesDropdown">
-
+                    {% for categorie in categories %}
+                        <li><a class="dropdown-item" href="{{ path('categorie', {'id': categorie.id}) }}">{{ categorie.nom }}</a></li>
+                    {% endfor %}
                 </ul>
             </li>
             <!-- Autres liens de la barre verticale -->
@@ -110,7 +112,7 @@
 
     <!-- Bootstrap JS et JS personnalisé -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-VoPFmB5F2S0LkR8R75QsZpEMKzvRU3aSeRbTNcCY6fHwAsfA1UaMyjgy7jvFHpqA" crossorigin="anonymous"></script>
     {% block javascripts %}
         {% block importmap %}{{ importmap('app') }}{% endblock %}
         {{ encore_entry_script_tags('app') }}

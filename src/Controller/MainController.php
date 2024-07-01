@@ -3,8 +3,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Categorie;
+use App\Entity\Produit;
 use App\Repository\CategorieRepository;
+use Doctrine\ORM\EntityManagerInterface; // Importez l'EntityManagerInterface
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,10 +13,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class MainController extends AbstractController
 {
     private CategorieRepository $categorieRepository;
+    private EntityManagerInterface $entityManager; // Ajoutez l'EntityManager
 
-    public function __construct(CategorieRepository $categorieRepository)
+    public function __construct(CategorieRepository $categorieRepository, EntityManagerInterface $entityManager)
     {
         $this->categorieRepository = $categorieRepository;
+        $this->entityManager = $entityManager;
     }
 
     #[Route('/', name: 'accueil')]
@@ -23,19 +26,23 @@ class MainController extends AbstractController
     {
         // Récupérer 5 catégories principales
         $categories = $this->categorieRepository->findBy([], [], 5);
-    
+
         // Récupérer toutes les sous-catégories
         $allSousCategories = $this->categorieRepository->getAllSousCategories();
-    
+
         // Mélanger toutes les sous-catégories
         shuffle($allSousCategories);
-    
+
         // Limiter à 5 sous-catégories aléatoires
         $randomSousCategories = array_slice($allSousCategories, 0, 5);
-    
+
+        // Récupérer les 5 premiers produits (exemple)
+        $produits = $this->entityManager->getRepository(Produit::class)->findBy([], [], 5);
+
         return $this->render('main/index.html.twig', [
             'categories' => $categories,
             'randomSousCategories' => $randomSousCategories,
+            'produits' => $produits, // Passer les produits au template Twig
         ]);
     }
     
