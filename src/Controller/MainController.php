@@ -92,6 +92,7 @@ class MainController extends AbstractController
 
         return $this->render('user/profil.html.twig');
     }
+
 }
 
 

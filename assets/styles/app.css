@@ -60,20 +60,19 @@ footer {
     left: 0;
 }
 
-/* app.css */
-
 .vertical-navbar {
-    height: 100vh; /* Hauteur de 100% de la hauteur de la vue */
-    width: 15%; /* Largeur de 20% de la largeur de la fenêtre */
-    position: fixed; /* Position fixée pour rester en place lors du défilement */
-    top: 0; /* Position à partir du haut */
-    left: 0; /* Position à partir de la gauche */
-    background-color: darkolivegreen; /* Couleur de fond */
-    overflow-x: hidden; /* Masquer le débordement horizontal */
-    padding-top: 80px; /* Espace en haut de la barre */
-    display: flex; /* Utiliser un affichage flex pour le contenu de la barre */
-    flex-direction: column; /* Affichage des éléments de manière verticale */
+    height: 100vh;
+    width: 15%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: darkolivegreen;
+    overflow-x: hidden;
+    padding-top: 80px;
+    display: flex;
+    flex-direction: column;
 }
+
 
 
 
