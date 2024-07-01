@@ -44,6 +44,7 @@ class MainController extends AbstractController
             'randomSousCategories' => $randomSousCategories,
             'produits' => $produits, // Passer les produits au template Twig
         ]);
+
     }
     
     #[Route('/categorie/{id}', name: 'categorie')]

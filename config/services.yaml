@@ -1,5 +1,3 @@
-# services.yaml
-
 # config/services.yaml
 
 services:
@@ -43,6 +41,14 @@ services:
         autowire: true
         autoconfigure: true
         public: true  # Assurez-vous que ce service est public si nécessaire
+
+    # Register TwigEventSubscriber
+    App\EventSubscriber\TwigEventSubscriber:
+        arguments:
+            $twig: '@twig'
+            $categorieRepository: '@App\Repository\CategorieRepository'
+        tags:
+            - { name: 'kernel.event_subscriber' }
 
 
 
