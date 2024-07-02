@@ -7,42 +7,11 @@ html, body {
     text-size-adjust: 100%; /* Pour les navigateurs modernes */
 }
 
-.vertical-navbar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.vertical-navbar ul li {
-    padding: 8px 8px;
-    text-align: center;
-}
-
-.vertical-navbar ul li a {
-    text-decoration: none;
-    color: white;
-    display: block;
-}
-
-.vertical-navbar ul li a:hover {
-    background-color: #575757;
-}
-
-/* Dropdown pour la barre de navigation verticale */
-.vertical-navbar .dropdown-menu {
-    display: none;
-    position: relative;
-    width: 100%;
-    background-color: #333;
-}
-
-.vertical-navbar .dropdown-menu a {
-    color: white;
-}
-
 /* Contenu principal */
 body {
     display: flex;
     flex-direction: column;
+    background-image:url('/assets/images/bg.jpg');
 }
 
 .main-content {
@@ -60,19 +29,6 @@ footer {
     left: 0;
 }
 
-/* Barre de navigation verticale */
-.vertical-navbar {
-    height: 100vh;
-    width: 10%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: darkolivegreen;
-    overflow-x: hidden;
-    padding-top: 30px;
-    display: flex;
-    flex-direction: column;
-}
 
 
 
