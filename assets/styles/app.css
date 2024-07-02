@@ -63,13 +63,13 @@ footer {
 /* Barre de navigation verticale */
 .vertical-navbar {
     height: 100vh;
-    width: 15%;
+    width: 10%;
     position: fixed;
     top: 0;
     left: 0;
     background-color: darkolivegreen;
     overflow-x: hidden;
-    padding-top: 80px;
+    padding-top: 30px;
     display: flex;
     flex-direction: column;
 }
