@@ -30,9 +30,6 @@ footer {
 
 .bg-main-content {
     background-color: blanchedalmond;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     padding: 20px; /* Ajoute un padding pour éviter que le contenu touche les bords */
     border-radius: 10px; /* Optionnel : pour des coins arrondis */
 }

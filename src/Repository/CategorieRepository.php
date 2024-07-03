@@ -35,6 +35,14 @@ class CategorieRepository extends ServiceEntityRepository
 
         return $qb->getResult();
     }
+
+    public function findMainCategories(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.categorieParent IS NULL')
+            ->getQuery()
+            ->getResult();
+    }
     
 }
 

@@ -5,7 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Produit;
 use App\Repository\CategorieRepository;
-use Doctrine\ORM\EntityManagerInterface; // Importez l'EntityManagerInterface
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,11 +13,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class MainController extends AbstractController
 {
     private CategorieRepository $categorieRepository;
-    private EntityManagerInterface $entityManager; // Ajoutez l'EntityManager
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(CategorieRepository $categorieRepository, EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->categorieRepository = $categorieRepository;
         $this->entityManager = $entityManager;
     }
 
@@ -25,7 +24,7 @@ class MainController extends AbstractController
     public function index(): Response
     {
         // Récupérer 5 catégories principales
-        $categories = $this->categorieRepository->findBy([], [], 5);
+        $categories = $this->categorieRepository->findMainCategories();
 
         // Récupérer toutes les sous-catégories
         $allSousCategories = $this->categorieRepository->getAllSousCategories();
@@ -42,11 +41,10 @@ class MainController extends AbstractController
         return $this->render('main/index.html.twig', [
             'categories' => $categories,
             'randomSousCategories' => $randomSousCategories,
-            'produits' => $produits, // Passer les produits au template Twig
+            'produits' => $produits,
         ]);
-
     }
-    
+
     #[Route('/categorie/{id}', name: 'categorie')]
     public function categorie(int $id): Response
     {
@@ -101,7 +99,10 @@ class MainController extends AbstractController
         return $this->render('user/profil.html.twig');
     }
 
+    // Méthode pour injecter le CategorieRepository
+    public function setCategorieRepository(CategorieRepository $categorieRepository)
+    {
+        $this->categorieRepository = $categorieRepository;
+    }
 }
-
-
 
