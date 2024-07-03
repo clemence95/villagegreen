@@ -10,6 +10,7 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
+    background-color:bisque;
 }
 
 .main-content {
@@ -28,7 +29,7 @@ footer {
 }
 
 .bg-main-content {
-    background-image: url('/assets/images/bg.jpg');
+    background-color: blanchedalmond;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

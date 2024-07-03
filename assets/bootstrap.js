@@ -12,4 +12,4 @@ startStimulusApp(require.context(
 // app.register('some_controller_name', SomeImportedController);
 
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+
