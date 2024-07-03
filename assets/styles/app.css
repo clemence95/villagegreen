@@ -3,7 +3,6 @@ html, body {
     height: 100%;
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: antiquewhite;
     text-size-adjust: 100%; /* Pour les navigateurs modernes */
 }
 
@@ -11,7 +10,6 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
-    background-image:url('/assets/images/bg.jpg');
 }
 
 .main-content {
@@ -29,6 +27,14 @@ footer {
     left: 0;
 }
 
+.bg-main-content {
+    background-image: url('/assets/images/bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px; /* Ajoute un padding pour éviter que le contenu touche les bords */
+    border-radius: 10px; /* Optionnel : pour des coins arrondis */
+}
 
 
 
