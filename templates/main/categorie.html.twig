@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ categorie.nom }}{% endblock %}
+
+{% block body %}
+    <h1 class="mt-5">{{ categorie.nom }}</h1>
+
+    <div class="row mt-4">
+        {% if sousCategories is not empty %}
+            {% for sousCategorie in sousCategories %}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="card my-3 border rounded">
+                        <a href="{{ path('sous_categorie', {'categorieId': categorie.id, 'sousCategorieId': sousCategorie.id}) }}">
+                            <img src="https://picsum.photos/400/300" alt="" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">{{ sousCategorie.nom }}</h5>
+                                <!-- Ajoutez d'autres informations sur la sous-catégorie si nécessaire -->
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col">
+                <p>Aucune sous-catégorie trouvée pour cette catégorie.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div style="height: 100px;"></div> <!-- Espace en bas ajustable -->
+{% endblock %}
+
+
+
+
