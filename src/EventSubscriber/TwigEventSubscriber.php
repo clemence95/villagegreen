@@ -8,36 +8,49 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Twig\Environment;
 use App\Repository\CategorieRepository;
-use App\Controller\MainController; // Importez MainController
+use App\Repository\ProduitRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class TwigEventSubscriber implements EventSubscriberInterface
 {
     private Environment $twig;
     private CategorieRepository $categorieRepository;
+    private ProduitRepository $produitRepository;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(Environment $twig, CategorieRepository $categorieRepository)
-    {
+    public function __construct(
+        Environment $twig,
+        CategorieRepository $categorieRepository,
+        ProduitRepository $produitRepository,
+        EntityManagerInterface $entityManager
+    ) {
         $this->twig = $twig;
         $this->categorieRepository = $categorieRepository;
+        $this->produitRepository = $produitRepository;
+        $this->entityManager = $entityManager;
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
         return [
             KernelEvents::CONTROLLER => 'onKernelController',
         ];
     }
 
-    public function onKernelController(ControllerEvent $event): void
+    public function onKernelController(ControllerEvent $event)
     {
-        $controller = $event->getController();
+        // Injecter des variables dans tous les templates
+        $this->injectGlobalVariables();
+    }
 
-        // Injecter le repository des catégories dans le contrôleur si c'est une instance de MainController
-        if (is_array($controller) && $controller[0] instanceof MainController) {
-            $controller[0]->setCategorieRepository($this->categorieRepository);
-            // Récupérer et transmettre les catégories à toutes les vues
-            $categories = $this->categorieRepository->findMainCategories();
-            $this->twig->addGlobal('categories', $categories);
-        }
+    private function injectGlobalVariables()
+    {
+        $categories = $this->categorieRepository->findAll(); // Exemple pour récupérer les catégories
+        $produits = $this->produitRepository->findAll(); // Exemple pour récupérer les produits
+
+        // Transmettre les variables aux templates Twig
+        $this->twig->addGlobal('categories', $categories);
+        $this->twig->addGlobal('produits', $produits);
     }
 }
+

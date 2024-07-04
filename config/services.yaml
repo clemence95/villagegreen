@@ -42,11 +42,13 @@ services:
         autoconfigure: true
         public: true  # Assurez-vous que ce service est public si nécessaire
 
-    # Register TwigEventSubscriber
+ # Service pour le TwigEventSubscriber
     App\EventSubscriber\TwigEventSubscriber:
         arguments:
             $twig: '@twig'
             $categorieRepository: '@App\Repository\CategorieRepository'
+            $produitRepository: '@App\Repository\ProduitRepository'
+            $entityManager: '@doctrine.orm.entity_manager'
         tags:
             - { name: 'kernel.event_subscriber' }
 

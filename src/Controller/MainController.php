@@ -15,8 +15,9 @@ class MainController extends AbstractController
     private CategorieRepository $categorieRepository;
     private EntityManagerInterface $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(CategorieRepository $categorieRepository, EntityManagerInterface $entityManager)
     {
+        $this->categorieRepository = $categorieRepository;
         $this->entityManager = $entityManager;
     }
 
@@ -50,20 +51,20 @@ class MainController extends AbstractController
     {
         // Récupérer la catégorie principale par son ID
         $categorie = $this->categorieRepository->find($id);
-
+    
         if (!$categorie) {
             throw $this->createNotFoundException('La catégorie demandée n\'existe pas.');
         }
-
+    
         // Récupérer les sous-catégories de la catégorie principale
         $sousCategories = $categorie->getSousCategories();
-
+    
         return $this->render('main/categorie.html.twig', [
             'categorie' => $categorie,
             'sousCategories' => $sousCategories,
         ]);
     }
-
+    
     #[Route('/categorie/{categorieId}/sous-categorie/{sousCategorieId}', name: 'sous_categorie')]
     public function sousCategorie(int $categorieId, int $sousCategorieId): Response
     {
@@ -98,11 +99,4 @@ class MainController extends AbstractController
 
         return $this->render('user/profil.html.twig');
     }
-
-    // Méthode pour injecter le CategorieRepository
-    public function setCategorieRepository(CategorieRepository $categorieRepository)
-    {
-        $this->categorieRepository = $categorieRepository;
-    }
 }
-
