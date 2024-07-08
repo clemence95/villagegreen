@@ -16,17 +16,17 @@
                 {% for produit in produits %}
                     <div class="col-md-4 mb-4">
                         <div class="card">
-                                <img src="{{ produit.photo }}" alt="Image de la sous-catégorie {{ produit.photo }}" class="img-fluid mb-4">
+                            <img src="{{ produit.photo }}" alt="Image de la sous-catégorie {{ produit.photo }}" class="img-fluid mb-4">
                             <div class="card-body">
                                 <h5 class="card-title">{{ produit.libelleCourt }}</h5>
                                 <p class="card-text">{{ produit.libelleLong }}</p>
                                 <p class="card-text">Prix Vente : {{ produit.prixVente }} €</p>
                                 <p class="card-text">Prix Achat : {{ produit.prixAchat }} €</p>
+                                <a href="{{ path('panier_ajouter', {id: produit.id}) }}" class="btn btn-primary">+</a>
+                                <a href="{{ path('panier_diminuer', {id: produit.id}) }}" class="btn btn-warning">-</a>
                             </div>
                         </div>
                     </div>
                 {% endfor %}
             {% endif %}
-        </div>
-    </div>
 {% endblock %}

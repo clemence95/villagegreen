@@ -1,3 +1,5 @@
+{# templates/base.html.twig #}
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('/styles/app.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ asset('/build/images/Logo.png') }}">
     {% block stylesheets %}
-        {{ encore_entry_link_tags('app') }}  
+        {{ encore_entry_link_tags('app') }}
     {% endblock %}
 </head>
 <body>
@@ -36,7 +38,7 @@
                         <a class="nav-link" href="#"><i class="bi bi-box-seam"></i> Produits</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-cart"></i> Panier <span id="cart-count" class="badge bg-primary">0</span></a>
+                        <a class="nav-link" href="{{ path('panier') }}"><i class="bi bi-cart"></i> Panier <span id="cart-count" class="badge bg-primary">0</span></a>
                     </li>
                     <li class="nav-item d-lg-none">
                         <a class="nav-link" href="#services"><i class="bi bi-gear"></i> Services</a>
@@ -66,7 +68,6 @@
                     <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Recherche</button>
                 </form>
-                <!-- Bouton de déconnexion -->
                 {% if app.user %}
                     <form class="d-flex" action="{{ path('logout') }}" method="post">
                         <button class="btn btn-outline-danger ms-2" type="submit">Déconnexion</button>
@@ -77,7 +78,7 @@
     </nav>
 
     <!-- Contenu principal -->
-    <div class="container mt-4 bg-main-content">
+    <div class="container mt-4 bg-main-content pb-5">
         {% block body %}
         {% endblock %}
     </div>
@@ -91,7 +92,21 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     {% block javascripts %}
-    {{ encore_entry_script_tags('app') }}
+        {{ encore_entry_script_tags('app') }}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                function updateCartCount() {
+                    fetch("{{ path('api_panier_count') }}")
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('cart-count').textContent = data.count;
+                        })
+                        .catch(error => console.error('Error fetching cart count:', error));
+                }
+
+                updateCartCount();
+            });
+        </script>
     {% endblock %}
 </body>
 </html>

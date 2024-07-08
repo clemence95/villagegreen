@@ -1,4 +1,5 @@
 <?php
+
 // src/Controller/MainController.php
 
 namespace App\Controller;
@@ -7,8 +8,10 @@ use App\Entity\Produit;
 use App\Repository\CategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class MainController extends AbstractController
 {
@@ -24,19 +27,10 @@ class MainController extends AbstractController
     #[Route('/', name: 'accueil')]
     public function index(): Response
     {
-        // Récupérer 5 catégories principales
         $categories = $this->categorieRepository->findMainCategories();
-
-        // Récupérer toutes les sous-catégories
         $allSousCategories = $this->categorieRepository->getAllSousCategories();
-
-        // Mélanger toutes les sous-catégories
         shuffle($allSousCategories);
-
-        // Limiter à 5 sous-catégories aléatoires
         $randomSousCategories = array_slice($allSousCategories, 0, 5);
-
-        // Récupérer les 5 premiers produits (exemple)
         $produits = $this->entityManager->getRepository(Produit::class)->findBy([], [], 5);
 
         return $this->render('main/index.html.twig', [
@@ -49,14 +43,12 @@ class MainController extends AbstractController
     #[Route('/categorie/{id}', name: 'categorie')]
     public function categorie(int $id): Response
     {
-        // Récupérer la catégorie principale par son ID
         $categorie = $this->categorieRepository->find($id);
     
         if (!$categorie) {
             throw $this->createNotFoundException('La catégorie demandée n\'existe pas.');
         }
     
-        // Récupérer les sous-catégories de la catégorie principale
         $sousCategories = $categorie->getSousCategories();
     
         return $this->render('main/categorie.html.twig', [
@@ -68,20 +60,91 @@ class MainController extends AbstractController
     #[Route('/categorie/{categorieId}/sous-categorie/{sousCategorieId}', name: 'sous_categorie')]
     public function sousCategorie(string $sousCategorieId): Response
     {
-        // Récupérer la sous-catégorie par son ID
         $sousCategorie = $this->categorieRepository->find($sousCategorieId);
 
         if (!$sousCategorie) {
             throw $this->createNotFoundException('La sous-catégorie demandée n\'existe pas.');
         }
 
-        // Récupérer les produits associés à la sous-catégorie
         $produits = $sousCategorie->getProduits();
 
         return $this->render('main/sous_categorie.html.twig', [
             'sousCategorie' => $sousCategorie,
             'produits' => $produits,
         ]);
+    }
+
+    #[Route('/panier', name: 'panier')]
+    public function panier(SessionInterface $session): Response
+    {
+        $panier = $session->get('panier', []);
+        $produits = [];
+        $totalPrix = 0;
+        $totalQuantite = 0;
+
+        foreach ($panier as $id => $quantite) {
+            $produit = $this->entityManager->getRepository(Produit::class)->find($id);
+            if ($produit) {
+                $produits[] = [
+                    'produit' => $produit,
+                    'quantite' => $quantite
+                ];
+                $totalPrix += $produit->getPrixVente() * $quantite;
+                $totalQuantite += $quantite;
+            }
+        }
+
+        return $this->render('panier/index.html.twig', [
+            'produits' => $produits,
+            'totalPrix' => $totalPrix,
+            'totalQuantite' => $totalQuantite,
+        ]);
+    }
+
+    #[Route('/panier/ajouter/{id}', name: 'panier_ajouter')]
+    public function ajouterAuPanier(int $id, SessionInterface $session): Response
+    {
+        $panier = $session->get('panier', []);
+
+        if (!array_key_exists($id, $panier)) {
+            $panier[$id] = 0;
+        }
+
+        $panier[$id]++;
+        $session->set('panier', $panier);
+
+        return $this->redirectToRoute('panier');
+    }
+
+    #[Route('/panier/diminuer/{id}', name: 'panier_diminuer')]
+    public function diminuerQuantite(int $id, SessionInterface $session): Response
+    {
+        $panier = $session->get('panier', []);
+
+        if (array_key_exists($id, $panier)) {
+            $panier[$id]--;
+            if ($panier[$id] <= 0) {
+                unset($panier[$id]);
+            }
+        }
+
+        $session->set('panier', $panier);
+
+        return $this->redirectToRoute('panier');
+    }
+
+    #[Route('/panier/supprimer/{id}', name: 'panier_supprimer')]
+    public function supprimerDuPanier(int $id, SessionInterface $session): Response
+    {
+        $panier = $session->get('panier', []);
+
+        if (array_key_exists($id, $panier)) {
+            unset($panier[$id]);
+        }
+
+        $session->set('panier', $panier);
+
+        return $this->redirectToRoute('panier');
     }
 
     #[Route('/dashboard', name: 'app_dashboard')]
@@ -99,4 +162,15 @@ class MainController extends AbstractController
 
         return $this->render('user/profil.html.twig');
     }
+
+    #[Route('/api/panier/count', name: 'api_panier_count')]
+    public function getPanierCount(SessionInterface $session): JsonResponse
+    {
+        $panier = $session->get('panier', []);
+        $totalQuantite = array_sum($panier);
+
+        return new JsonResponse(['count' => $totalQuantite]);
+    }
 }
+
+
