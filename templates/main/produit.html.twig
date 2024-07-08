@@ -1,0 +1,34 @@
+{# templates/main/produits.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous les Produits{% endblock %}
+
+{% block body %}
+    <div class="container pt-4">
+        <h1 class="my-4">Tous les Produits</h1>
+        <div class="row">
+            {% for sousCategorie in sousCategories %}
+                <div class="col-12 mb-4">
+                    <h2>{{ sousCategorie.nom }}</h2>
+                    <div class="row">
+                        {% for produit in sousCategorie.produits %}
+                            <div class="col-md-4 mb-4">
+                                <div class="card">
+                                    <img src="{{ produit.photo }}" alt="Image de la sous-catégorie {{ produit.photo }}" class="img-fluid mb-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ produit.libelleCourt }}</h5>
+                                        <p class="card-text">{{ produit.libelleLong }}</p>
+                                        <p class="card-text">Prix Vente : {{ produit.prixVente }} €</p>
+                                        <a href="{{ path('panier_ajouter', {id: produit.id}) }}" class="btn btn-primary">+</a>
+                                        <a href="{{ path('panier_diminuer', {id: produit.id}) }}" class="btn btn-warning">-</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

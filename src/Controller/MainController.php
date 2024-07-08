@@ -171,6 +171,16 @@ class MainController extends AbstractController
 
         return new JsonResponse(['count' => $totalQuantite]);
     }
+
+    #[Route('/produits', name: 'produits')]
+    public function produits(): Response
+    {
+        $sousCategories = $this->categorieRepository->getAllSousCategories();
+
+        return $this->render('main/produit.html.twig', [
+            'sousCategories' => $sousCategories,
+        ]);
+    }
 }
 
 
