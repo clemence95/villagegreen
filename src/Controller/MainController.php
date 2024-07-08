@@ -66,7 +66,7 @@ class MainController extends AbstractController
     }
     
     #[Route('/categorie/{categorieId}/sous-categorie/{sousCategorieId}', name: 'sous_categorie')]
-    public function sousCategorie(int $categorieId, int $sousCategorieId): Response
+    public function sousCategorie(string $sousCategorieId): Response
     {
         // Récupérer la sous-catégorie par son ID
         $sousCategorie = $this->categorieRepository->find($sousCategorieId);
