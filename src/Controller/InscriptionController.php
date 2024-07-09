@@ -20,7 +20,7 @@ class InscriptionController extends AbstractController
         $client = new Client();
 
         // Définition automatique du coefficient en fonction du type de client
-        $typeClient = $request->request->get('InscriptionFormType')['type_client'];
+        $typeClient = $request->request->get('inscription_form')['type_client'];
         if ($typeClient === 'particulier') {
             $client->setCoefficientParticulier(1.0); // Coefficient pour un client particulier
         } elseif ($typeClient === 'entreprise') {
@@ -31,10 +31,8 @@ class InscriptionController extends AbstractController
         $commercial = $entityManager->getRepository(Client::class)->findOneBy(['roles' => 'ROLE_COMMERCIAL']);
         $client->setIdCommercial($commercial);
 
-        // Création du formulaire à partir de InscriptionFormType et de l'entité Client (sans les champs de coefficient et de commercial)
-        $form = $this->createForm(InscriptionFormType::class, $client, [
-            'exclude_fields' => ['coefficient', 'id_commercial'],
-        ]);
+        // Création du formulaire à partir de InscriptionFormType et de l'entité Client
+        $form = $this->createForm(InscriptionFormType::class, $client);
 
         // Gestion de la soumission du formulaire
         $form->handleRequest($request);
@@ -65,7 +63,6 @@ class InscriptionController extends AbstractController
         return $this->render('registration/success.html.twig');
     }
 }
-
 
 
 
