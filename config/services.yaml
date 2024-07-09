@@ -52,5 +52,7 @@ services:
         tags:
             - { name: 'kernel.event_subscriber' }
 
+    App\Controller\InscriptionController:
+        autowire: true
 
 

@@ -8,12 +8,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class InscriptionController extends AbstractController
+class inscriptionController extends AbstractController
 {
-    /**
-     * @Route("/inscription", name="inscription")
-     */
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    
+    #[Route('/inscription', name: 'app_inscription')]
+    public function app_inscription (Request $request, EntityManagerInterface $entityManager): Response
     {
         // Création d'une nouvelle instance de l'entité Client
         $client = new Client();
@@ -35,14 +34,13 @@ class InscriptionController extends AbstractController
         }
 
         // Affichage du formulaire dans le template Twig
-        return $this->render('inscription/new.html.twig', [
+        return $this->render('regisration/inscription.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
-    /**
-     * @Route("/inscription/success", name="inscription_success")
-     */
+    
+    #[Route('/inscription/success', name:'inscription_success')]
     public function success(): Response
     {
         return $this->render('inscription/success.html.twig');
