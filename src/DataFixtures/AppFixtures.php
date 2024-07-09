@@ -4,8 +4,8 @@ namespace App\DataFixtures;
 
 use App\Entity\Client;
 use App\Entity\Employe;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
@@ -16,7 +16,7 @@ class AppFixtures extends Fixture
     {
         $this->passwordHasher = $passwordHasher;
     }
-    
+
     public function load(ObjectManager $manager): void
     {
         // Création d'un employé (Employe)
@@ -29,31 +29,44 @@ class AppFixtures extends Fixture
         $employe->setTelephone('0123456789');
         $manager->persist($employe);
 
-        // Création d'un client (Client)
-        $client = new Client();
-        $client->setEmail('client@example.com');
-        $client->setRoles(['ROLE_USER']);
-        $client->setPassword($this->passwordHasher->hashPassword($client, 'password123'));
-        $client->setNom('Doe');
-        $client->setPrenom('Jane');
-        $client->setSiret('12345678901234');
-        $client->setEntreprise('Acme Corp');
-        $client->setReferenceClient('REF123456');
-        $client->setCoefficient(1.5);
-        $client->setTelephone('0123456789');
-        $client->setTypeClient('standard');
-        // Définir d'autres propriétés si nécessaire
+        // Création d'un client particulier (Client)
+        $clientParticulier = new Client();
+        $clientParticulier->setEmail('clientparticulier@example.com');
+        $clientParticulier->setRoles(['ROLE_USER']);
+        $clientParticulier->setPassword($this->passwordHasher->hashPassword($clientParticulier, 'password123'));
+        $clientParticulier->setNom('Doe');
+        $clientParticulier->setPrenom('Jane');
+        $clientParticulier->setSiret('12345678901234');
+        $clientParticulier->setEntreprise('Acme Corp');
+        $clientParticulier->setReferenceClient('REF123456');
+        $clientParticulier->setTelephone('0123456789');
+        $clientParticulier->setTypeClient('particulier');
+        $clientParticulier->setCoefficientParticulier(1.0); // Coefficient pour un client particulier
+        $manager->persist($clientParticulier);
+
+        // Création d'un client professionnel (Client)
+        $clientProfessionnel = new Client();
+        $clientProfessionnel->setEmail('clientprofessionnel@example.com');
+        $clientProfessionnel->setRoles(['ROLE_USER']);
+        $clientProfessionnel->setPassword($this->passwordHasher->hashPassword($clientProfessionnel, 'password456'));
+        $clientProfessionnel->setNom('Smith');
+        $clientProfessionnel->setPrenom('John');
+        $clientProfessionnel->setSiret('56789012345678');
+        $clientProfessionnel->setEntreprise('Tech Solutions');
+        $clientProfessionnel->setReferenceClient('REF987654');
+        $clientProfessionnel->setTelephone('0123456789');
+        $clientProfessionnel->setTypeClient('professionnel');
+        $clientProfessionnel->setCoefficientProfessionnel(2.0); // Coefficient pour un client professionnel
+        $manager->persist($clientProfessionnel);
 
         // Vérification des champs obligatoires avant de persister
         if ($employe->getEmail() !== null && $employe->getPassword() !== null &&
-            $client->getEmail() !== null && $client->getPassword() !== null) {
-            $manager->persist($employe);
-            $manager->persist($client);
+            $clientParticulier->getEmail() !== null && $clientParticulier->getPassword() !== null &&
+            $clientProfessionnel->getEmail() !== null && $clientProfessionnel->getPassword() !== null) {
             $manager->flush();
         } else {
             throw new \Exception('Les champs obligatoires ne sont pas définis.');
         }
-
-        $manager->flush();
     }
 }
+

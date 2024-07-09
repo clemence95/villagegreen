@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', columns: ['email'])]
 class Client implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -20,7 +20,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     /**
-     * @var list<string> The user roles
+     * @var array<string> The user roles
      */
     #[ORM\Column(type: 'json')]
     private array $roles = [];
@@ -46,8 +46,11 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private ?string $reference_client = null;
 
-    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    private ?float $coefficient = null;
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
+    private ?float $coefficientParticulier = null;
+
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
+    private ?float $coefficientProfessionnel = null;
 
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $telephone = null;
@@ -74,9 +77,10 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(string $email): self
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -87,13 +91,11 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return $this->email;
+        return (string) $this->email;
     }
 
     /**
      * @see UserInterface
-     *
-     * @return list<string>
      */
     public function getRoles(): array
     {
@@ -104,12 +106,10 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
-    public function setRoles(array $roles): static
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
         return $this;
     }
 
@@ -121,9 +121,10 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $password): self
     {
         $this->password = $password;
+
         return $this;
     }
 
@@ -135,6 +136,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
+
         return $this;
     }
 
@@ -146,6 +148,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
+
         return $this;
     }
 
@@ -157,6 +160,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSiret(?string $siret): self
     {
         $this->siret = $siret;
+
         return $this;
     }
 
@@ -168,6 +172,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEntreprise(?string $entreprise): self
     {
         $this->entreprise = $entreprise;
+
         return $this;
     }
 
@@ -179,17 +184,31 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setReferenceClient(string $reference_client): self
     {
         $this->reference_client = $reference_client;
+
         return $this;
     }
 
-    public function getCoefficient(): ?float
+    public function getCoefficientParticulier(): ?float
     {
-        return $this->coefficient;
+        return $this->coefficientParticulier;
     }
 
-    public function setCoefficient(float $coefficient): self
+    public function setCoefficientParticulier(?float $coefficientParticulier): self
     {
-        $this->coefficient = $coefficient;
+        $this->coefficientParticulier = $coefficientParticulier;
+
+        return $this;
+    }
+
+    public function getCoefficientProfessionnel(): ?float
+    {
+        return $this->coefficientProfessionnel;
+    }
+
+    public function setCoefficientProfessionnel(?float $coefficientProfessionnel): self
+    {
+        $this->coefficientProfessionnel = $coefficientProfessionnel;
+
         return $this;
     }
 
@@ -201,6 +220,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTelephone(string $telephone): self
     {
         $this->telephone = $telephone;
+
         return $this;
     }
 
@@ -212,6 +232,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTypeClient(string $type_client): self
     {
         $this->type_client = $type_client;
+
         return $this;
     }
 
@@ -223,6 +244,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIdAdresseFacturation(?Adresse $id_adresse_facturation): self
     {
         $this->id_adresse_facturation = $id_adresse_facturation;
+
         return $this;
     }
 
@@ -234,6 +256,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIdAdresseLivraison(?Adresse $id_adresse_livraison): self
     {
         $this->id_adresse_livraison = $id_adresse_livraison;
+
         return $this;
     }
 
@@ -245,6 +268,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIdCommercial(?Employe $id_commercial): self
     {
         $this->id_commercial = $id_commercial;
+
         return $this;
     }
 
