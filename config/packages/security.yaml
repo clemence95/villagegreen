@@ -39,7 +39,7 @@ security:
             lazy: true
             remember_me:
                 secret: '%kernel.secret%'
-                lifetime: 604800  # 1 semaine en secondes
+                lifetime: 86400  # 1 journée
                 path: /
                 name: REMEMBERME
 
