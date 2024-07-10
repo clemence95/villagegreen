@@ -33,9 +33,8 @@ class ClientType extends AbstractType
             ])
             ->add('entreprise', TextType::class, [
                 'required' => false,
-            ])
-            ->add('reference_client', TextType::class);
-            // Remove coefficientParticulier and coefficientProfessionnel from the form
+            ]);
+            // Remove reference_client from the form
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -45,6 +44,7 @@ class ClientType extends AbstractType
         ]);
     }
 }
+
 
 
 
