@@ -28,7 +28,7 @@ class ClientType extends AbstractType
                 ],
                 'placeholder' => 'Sélectionnez le type de client',
                 'attr' => [
-                    'id' => 'type_client', // Ensure this matches what you're querying in JavaScript
+                    'id' => 'type_client', // Assurez-vous que cela correspond à ce que vous interrogez dans le JavaScript
                 ],
             ])
             ->add('siret', TextType::class, [
@@ -37,7 +37,6 @@ class ClientType extends AbstractType
             ->add('entreprise', TextType::class, [
                 'required' => false,
             ]);
-            // Remove reference_client from the form
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -47,6 +46,8 @@ class ClientType extends AbstractType
         ]);
     }
 }
+
+
 
 
 

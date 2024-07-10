@@ -44,15 +44,21 @@
         </div>
     </div>
 
+    <!-- Déplacement du script à la fin du fichier HTML -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            console.log('DOM entièrement chargé et analysé');
+            
             var typeClientField = document.querySelector('#type_client');
+            console.log('typeClientField:', typeClientField); // Ajout d'un log pour déboguer
+
             var professionalFields = document.getElementById('professional-fields');
             var siretField = document.querySelector('#{{ registrationForm.siret.vars.id }}');
             var entrepriseField = document.querySelector('#{{ registrationForm.entreprise.vars.id }}');
 
             if (typeClientField) {
                 function toggleProfessionalFields() {
+                    console.log('typeClientField.value:', typeClientField.value);
                     if (typeClientField.value === 'professionnel') {
                         professionalFields.style.display = 'block';
                         siretField.required = true;
@@ -66,7 +72,7 @@
 
                 typeClientField.addEventListener('change', toggleProfessionalFields);
 
-                // Call the function on page load to set the correct state
+                // Appel de la fonction au chargement de la page pour définir l'état correct
                 toggleProfessionalFields();
             } else {
                 console.error('Element with ID "type_client" not found.');
@@ -74,6 +80,7 @@
         });
     </script>
 {% endblock %}
+
 
 
 
