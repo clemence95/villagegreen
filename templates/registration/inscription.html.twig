@@ -1,13 +1,51 @@
-// templates/registration/inscription.html.twig
 {% extends 'base.html.twig' %}
 
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
     <h1>Inscription</h1>
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button type="submit">S'inscrire</button>
-    {{ form_end(form) }}
+
+    {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.password) }}
+        {{ form_row(registrationForm.nom) }}
+        {{ form_row(registrationForm.prenom) }}
+        {{ form_row(registrationForm.telephone) }}
+        {{ form_row(registrationForm.type_client) }}
+        <div id="professional-fields" style="display: none;">
+            {{ form_row(registrationForm.siret) }}
+            {{ form_row(registrationForm.entreprise) }}
+        </div>
+        {{ form_row(registrationForm.reference_client) }}
+        <button class="btn">S'inscrire</button>
+    {{ form_end(registrationForm) }}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var typeClientField = document.querySelector('#{{ registrationForm.type_client.vars.id }}');
+            var professionalFields = document.getElementById('professional-fields');
+            var siretField = document.querySelector('#{{ registrationForm.siret.vars.id }}');
+            var entrepriseField = document.querySelector('#{{ registrationForm.entreprise.vars.id }}');
+
+            function toggleProfessionalFields() {
+                if (typeClientField.value === 'professionnel') {
+                    professionalFields.style.display = 'block';
+                    siretField.required = true;
+                    entrepriseField.required = true;
+                } else {
+                    professionalFields.style.display = 'none';
+                    siretField.required = false;
+                    entrepriseField.required = false;
+                }
+            }
+
+            typeClientField.addEventListener('change', toggleProfessionalFields);
+
+            // Call the function on page load to set the correct state
+            toggleProfessionalFields();
+        });
+    </script>
 {% endblock %}
+
+
 
