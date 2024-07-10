@@ -27,6 +27,9 @@ class ClientType extends AbstractType
                     'Professionnel' => 'professionnel',
                 ],
                 'placeholder' => 'Sélectionnez le type de client',
+                'attr' => [
+                    'id' => 'type_client', // Ensure this matches what you're querying in JavaScript
+                ],
             ])
             ->add('siret', TextType::class, [
                 'required' => false,
