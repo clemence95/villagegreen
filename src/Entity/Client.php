@@ -47,10 +47,10 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $reference_client = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
-    private ?float $coefficientParticulier = null;
+    private ?string $coefficientParticulier = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
-    private ?float $coefficientProfessionnel = null;
+    private ?string $coefficientProfessionnel = null;
 
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $telephone = null;
