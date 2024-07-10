@@ -36,10 +36,13 @@ class InscriptionController extends AbstractController
             // Set a unique reference client
             $client->setReferenceClient(uniqid('client_'));
 
+            // Assign ROLE_USER by default
+            $client->setRoles(['ROLE_USER']);
+
             $entityManager->persist($client);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('accueil');
         }
 
         return $this->render('registration/inscription.html.twig', [
@@ -47,6 +50,7 @@ class InscriptionController extends AbstractController
         ]);
     }
 }
+
 
 
 
