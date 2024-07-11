@@ -1,4 +1,15 @@
+{# templates/registration/inscription.html.twig #}
+
 {% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
     <div class="container mt-5">
@@ -9,68 +20,75 @@
                     <div class="card-body">
                         {{ form_start(registrationForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
                             <div class="form-group">
-                                {{ form_row(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Email'}}) }}
+                                {{ form_label(registrationForm.email) }}
+                                {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Email'}}) }}
+                                <div class="error-message">
+                                    {{ form_errors(registrationForm.email) }}
+                                </div>
                             </div>
                             <div class="form-group">
-                                {{ form_row(registrationForm.password, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'}}) }}
+                                {{ form_label(registrationForm.plainPassword) }}
+                                {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'}}) }}
+                                <div class="error-message">
+                                    {{ form_errors(registrationForm.plainPassword) }}
+                                </div>
                             </div>
                             <div class="form-group">
-                                {{ form_row(registrationForm.nom, {'attr': {'class': 'form-control', 'placeholder': 'Nom'}}) }}
+                                {{ form_label(registrationForm.nom) }}
+                                {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control', 'placeholder': 'Nom'}}) }}
+                                <div class="error-message">
+                                    {{ form_errors(registrationForm.nom) }}
+                                </div>
                             </div>
                             <div class="form-group">
-                                {{ form_row(registrationForm.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Prénom'}}) }}
+                                {{ form_label(registrationForm.prenom) }}
+                                {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Prénom'}}) }}
+                                <div class="error-message">
+                                    {{ form_errors(registrationForm.prenom) }}
+                                </div>
                             </div>
                             <div class="form-group">
-                                {{ form_row(registrationForm.telephone, {'attr': {'class': 'form-control', 'placeholder': 'Téléphone'}}) }}
+                                {{ form_label(registrationForm.telephone) }}
+                                {{ form_widget(registrationForm.telephone, {'attr': {'class': 'form-control', 'placeholder': 'Téléphone'}}) }}
+                                <div class="error-message">
+                                    {{ form_errors(registrationForm.telephone) }}
+                                </div>
                             </div>
                             <div class="form-group">
-                                {{ form_row(registrationForm.type_client, {'attr': {'class': 'form-control', 'id': 'type_client'}}) }}
+                                {{ form_label(registrationForm.type_client) }}
+                                <div>
+                                    {{ form_widget(registrationForm.type_client) }}
+                                </div>
+                                <div class="error-message">
+                                    {{ form_errors(registrationForm.type_client) }}
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary mt-3">S'inscrire</button>
-                            
                             <div id="professional-fields" style="display: none;">
                                 <div class="form-group">
-                                    {{ form_row(registrationForm.siret, {'attr': {'class': 'form-control', 'id': registrationForm.siret.vars.id, 'placeholder': 'SIRET'}}) }}
+                                    {{ form_label(registrationForm.siret) }}
+                                    {{ form_widget(registrationForm.siret, {'attr': {'class': 'form-control', 'placeholder': 'SIRET'}}) }}
+                                    <div class="error-message">
+                                        {{ form_errors(registrationForm.siret) }}
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    {{ form_row(registrationForm.entreprise, {'attr': {'class': 'form-control', 'id': registrationForm.entreprise.vars.id, 'placeholder': 'Entreprise'}}) }}
+                                    {{ form_label(registrationForm.entreprise) }}
+                                    {{ form_widget(registrationForm.entreprise, {'attr': {'class': 'form-control', 'placeholder': 'Entreprise'}}) }}
+                                    <div class="error-message">
+                                        {{ form_errors(registrationForm.entreprise) }}
+                                    </div>
                                 </div>
                             </div>
+                            <button type="submit" class="btn btn-primary mt-3">S'inscrire</button>
                         {{ form_end(registrationForm) }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var typeClientField = document.querySelector('#type_client');
-            var professionalFields = document.getElementById('professional-fields');
-            var siretField = document.querySelector('#{{ registrationForm.siret.vars.id }}');
-            var entrepriseField = document.querySelector('#{{ registrationForm.entreprise.vars.id }}');
-
-            if (typeClientField) {
-                function toggleProfessionalFields() {
-                    if (typeClientField.value === 'professionnel') {
-                        professionalFields.style.display = 'block';
-                        siretField.required = true;
-                        entrepriseField.required = true;
-                    } else {
-                        professionalFields.style.display = 'none';
-                        siretField.required = false;
-                        entrepriseField.required = false;
-                    }
-                }
-
-                typeClientField.addEventListener('change', toggleProfessionalFields);
-
-                // Appel de la fonction au chargement de la page pour définir l'état correct
-                toggleProfessionalFields();
-            }
-        });
-    </script>
 {% endblock %}
+
+
 
 
 

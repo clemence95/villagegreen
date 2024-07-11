@@ -1,5 +1,7 @@
 <?php
 
+// src/Entity/Client.php
+
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
@@ -8,6 +10,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
+#[ORM\Table(name: 'client')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', columns: ['email'])]
 class Client implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -19,15 +22,9 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private ?string $email = null;
 
-    /**
-     * @var array<string> The user roles
-     */
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
-    /**
-     * @var string|null The hashed password
-     */
     #[ORM\Column(type: 'string')]
     private ?string $password = null;
 
@@ -47,10 +44,10 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $reference_client = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
-    private ?string $coefficientParticulier = null;
+    private ?float $coefficientParticulier = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
-    private ?string $coefficientProfessionnel = null;
+    private ?float $coefficientProfessionnel = null;
 
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $telephone = null;
@@ -66,6 +63,8 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Employe::class)]
     private ?Employe $id_commercial = null;
+
+    private ?string $plainPassword = null;
 
     public function getId(): ?int
     {
@@ -84,23 +83,14 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -113,9 +103,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -124,6 +111,18 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
@@ -272,14 +271,11 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 }
+
 
 

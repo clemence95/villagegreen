@@ -1,5 +1,7 @@
 <?php
 
+// src/Controller/InscriptionController.php
+
 namespace App\Controller;
 
 use App\Entity\Client;
@@ -22,27 +24,32 @@ class InscriptionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Hash the password
-            $hashedPassword = $passwordHasher->hashPassword(
-                $client,
-                $client->getPassword()
-            );
-            $client->setPassword($hashedPassword);
+            // Récupérez le mot de passe depuis le champ plainPassword
+            $plainPassword = $form->get('plainPassword')->getData();
 
-            // Set default values for coefficients
-            $client->setCoefficientParticulier(1.0); // or any other default value
-            $client->setCoefficientProfessionnel(1.0); // or any other default value
+            if ($plainPassword) {
+                // Hash the password
+                $hashedPassword = $passwordHasher->hashPassword(
+                    $client,
+                    $plainPassword
+                );
+                $client->setPassword($hashedPassword);
 
-            // Set a unique reference client
-            $client->setReferenceClient(uniqid('client_'));
+                // Set default values for coefficients
+                $client->setCoefficientParticulier(1.0); // or any other default value
+                $client->setCoefficientProfessionnel(1.0); // or any other default value
 
-            // Assign ROLE_USER by default
-            $client->setRoles(['ROLE_USER']);
+                // Set a unique reference client
+                $client->setReferenceClient(uniqid('client_'));
 
-            $entityManager->persist($client);
-            $entityManager->flush();
+                // Assign ROLE_USER by default
+                $client->setRoles(['ROLE_USER']);
 
-            return $this->redirectToRoute('login');
+                $entityManager->persist($client);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('login');
+            }
         }
 
         return $this->render('registration/inscription.html.twig', [
@@ -50,6 +57,9 @@ class InscriptionController extends AbstractController
         ]);
     }
 }
+
+
+
 
 
 
