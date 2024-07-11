@@ -21,5 +21,7 @@ categorie_show:
     path: /categorie/{id}
     controller: App\Controller\MainController::showCategorie
 
-
+search:
+    path: /search
+    controller: App\Controller\SearchController::search
 
