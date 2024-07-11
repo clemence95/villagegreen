@@ -27,31 +27,28 @@ class SearchController extends AbstractController
         $searchTerm = $request->query->get('query');
         $type = $request->query->get('type');
 
+        $query = null;
+
         switch ($type) {
             case 'categorie':
-                $resultats = $this->entityManager->createQueryBuilder()
-                    ->select('c')
-                    ->from(Categorie::class, 'c')
-                    ->where('c.nom LIKE :searchTerm')
-                    ->setParameter('searchTerm', '%' . $searchTerm . '%')
-                    ->getQuery()
-                    ->getResult();
+                $query = $this->entityManager->createQuery(
+                    'SELECT c FROM App\Entity\Categorie c WHERE c.nom LIKE :searchTerm'
+                )->setParameter('searchTerm', '%' . $searchTerm . '%');
                 break;
             case 'produit':
-                $resultats = $this->entityManager->createQueryBuilder()
-                    ->select('p')
-                    ->from(Produit::class, 'p')
-                    ->where('p.nom LIKE :searchTerm')
-                    ->setParameter('searchTerm', '%' . $searchTerm . '%')
-                    ->getQuery()
-                    ->getResult();
+                $query = $this->entityManager->createQuery(
+                    'SELECT p FROM App\Entity\Produit p WHERE p.nom LIKE :searchTerm'
+                )->setParameter('searchTerm', '%' . $searchTerm . '%');
                 break;
             default:
-                $resultats = [];
+                // Gestion d'un type invalide
+                $this->addFlash('danger', 'Type de recherche invalide.');
                 break;
         }
 
-        // Debug dump pour vérification
+        $resultats = $query ? $query->getResult() : [];
+
+        // Debug dump pour vérification des résultats
         dump($searchTerm, $type, $resultats);
 
         return $this->render('search/index.html.twig', [
@@ -61,6 +58,9 @@ class SearchController extends AbstractController
         ]);
     }
 }
+
+
+
 
 
 

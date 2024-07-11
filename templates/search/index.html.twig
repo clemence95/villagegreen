@@ -1,32 +1,39 @@
-{# templates/search/index.html.twig #}
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Résultats de la recherche{% endblock %}
-
 {% block body %}
-    <h1>Résultats de la recherche</h1>
+    <h1>Recherche</h1>
 
-    <p>Vous avez recherché : <strong>{{ searchTerm }}</strong></p>
+    <h2>Résultats de la recherche</h2>
+
+    Vous avez recherché : {{ searchTerm }} (Type: {{ type }})
 
     {{ dump(searchTerm, type, resultats) }}
 
     {% if resultats is not empty %}
         <ul>
-            {% if type == 'categorie' %}
-                {% for categorie in resultats %}
-                    <li>Catégorie : {{ categorie.nom }}</li>
-                {% endfor %}
-            {% elseif type == 'produit' %}
-                {% for produit in resultats %}
-                    <li>Produit : {{ produit.nom }}</li>
-                {% endfor %}
-            {% else %}
-                <li>Résultats non disponibles pour ce type de recherche.</li>
-            {% endif %}
+            {% for resultat in resultats %}
+                <li>
+                    <strong>ID:</strong> {{ resultat.id }}, <strong>Nom:</strong> {{ resultat.nom }}
+                    {% if resultat.image is defined %}
+                        <img src="{{ resultat.image }}" alt="{{ resultat.nom }}" style="height: 100px; width: auto;">
+                    {% endif %}
+                    {% if resultat.produits is defined and resultat.produits|length > 0 %}
+                        <ul>
+                            {% for produit in resultat.produits %}
+                                <li>
+                                    <strong>Produit ID:</strong> {{ produit.id }}, <strong>Nom:</strong> {{ produit.nom }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
         </ul>
     {% else %}
         <p>Aucun résultat trouvé pour votre recherche.</p>
     {% endif %}
 {% endblock %}
+
+
+
 
