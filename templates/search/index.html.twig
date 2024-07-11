@@ -1,42 +1,28 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Recherche</h1>
+    <h1>Résultats de la recherche</h1>
 
-    <h2>Résultats de la recherche</h2>
-
-    Vous avez recherché : {{ searchTerm }} (Type: {{ type }})
-
-    {{ dump(searchTerm, type, resultats) }}
+    <p>Vous avez recherché : {{ searchTerm }}</p>
 
     {% if resultats is not empty %}
         <ul>
-            {% for resultat in resultats %}
-                <li>
-                    <strong>ID:</strong> {{ resultat.id }}, <strong>Nom:</strong> {{ resultat.nom ?? resultat.libelleCourt }} <br>
-                    {% if resultat.image is defined %}
-                        <img src="{{ resultat.image }}" alt="{{ resultat.nom }}" style="height: 100px; width: auto;">
-                    {% endif %}
-                    {% if resultat.libelleLong is defined %}
-                        <p>{{ resultat.libelleLong }}</p>
-                    {% endif %}
-                    {% if resultat.produits is defined and resultat.produits|length > 0 %}
-                        <ul>
-                            {% for produit in resultat.produits %}
-                                <li>
-                                    <strong>Produit ID:</strong> {{ produit.id }}, <strong>Nom:</strong> {{ produit.libelleCourt }} <br>
-                                    <p>{{ produit.libelleLong }}</p>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </li>
+            {% for categorie in resultats %}
+                <li>{{ categorie.nom }}</li>
+                {% if categorie.sousCategories is not empty %}
+                    <ul>
+                        {% for sousCategorie in categorie.sousCategories %}
+                            <li>{{ sousCategorie.nom }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
             {% endfor %}
         </ul>
     {% else %}
         <p>Aucun résultat trouvé pour votre recherche.</p>
     {% endif %}
 {% endblock %}
+
 
 
 
