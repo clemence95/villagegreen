@@ -7,6 +7,7 @@ namespace App\Form;
 use App\Entity\Client;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -20,7 +21,13 @@ class ClientType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer un email',
+                    ]),
+                ],
+            ])
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -68,8 +75,24 @@ class ClientType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('siret', TextType::class, ['required' => false])
-            ->add('entreprise', TextType::class, ['required' => false])
+            ->add('siret', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Le numéro de SIRET ne peut pas être vide',
+                        'groups' => ['professionnel']
+                    ]),
+                ],
+            ])
+            ->add('entreprise', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "Le nom de l'entreprise ne peut pas être vide",
+                        'groups' => ['professionnel']
+                    ]),
+                ],
+            ])
             // Ajoutez d'autres champs si nécessaire
         ;
     }
@@ -78,8 +101,19 @@ class ClientType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Client::class,
+            'validation_groups' => function (FormInterface $form) {
+                $data = $form->getData();
+                if ($data->getTypeClient() === 'professionnel') {
+                    return ['Default', 'professionnel'];
+                }
+                return ['Default'];
+            },
         ]);
     }
 }
+
+
+
+
 
 
