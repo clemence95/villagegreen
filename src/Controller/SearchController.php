@@ -1,8 +1,5 @@
 <?php
 
-
-// src/Controller/SearchController.php
-
 namespace App\Controller;
 
 use App\Entity\Categorie;
@@ -27,25 +24,35 @@ class SearchController extends AbstractController
      */
     public function search(Request $request): Response
     {
-        $searchTerm = $request->query->get('search');
+        $searchTerm = $request->query->get('query');
         $type = $request->query->get('type');
 
         switch ($type) {
             case 'categorie':
-                $resultats = $this->entityManager->getRepository(Categorie::class)->findByNom($searchTerm);
-                break;
-            case 'sous_categorie':
-                // Vous devrez ajuster ceci en fonction de votre structure d'entité
-                $resultats = $this->entityManager->getRepository(Categorie::class)->findBySousCategorieNom($searchTerm);
+                $resultats = $this->entityManager->createQueryBuilder()
+                    ->select('c')
+                    ->from(Categorie::class, 'c')
+                    ->where('c.nom LIKE :searchTerm')
+                    ->setParameter('searchTerm', '%' . $searchTerm . '%')
+                    ->getQuery()
+                    ->getResult();
                 break;
             case 'produit':
-                // Vous devrez ajuster ceci en fonction de votre structure d'entité
-                $resultats = $this->entityManager->getRepository(Produit::class)->findByNom($searchTerm);
+                $resultats = $this->entityManager->createQueryBuilder()
+                    ->select('p')
+                    ->from(Produit::class, 'p')
+                    ->where('p.nom LIKE :searchTerm')
+                    ->setParameter('searchTerm', '%' . $searchTerm . '%')
+                    ->getQuery()
+                    ->getResult();
                 break;
             default:
                 $resultats = [];
                 break;
         }
+
+        // Debug dump pour vérification
+        dump($searchTerm, $type, $resultats);
 
         return $this->render('search/index.html.twig', [
             'searchTerm' => $searchTerm,
@@ -54,4 +61,7 @@ class SearchController extends AbstractController
         ]);
     }
 }
+
+
+
 

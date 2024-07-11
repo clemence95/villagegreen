@@ -2,25 +2,31 @@
 
 {% extends 'base.html.twig' %}
 
+{% block title %}Résultats de la recherche{% endblock %}
+
 {% block body %}
     <h1>Résultats de la recherche</h1>
 
-    <p>Recherche pour : <strong>{{ searchTerm }}</strong></p>
+    <p>Vous avez recherché : <strong>{{ searchTerm }}</strong></p>
+
+    {{ dump(searchTerm, type, resultats) }}
 
     {% if resultats is not empty %}
         <ul>
-            {% for resultat in resultats %}
-                <li>{{ resultat.nom }}</li> {# Adapter selon votre structure d'entité #}
-                {% if resultat.sousCategories is not empty %}
-                    <ul>
-                        {% for sousCategorie in resultat.sousCategories %}
-                            <li>{{ sousCategorie.nom }}</li> {# Adapter selon votre structure d'entité #}
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endfor %}
+            {% if type == 'categorie' %}
+                {% for categorie in resultats %}
+                    <li>Catégorie : {{ categorie.nom }}</li>
+                {% endfor %}
+            {% elseif type == 'produit' %}
+                {% for produit in resultats %}
+                    <li>Produit : {{ produit.nom }}</li>
+                {% endfor %}
+            {% else %}
+                <li>Résultats non disponibles pour ce type de recherche.</li>
+            {% endif %}
         </ul>
     {% else %}
         <p>Aucun résultat trouvé pour votre recherche.</p>
     {% endif %}
 {% endblock %}
+
