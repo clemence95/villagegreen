@@ -1,30 +1,57 @@
 <?php
 
+
 // src/Controller/SearchController.php
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Categorie;
+use App\Entity\Produit;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 
 class SearchController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * @Route("/search", name="search", methods={"GET"})
      */
     public function search(Request $request): Response
     {
-        $query = $request->query->get('query');
+        $searchTerm = $request->query->get('search');
+        $type = $request->query->get('type');
 
-        // Ajoutez ici la logique pour rechercher dans vos produits, catégories, etc.
-        // Exemple simplifié :
-        $results = []; // Résultats de la recherche à obtenir depuis la base de données
+        switch ($type) {
+            case 'categorie':
+                $resultats = $this->entityManager->getRepository(Categorie::class)->findByNom($searchTerm);
+                break;
+            case 'sous_categorie':
+                // Vous devrez ajuster ceci en fonction de votre structure d'entité
+                $resultats = $this->entityManager->getRepository(Categorie::class)->findBySousCategorieNom($searchTerm);
+                break;
+            case 'produit':
+                // Vous devrez ajuster ceci en fonction de votre structure d'entité
+                $resultats = $this->entityManager->getRepository(Produit::class)->findByNom($searchTerm);
+                break;
+            default:
+                $resultats = [];
+                break;
+        }
 
         return $this->render('search/index.html.twig', [
-            'query' => $query,
-            'results' => $results,
+            'searchTerm' => $searchTerm,
+            'type' => $type,
+            'resultats' => $resultats,
         ]);
     }
 }
+
