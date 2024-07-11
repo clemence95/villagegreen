@@ -13,15 +13,19 @@
         <ul>
             {% for resultat in resultats %}
                 <li>
-                    <strong>ID:</strong> {{ resultat.id }}, <strong>Nom:</strong> {{ resultat.nom }}
+                    <strong>ID:</strong> {{ resultat.id }}, <strong>Nom:</strong> {{ resultat.nom ?? resultat.libelleCourt }} <br>
                     {% if resultat.image is defined %}
                         <img src="{{ resultat.image }}" alt="{{ resultat.nom }}" style="height: 100px; width: auto;">
+                    {% endif %}
+                    {% if resultat.libelleLong is defined %}
+                        <p>{{ resultat.libelleLong }}</p>
                     {% endif %}
                     {% if resultat.produits is defined and resultat.produits|length > 0 %}
                         <ul>
                             {% for produit in resultat.produits %}
                                 <li>
-                                    <strong>Produit ID:</strong> {{ produit.id }}, <strong>Nom:</strong> {{ produit.nom }}
+                                    <strong>Produit ID:</strong> {{ produit.id }}, <strong>Nom:</strong> {{ produit.libelleCourt }} <br>
+                                    <p>{{ produit.libelleLong }}</p>
                                 </li>
                             {% endfor %}
                         </ul>
@@ -33,6 +37,7 @@
         <p>Aucun résultat trouvé pour votre recherche.</p>
     {% endif %}
 {% endblock %}
+
 
 
 
