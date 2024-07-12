@@ -5,39 +5,44 @@
 {% block title %}Votre Panier{% endblock %}
 
 {% block body %}
-    <div class="container pt-4">
-        <h1 class="my-4">Votre Panier</h1>
-
+<div class="container mt-4">
+    <h1>Votre Panier</h1>
+    {% if produits is empty %}
+        <div class="alert alert-info" role="alert">
+            Votre panier est vide.
+        </div>
+    {% else %}
         <div class="row">
-            {% if produits is empty %}
-                <p>Votre panier est vide.</p>
-            {% else %}
-                {% for item in produits %}
-                    {% set produit = item.produit %}
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <img src="{{ produit.photo }}" alt="Image de la sous-catégorie {{ produit.photo }}" class="img-fluid mb-4">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ produit.libelleCourt }}</h5>
-                                <p class="card-text">{{ produit.libelleLong }}</p>
-                                <p class="card-text">Prix Vente : {{ produit.prixVente }} €</p>
-                                <p class="card-text">Quantité : {{ item.quantite }}</p>
-                                <div class="d-flex justify-content-between">
-                                    <a href="{{ path('panier_ajouter', {id: produit.id}) }}" class="btn btn-primary">+</a>
-                                    <a href="{{ path('panier_diminuer', {id: produit.id}) }}" class="btn btn-warning">-</a>
-                                    <a href="{{ path('panier_supprimer', {id: produit.id}) }}" class="btn btn-danger">Supprimer</a>
-                                </div>
+            {% for item in produits %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.produit.libelleCourt }}</h5>
+                            <p class="card-text">Quantité : {{ item.quantite }}</p>
+                             <p class="card-text">Quantité : {{ item.produit.libelleLong }}</p>
+                            <p class="card-text">Prix unitaire : {{ item.produit.prixVente }} €</p>
+                            <p class="card-text">Total : {{ item.quantite * item.produit.prixVente }} €</p>
+                            <div class="d-flex justify-content-between">
+                                <a href="{{ path('panier_ajouter', {id: item.produit.id}) }}" class="btn btn-primary">+</a>
+                                <a href="{{ path('panier_diminuer', {id: item.produit.id}) }}" class="btn btn-warning">-</a>
+                                <a href="{{ path('panier_supprimer', {id: item.produit.id}) }}" class="btn btn-danger">Supprimer</a>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-                <div class="col-12 mt-4">
-                    <h4>Total Quantité : {{ totalQuantite }}</h4>
-                    <h4>Total Prix : {{ totalPrix }} €</h4>
                 </div>
-            {% endif %}
+            {% endfor %}
         </div>
-    </div>
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Résumé du Panier</h5>
+                <p class="card-text">Total Quantité: {{ totalQuantite }}</p>
+                <p class="card-text">Total Prix: {{ totalPrix }} €</p>
+                <a href="#" class="btn btn_warning"Commander</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}
+
 
 
