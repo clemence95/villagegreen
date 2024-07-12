@@ -1,0 +1,30 @@
+{# templates/produit/details.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du Produit{% endblock %}
+
+{% block body %}
+    <div class="container pt-4">
+        <h1 class="my-4">{{ produit.libelleCourt }}</h1>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <img src="{{ produit.photo }}" alt="Image de {{ produit.libelleCourt }}" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <h2>Description</h2>
+                <p>{{ produit.libelleLong }}</p>
+                <h3>Prix : {{ produit.prixVente }} €</h3>
+                <p>Référence : {{ produit.referenceFournisseur }}</p>
+                <p>Stock : {{ produit.stock }}</p>
+                <div>
+                    <a href="{{ path('panier_ajouter', {id: produit.id}) }}" class="btn btn-primary">+</a>
+                    <a href="{{ path('panier_diminuer', {id: produit.id}) }}" class="btn btn-warning">-</a>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-secondary" onclick="history.back()">Retour</button>
+    </div>
+{% endblock %}
+
+
