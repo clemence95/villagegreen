@@ -12,46 +12,51 @@ class Jeu1 extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // Création de fournisseurs avec tous les champs requis
+        // Création d'un fournisseur d'instruments de musique
         $fournisseur1 = new Fournisseur();
-        $fournisseur1->setNomEntreprise("Fournisseur A");
-        $fournisseur1->setContact("contact@fournisseurA.com");
+        $fournisseur1->setNomEntreprise("Musique & Co");
+        $fournisseur1->setContact("contact@musiqueandco.com");
         $fournisseur1->setTelephone("0123456789");
         $fournisseur1->setSiret("12345678900001");
-        $fournisseur1->setImportateur(true); // Exemple de valeur pour le champ importateur
-        $fournisseur1->setFabricant(false); // Exemple de valeur pour le champ fabricant
+        $fournisseur1->setImportateur(true);
+        $fournisseur1->setFabricant(false);
         $manager->persist($fournisseur1);
 
-        // Création de 5 catégories principales et leurs sous-catégories
-        $categories = [];
-        for ($i = 1; $i <= 5; $i++) {
+        // Création de catégories principales et leurs sous-catégories pour les instruments de musique
+        $categories = [
+            'Cordes' => ['Guitares', 'Violons', 'Violoncellos'],
+            'Vent' => ['Flûtes', 'Clarinets', 'Saxophones'],
+            'Percussions' => ['Tambours', 'Xylophones', 'Batteries'],
+            'Claviers' => ['Pianos', 'Synthétiseurs', 'Orgues'],
+            'Électroniques' => ['Guitares électriques', 'Claviers électriques', 'Batteries électroniques']
+        ];
+
+        foreach ($categories as $catName => $subCategories) {
             $categorie = new Categorie();
-            $categorie->setNom("Catégorie $i");
+            $categorie->setNom($catName);
             $categorie->setImage($this->getRandomImageUrl());
             $manager->persist($categorie);
-            $categories[] = $categorie; // Sauvegarde de la catégorie principale dans un tableau
-            
-            // Création de sous-catégories pour chaque catégorie principale
-            for ($j = 1; $j <= 5; $j++) {
+
+            foreach ($subCategories as $subCatName) {
                 $sousCategorie = new Categorie();
-                $sousCategorie->setNom("Sous-catégorie $j de " . $categorie->getNom());
+                $sousCategorie->setNom($subCatName);
                 $sousCategorie->setImage($this->getRandomImageUrl());
-                $sousCategorie->setCategorieParent($categorie); // Définir la catégorie parente
+                $sousCategorie->setCategorieParent($categorie);
                 $manager->persist($sousCategorie);
-                
-                // Génération de 5 produits pour chaque sous-catégorie
+
+                // Génération de produits pour chaque sous-catégorie
                 for ($k = 1; $k <= 5; $k++) {
                     $produit = new Produit();
-                    $produit->setLibelleCourt("Produit $k de " . $sousCategorie->getNom());
-                    $produit->setLibelleLong("Description détaillée du Produit $k");
-                    $produit->setReferenceFournisseur("REF-" . $categorie->getNom() . "-$j-$k");
-                    $produit->setPrixAchat(10.0 * $k);
-                    $produit->setPrixVente(15.0 * $k);
-                    $produit->setStock(100);
+                    $produit->setLibelleCourt("$subCatName $k");
+                    $produit->setLibelleLong("Description détaillée du $subCatName $k");
+                    $produit->setReferenceFournisseur("REF-$catName-$subCatName-$k");
+                    $produit->setPrixAchat(100.0 * $k);
+                    $produit->setPrixVente(150.0 * $k);
+                    $produit->setStock(10 + $k);
                     $produit->setActif(true);
-                    $produit->setSousCategorie($sousCategorie); // Associer le produit à la sous-catégorie
-                    $produit->setPhoto($this->getRandomImageUrl()); // Utilisation de l'API Picsum pour les images aléatoires
-                    $produit->setIdFournisseur($fournisseur1); // Exemple d'association avec un fournisseur
+                    $produit->setSousCategorie($sousCategorie);
+                    $produit->setPhoto($this->getRandomImageUrl());
+                    $produit->setIdFournisseur($fournisseur1);
                     $manager->persist($produit);
                 }
             }
@@ -65,6 +70,7 @@ class Jeu1 extends Fixture
         return 'https://picsum.photos/200/300';
     }
 }
+
 
 
 
