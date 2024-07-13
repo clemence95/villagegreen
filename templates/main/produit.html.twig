@@ -22,6 +22,7 @@
                                         <p class="card-text">Prix Vente : {{ produit.prixVente }} €</p>
                                         <a href="{{ path('panier_ajouter', {id: produit.id}) }}" class="btn btn-primary">+</a>
                                         <a href="{{ path('panier_diminuer', {id: produit.id}) }}" class="btn btn-warning">-</a>
+                                        <a href="{{ path('produit_details', {id: produit.id}) }}" class="btn btn-info">Détails du produit</a>
                                     </div>
                                 </div>
                             </div>

@@ -99,6 +99,20 @@ class MainController extends AbstractController
             'sousCategories' => $sousCategories,
         ]);
     }
+
+    #[Route('/produit/{id}', name: 'produit_details')]
+    public function details(int $id, EntityManagerInterface $entityManager): Response
+    {
+        $produit = $entityManager->getRepository(Produit::class)->find($id);
+
+        if (!$produit) {
+            throw $this->createNotFoundException('Produit non trouvé');
+        }
+
+        return $this->render('main/details.html.twig', [
+            'produit' => $produit,
+        ]);
+    }
 }
 
 
