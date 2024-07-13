@@ -67,6 +67,12 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(targetEntity: Employe::class)]
     private ?Employe $id_commercial = null;
 
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    private ?string $confirmationToken = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isEmailConfirmed = false;
+
     private ?string $plainPassword = null;
 
     public function getId(): ?int
@@ -278,7 +284,32 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->plainPassword = null;
     }
+
+    public function getConfirmationToken(): ?string
+    {
+        return $this->confirmationToken;
+    }
+
+    public function setConfirmationToken(?string $confirmationToken): self
+    {
+        $this->confirmationToken = $confirmationToken;
+
+        return $this;
+    }
+
+    public function getIsEmailConfirmed(): ?bool
+    {
+        return $this->isEmailConfirmed;
+    }
+
+    public function setIsEmailConfirmed(bool $isEmailConfirmed): self
+    {
+        $this->isEmailConfirmed = $isEmailConfirmed;
+
+        return $this;
+    }
 }
+
 
 
 

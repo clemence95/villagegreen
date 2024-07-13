@@ -13,11 +13,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class InscriptionController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory): Response
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, MailerInterface $mailer): Response
     {
         $client = new Client();
         $form = $formFactory->create(ClientType::class, $client);
@@ -42,8 +45,28 @@ class InscriptionController extends AbstractController
             // Assign ROLE_USER by default
             $client->setRoles(['ROLE_USER']);
 
+            // Generate a unique confirmation token
+            $client->setConfirmationToken(uniqid('confirm_', true));
+
             $entityManager->persist($client);
             $entityManager->flush();
+
+            // Generate confirmation link
+            $confirmationLink = $this->generateUrl('app_confirm_email', [
+                'token' => $client->getConfirmationToken(),
+            ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+            // Send confirmation email
+            $email = (new Email())
+                ->from('no-reply@yourdomain.com')
+                ->to($client->getEmail())
+                ->subject('Confirmez votre inscription')
+                ->html($this->renderView('emails/confirmation.html.twig', [
+                    'client' => $client,
+                    'confirmationLink' => $confirmationLink,
+                ]));
+
+            $mailer->send($email);
 
             return $this->redirectToRoute('login');
         }
@@ -52,9 +75,30 @@ class InscriptionController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+
+    #[Route('/confirm-email', name: 'app_confirm_email')]
+    public function confirmEmail(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $token = $request->query->get('token');
+
+        $client = $entityManager->getRepository(Client::class)->findOneBy(['confirmationToken' => $token]);
+
+        if ($client) {
+            $client->setIsEmailConfirmed(true);
+            $client->setConfirmationToken(null);
+            $entityManager->persist($client);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Votre email a été confirmé avec succès !');
+        } else {
+            $this->addFlash('error', 'Le token de confirmation est invalide.');
+        }
+
+        return $this->redirectToRoute('login');
+    }
 }
 
-
+//  php bin/console messenger:consume async
 
 
 

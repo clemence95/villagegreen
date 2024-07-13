@@ -1,0 +1,8 @@
+{# templates/emails/confirmation.html.twig #}
+<p>Bonjour {{ client.prenom }},</p>
+<p>Merci de vous être inscrit à notre site ! Veuillez confirmer votre adresse email en cliquant sur le lien suivant :</p>
+<p><a href="{{ confirmationLink }}">Confirmer mon inscription</a></p>
+<p>Si le lien ne fonctionne pas, copiez et collez cette URL dans votre navigateur :</p>
+<p>{{ confirmationLink }}</p>
+<p>Merci,</p>
+<p>L'équipe de [Nom de l'Entreprise]</p>
