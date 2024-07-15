@@ -42,7 +42,7 @@
                         {% if categorie.categorieParent is null %}
                             <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
                                 <div class="card my-3 mx-auto border rounded">
-                                    <a href="{{ path('categorie', {'id': categorie.nom}) }}">
+                                    <a href="{{ path('categorie', {'nom': categorie.nom}) }}">
                                         <img src="https://picsum.photos/400/300" alt="" class="card-img-top">
                                         <div class="card-body">
                                             <h5 class="card-title fw-bold">{{ categorie.nom }}</h5>
@@ -97,6 +97,7 @@
     </div>
 </div>
 {% endblock %}
+
 
 
 

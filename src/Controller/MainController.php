@@ -41,18 +41,21 @@ class MainController extends AbstractController
     }
 
 
-    #[Route('/categorie/{id}', name: 'categorie', requirements: ['id' => '\d+'])]
-    public function categorie(int $id): Response
+
+    #[Route('/categorie/{nom}', name: 'categorie')]
+    public function categorie(string $nom): Response
     {
-        $categorie = $this->categorieRepository->find($id);
+        $categorie = $this->categorieRepository->findOneBy(['nom' => $nom]);
 
         if (!$categorie) {
             throw $this->createNotFoundException('La catégorie demandée n\'existe pas.');
         }
 
-        // Supposons que vous souhaitiez retourner une vue avec des informations sur la catégorie
+        $sousCategories = $categorie->getSousCategories();
+
         return $this->render('main/categorie.html.twig', [
             'categorie' => $categorie,
+            'sousCategories' => $sousCategories,
         ]);
     }
     
