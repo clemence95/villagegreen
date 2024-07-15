@@ -1,11 +1,8 @@
 <?php
 
-// src/Controller/MainController.php
-
 namespace App\Controller;
 
 use App\Entity\Produit;
-use App\Entity\Categorie;
 use App\Repository\CategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,16 +54,15 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/categorie/{categorieId}/sous-categorie/{sousCategorieId}', name: 'sous_categorie')]
-    public function sousCategorie(int $categorieId, int $sousCategorieId): Response
+    #[Route('/categorie/{nom}/sous-categorie/{sousCategorieId<\d+>}', name: 'sous_categorie')]
+    public function sousCategorie(string $nom, int $sousCategorieId): Response
     {
-        $categorie = $this->categorieRepository->find($categorieId);
+        $categorie = $this->categorieRepository->findOneBy(['nom' => $nom]);
 
         if (!$categorie) {
             throw $this->createNotFoundException('La catégorie demandée n\'existe pas.');
         }
 
-        // Recherche de la sous-catégorie dans la catégorie donnée
         $sousCategorie = null;
         foreach ($categorie->getSousCategories() as $sc) {
             if ($sc->getId() === $sousCategorieId) {
@@ -113,7 +109,7 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/produit/{id}', name: 'produit_details')]
+    #[Route('/produit/{id<\d+>}', name: 'produit_details')]
     public function details(int $id, EntityManagerInterface $entityManager): Response
     {
         $produit = $entityManager->getRepository(Produit::class)->find($id);
@@ -127,6 +123,8 @@ class MainController extends AbstractController
         ]);
     }
 }
+
+
 
 
 

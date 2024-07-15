@@ -63,7 +63,7 @@
                         {% if sousCategorie.categorieParent is not null %}
                             <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
                                 <div class="card my-3 mx-auto border rounded">
-                                    <a href="{{ path('sous_categorie', {'categorieId': sousCategorie.categorieParent.nom, 'sousCategorieId': sousCategorie.id}) }}">
+                                    <a href="{{ path('sous_categorie', {'nom': sousCategorie.categorieParent.nom, 'sousCategorieId': sousCategorie.id}) }}">
                                         {% if sousCategorie.image is not null %}
                                             <img src="{{ sousCategorie.image }}" alt="" class="card-img-top">
                                         {% else %}
@@ -97,6 +97,7 @@
     </div>
 </div>
 {% endblock %}
+
 
 
 

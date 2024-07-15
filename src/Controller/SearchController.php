@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Categorie;
+use App\Entity\Produit;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,27 +25,35 @@ class SearchController extends AbstractController
     public function search(Request $request): Response
     {
         $searchTerm = $request->query->get('query');
-
-        // Recherche dans les catégories principales par nom
-        $categories = $this->entityManager->getRepository(Categorie::class)
-            ->createQueryBuilder('c')
-            ->where('c.nom LIKE :searchTerm')
-            ->andWhere('c.categorieParent IS NULL') // Seulement les catégories principales
-            ->setParameter('searchTerm', '%' . $searchTerm . '%')
-            ->getQuery()
-            ->getResult();
-
-        // Récupération des sous-catégories associées à chaque catégorie principale trouvée
+        $type = $request->query->get('type');
         $resultats = [];
-        foreach ($categories as $categorie) {
-            $resultats[] = $categorie;
-            foreach ($categorie->getSousCategories() as $sousCategorie) {
-                $resultats[] = $sousCategorie;
+
+        if ($type === 'categorie') {
+            $categories = $this->entityManager->getRepository(Categorie::class)
+                ->createQueryBuilder('c')
+                ->where('c.nom LIKE :searchTerm')
+                ->andWhere('c.categorieParent IS NULL')
+                ->setParameter('searchTerm', '%' . $searchTerm . '%')
+                ->getQuery()
+                ->getResult();
+
+            foreach ($categories as $categorie) {
+                foreach ($categorie->getSousCategories() as $sousCategorie) {
+                    $resultats[] = ['type' => 'sousCategorie', 'data' => $sousCategorie];
+                }
+            }
+        } elseif ($type === 'produit') {
+            $produits = $this->entityManager->getRepository(Produit::class)
+                ->createQueryBuilder('p')
+                ->where('p.libelleCourt LIKE :searchTerm')
+                ->setParameter('searchTerm', '%' . $searchTerm . '%')
+                ->getQuery()
+                ->getResult();
+
+            foreach ($produits as $produit) {
+                $resultats[] = ['type' => 'produit', 'data' => $produit];
             }
         }
-
-        // Debug dump pour vérification
-        dump($searchTerm, $resultats);
 
         return $this->render('search/index.html.twig', [
             'searchTerm' => $searchTerm,
@@ -52,6 +61,8 @@ class SearchController extends AbstractController
         ]);
     }
 }
+
+
 
 
 

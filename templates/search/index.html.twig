@@ -1,29 +1,49 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container mt-5">
-        <h1 class="text-center">Résultats de la recherche</h1>
+<div class="container my-4 mt-5 pt-5">
+    <h1 class="mb-4">Résultats de la recherche pour "{{ searchTerm }}"</h1>
 
-        <p class="text-center">Vous avez recherché : <strong>{{ searchTerm }}</strong></p>
-
-        {% if resultats is not empty %}
-            <div class="row">
-                {% for categorie in resultats %}
-                    <div class="col-md-4">
-                        <div class="card mb-4 shadow-sm">
-                            <img src="{{ categorie.image }}" class="card-img-top" alt="{{ categorie.nom }}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ categorie.nom }}</h5>
-                            </div>
+    {% if resultats is empty %}
+        <p>Aucun résultat trouvé pour "{{ searchTerm }}"</p>
+    {% else %}
+        <div class="row">
+            {% for result in resultats %}
+                {% if result.type == 'sousCategorie' or result.type == 'produit' %}
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card my-3 mx-auto border rounded">
+                            {% if result.type == 'sousCategorie' %}
+                                <a href="{{ path('sous_categorie', {'nom': result.data.categorieParent.nom, 'sousCategorieId': result.data.id}) }}">
+                                    {% if result.data.image %}
+                                        <img src="{{ result.data.image }}" alt="{{ result.data.nom }}" class="card-img-top">
+                                    {% else %}
+                                        <img src="https://picsum.photos/400/300" alt="{{ result.data.nom }}" class="card-img-top">
+                                    {% endif %}
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ result.data.nom }}</h5>
+                                    </div>
+                                </a>
+                            {% elseif result.type == 'produit' %}
+                                <a href="{{ path('produit_details', {'id': result.data.id}) }}">
+                                    {% if result.data.photo %}
+                                        <img src="{{ result.data.photo }}" alt="{{ result.data.libelleCourt }}" class="card-img-top">
+                                    {% else %}
+                                        <img src="https://picsum.photos/400/300" alt="{{ result.data.libelleCourt }}" class="card-img-top">
+                                    {% endif %}
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ result.data.libelleCourt }}</h5>
+                                    </div>
+                                </a>
+                            {% endif %}
                         </div>
                     </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p class="text-center">Aucun résultat trouvé pour votre recherche.</p>
-        {% endif %}
-    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
 {% endblock %}
+
 
 
 

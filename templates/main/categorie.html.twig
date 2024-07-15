@@ -1,26 +1,29 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1 class="mt-5">{{ categorie.nom }}</h1>
-    <div class="row mt-4">
-        {% if categorie.sousCategories is not empty %}
-            {% for sousCategorie in categorie.sousCategories %}
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                    <div class="card mb-4 shadow-sm">
-                        {% if sousCategorie.getImage() %}
-                            <img src="{{ sousCategorie.getImage() }}" class="card-img-top" alt="{{ sousCategorie.getNom() }}">
-                        {% endif %}
-                        <div class="card-body">
-                            <h5 class="card-title">{{ sousCategorie.getNom() }}</h5>
-                            <a href="{{ path('sous_categorie', {'categorieId': categorie.id, 'sousCategorieId': sousCategorie.id}) }}" class="btn btn-primary">Voir les produits</a>
+<div class="container my-4 mt-5 pt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 text-center mt-5">
+            <h1 class="mb-4">{{ categorie.nom }}</h1>
+
+            <div class="row">
+                {% for sousCategorie in sousCategories %}
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
+                        <div class="card my-3 mx-auto border rounded">
+                            {% if sousCategorie.getImage() %}
+                                <img src="{{ sousCategorie.getImage() }}" class="card-img-top" alt="{{ sousCategorie.getNom() }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ sousCategorie.getNom() }}</h5>
+                                <a href="{{ path('sous_categorie', {'nom': categorie.nom, 'sousCategorieId': sousCategorie.id}) }}" class="btn btn-primary">Voir les produits</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>Aucune sous-catégorie trouvée.</p>
-        {% endif %}
+                {% endfor %}
+            </div>
+        </div>
     </div>
+</div>
 {% endblock %}
 
 
