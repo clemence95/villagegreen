@@ -1,27 +1,30 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Résultats de la recherche</h1>
+    <div class="container mt-5">
+        <h1 class="text-center">Résultats de la recherche</h1>
 
-    <p>Vous avez recherché : {{ searchTerm }}</p>
+        <p class="text-center">Vous avez recherché : <strong>{{ searchTerm }}</strong></p>
 
-    {% if resultats is not empty %}
-        <ul>
-            {% for categorie in resultats %}
-                <li>{{ categorie.nom }}</li>
-                {% if categorie.sousCategories is not empty %}
-                    <ul>
-                        {% for sousCategorie in categorie.sousCategories %}
-                            <li>{{ sousCategorie.nom }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Aucun résultat trouvé pour votre recherche.</p>
-    {% endif %}
+        {% if resultats is not empty %}
+            <div class="row">
+                {% for categorie in resultats %}
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <img src="{{ categorie.image }}" class="card-img-top" alt="{{ categorie.nom }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ categorie.nom }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center">Aucun résultat trouvé pour votre recherche.</p>
+        {% endif %}
+    </div>
 {% endblock %}
+
 
 
 
