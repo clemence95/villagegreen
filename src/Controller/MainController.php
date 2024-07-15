@@ -5,13 +5,13 @@
 namespace App\Controller;
 
 use App\Entity\Produit;
+use App\Entity\Categorie;
 use App\Repository\CategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MainController extends AbstractController
 {
@@ -40,8 +40,6 @@ class MainController extends AbstractController
         ]);
     }
 
-
-
     #[Route('/categorie/{nom}', name: 'categorie')]
     public function categorie(string $nom): Response
     {
@@ -58,14 +56,27 @@ class MainController extends AbstractController
             'sousCategories' => $sousCategories,
         ]);
     }
-    
+
     #[Route('/categorie/{categorieId}/sous-categorie/{sousCategorieId}', name: 'sous_categorie')]
-    public function sousCategorie(string $sousCategorieId): Response
+    public function sousCategorie(int $categorieId, int $sousCategorieId): Response
     {
-        $sousCategorie = $this->categorieRepository->find($sousCategorieId);
+        $categorie = $this->categorieRepository->find($categorieId);
+
+        if (!$categorie) {
+            throw $this->createNotFoundException('La catégorie demandée n\'existe pas.');
+        }
+
+        // Recherche de la sous-catégorie dans la catégorie donnée
+        $sousCategorie = null;
+        foreach ($categorie->getSousCategories() as $sc) {
+            if ($sc->getId() === $sousCategorieId) {
+                $sousCategorie = $sc;
+                break;
+            }
+        }
 
         if (!$sousCategorie) {
-            throw $this->createNotFoundException('La sous-catégorie demandée n\'existe pas.');
+            throw new NotFoundHttpException('La sous-catégorie demandée n\'existe pas dans cette catégorie.');
         }
 
         $produits = $sousCategorie->getProduits();
@@ -116,5 +127,6 @@ class MainController extends AbstractController
         ]);
     }
 }
+
 
 
