@@ -16,16 +16,23 @@
             {% for item in produits %}
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
+                        <img src="{{ item.produit.photo }}" class="card-img-top" alt="{{ item.produit.libelleCourt }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ item.produit.libelleCourt }}</h5>
+                            <p class="card-text">{{ item.produit.libelleLong }}</p>
                             <p class="card-text">Quantité : {{ item.quantite }}</p>
-                             <p class="card-text">Quantité : {{ item.produit.libelleLong }}</p>
-                            <p class="card-text">Prix unitaire : {{ item.produit.prixVente }} €</p>
-                            <p class="card-text">Total : {{ item.quantite * item.produit.prixVente }} €</p>
+                            <p class="card-text">Prix unitaire : {{ item.produit.prixVente | number_format(2, ',', ' ') }} €</p>
+                            <p class="card-text">Total : {{ (item.quantite * item.produit.prixVente) | number_format(2, ',', ' ') }} €</p>
                             <div class="d-flex justify-content-between">
-                                <a href="{{ path('panier_ajouter', {id: item.produit.id}) }}" class="btn btn-primary">+</a>
-                                <a href="{{ path('panier_diminuer', {id: item.produit.id}) }}" class="btn btn-warning">-</a>
-                                <a href="{{ path('panier_supprimer', {id: item.produit.id}) }}" class="btn btn-danger">Supprimer</a>
+                                <a href="{{ path('panier_ajouter', {id: item.produit.id}) }}" class="btn btn-primary">
+                                    <i class="bi bi-plus">+</i>
+                                </a>
+                                <a href="{{ path('panier_diminuer', {id: item.produit.id}) }}" class="btn btn-warning">
+                                    <i class="bi bi-dash">-</i>
+                                </a>
+                                <a href="{{ path('panier_supprimer', {id: item.produit.id}) }}" class="btn btn-danger">
+                                    <i class="bi bi-trash">Supprimer</i>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -36,13 +43,17 @@
             <div class="card-body">
                 <h5 class="card-title">Résumé du Panier</h5>
                 <p class="card-text">Total Quantité: {{ totalQuantite }}</p>
-                <p class="card-text">Total Prix: {{ totalPrix }} €</p>
-                <a href="#" class="btn btn_warning"Commander</a>
+                <p class="card-text">Total Prix: {{ totalPrix | number_format(2, ',', ' ') }} €</p>
+                <a href="#" class="btn btn-success">Commander</a>
             </div>
+        </div>
+        <div class="mt-4">
+            <a href="{{ path('produits') }}" class="btn btn-secondary">Continuer vos achats</a>
         </div>
     {% endif %}
 </div>
 {% endblock %}
+
 
 
 
