@@ -1,6 +1,6 @@
 <?php
 
-// src/Controller/RegistrationController.php
+// src/Controller/InscriptionController.php
 
 namespace App\Controller;
 
@@ -35,9 +35,14 @@ class InscriptionController extends AbstractController
             );
             $client->setPassword($hashedPassword);
 
-            // Set default values for coefficients
-            $client->setCoefficientParticulier(1.0); // or any other default value
-            $client->setCoefficientProfessionnel(2.0); // or any other default value
+            // Set default values for coefficients based on client type
+            if ($form->get('type_client')->getData() === 'particulier') {
+                $client->setCoefficientParticulier(1.0); // or any other default value
+                $client->setCoefficientProfessionnel(null);
+            } elseif ($form->get('type_client')->getData() === 'professionnel') {
+                $client->setCoefficientProfessionnel(2.0); // or any other default value
+                $client->setCoefficientParticulier(null);
+            }
 
             // Set a unique reference client
             $client->setReferenceClient(uniqid('client_'));
@@ -98,9 +103,10 @@ class InscriptionController extends AbstractController
     }
 }
 
-//  php bin/console messenger:consume async
 
-
+// php bin/console messenger:consume async
+// MailHog
+// symfony serve
 
 
 
