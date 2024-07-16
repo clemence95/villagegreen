@@ -1,5 +1,3 @@
-{# templates/commande/index.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Commander{% endblock %}
@@ -9,62 +7,97 @@
     <h1>Passer une commande</h1>
     
     {% if app.user %}
-        <h2>Récapitulatif de votre panier</h2>
-        <div class="table-responsive">
-            <!-- Tableau récapitulatif du panier (déjà existant) -->
-        </div>
-
-        {{ form_start(form) }}
-            <h3>Adresse de Livraison</h3>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    {{ form_row(form.id_adresse_livraison.rue) }}
-                </div>
-                <div class="col-md-6 mb-3">
-                    {{ form_row(form.id_adresse_livraison.numero_rue) }}
-                </div>
-                <div class="col-md-6 mb-3">
-                    {{ form_row(form.id_adresse_livraison.ville) }}
-                </div>
-                <div class="col-md-6 mb-3">
-                    {{ form_row(form.id_adresse_livraison.code_postal) }}
-                </div>
-                <div class="col-md-6 mb-3">
-                    {{ form_row(form.id_adresse_livraison.pays) }}
-                </div>
+        {% if produits is not empty %}
+            <h2>Récapitulatif de votre panier</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Quantité</th>
+                            <th>Prix unitaire HT</th>
+                            <th>Total HT</th>
+                            <th>Total TTC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in produits %}
+                            <tr>
+                                <td>{{ item.produit.libelleCourt }}</td>
+                                <td>{{ item.quantite }}</td>
+                                <td>{{ item.produit.prixVente }} €</td>
+                                <td>{{ item.totalHT }} €</td>
+                                <td>{{ item.totalTTC }} €</td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <td colspan="3"><strong>Total HT</strong></td>
+                            <td colspan="2"><strong>{{ totalHT }} €</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><strong>Total TTC</strong></td>
+                            <td colspan="2"><strong>{{ totalTTC }} €</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <h3>Adresse de Facturation</h3>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    {{ form_row(form.id_adresse_facturation.rue) }}
+            {{ form_start(form) }}
+                <h3>Adresse de Livraison</h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(form.id_adresse_livraison.rue) }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(form.id_adresse_livraison.numero_rue) }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(form.id_adresse_livraison.ville) }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(form.id_adresse_livraison.code_postal) }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(form.id_adresse_livraison.pays) }}
+                    </div>
                 </div>
-                <div class="col-md-6 mb-3">
-                    {{ form_row(form.id_adresse_facturation.numero_rue) }}
-                </div>
-                <div class="col-md-6 mb-3">
-                    {{ form_row(form.id_adresse_facturation.ville) }}
-                </div>
-                <div class="col-md-6 mb-3">
-                    {{ form_row(form.id_adresse_facturation.code_postal) }}
-                </div>
-                <div class="col-md-6 mb-3">
-                    {{ form_row(form.id_adresse_facturation.pays) }}
-                </div>
-            </div>
 
-            <div class="mb-3">
-                {{ form_label(form.mode_paiement) }}
-                {{ form_widget(form.mode_paiement, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.mode_paiement) }}
+                <h3>Adresse de Facturation</h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(form.id_adresse_facturation.rue) }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(form.id_adresse_facturation.numero_rue) }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(form.id_adresse_facturation.ville) }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(form.id_adresse_facturation.code_postal) }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(form.id_adresse_facturation.pays) }}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.mode_paiement) }}
+                    {{ form_widget(form.mode_paiement, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.mode_paiement) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.information_reglement) }}
+                    {{ form_widget(form.information_reglement, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.information_reglement) }}
+                </div>
+                <button type="submit" class="btn btn-success">Commander</button>
+            {{ form_end(form) }}
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                Votre panier est vide. Ajoutez des produits pour passer une commande.
             </div>
-            <div class="mb-3">
-                {{ form_label(form.information_reglement) }}
-                {{ form_widget(form.information_reglement, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.information_reglement) }}
-            </div>
-            <button type="submit" class="btn btn-success">Commander</button>
-        {{ form_end(form) }}
+        {% endif %}
     {% else %}
         <div class="alert alert-warning" role="alert">
             Vous devez être connecté pour passer une commande. <a href="{{ path('app_login') }}" class="alert-link">Se connecter</a>
@@ -72,6 +105,7 @@
     {% endif %}
 </div>
 {% endblock %}
+
 
 
 
