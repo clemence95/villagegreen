@@ -68,14 +68,14 @@
                         </div>
                     </li>
                 </ul>
-<form class="d-flex" action="{{ path('search') }}" method="GET">
-    <input class="form-control me-2" type="search" name="query" placeholder="Rechercher par nom" aria-label="Search" required>
-    <select class="form-control me-2" name="type">
-        <option value="categorie">Categorie</option>
-        <option value="produit">Produit</option>
-    </select>
-    <button class="btn btn-outline-success" type="submit">Rechercher</button>
-</form>
+                <form class="d-flex" action="{{ path('search') }}" method="GET">
+                    <input class="form-control me-2" type="search" name="query" placeholder="Rechercher par nom" aria-label="Search" required>
+                    <select class="form-control me-2" name="type">
+                        <option value="categorie">Categorie</option>
+                        <option value="produit">Produit</option>
+                    </select>
+                    <button class="btn btn-outline-success" type="submit">Rechercher</button>
+                </form>
                 {% if app.user %}
                     <form class="d-flex" action="{{ path('logout') }}" method="post">
                         <button class="btn btn-outline-danger ms-2" type="submit">Déconnexion</button>
