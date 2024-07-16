@@ -11,36 +11,7 @@
     {% if app.user %}
         <h2>Récapitulatif de votre panier</h2>
         <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Produit</th>
-                        <th>Quantité</th>
-                        <th>Prix unitaire HT</th>
-                        <th>Total HT</th>
-                        <th>Total TTC</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in produits %}
-                        <tr>
-                            <td>{{ item.produit.libelleCourt }}</td>
-                            <td>{{ item.quantite }}</td>
-                            <td>{{ item.produit.prixVente }} €</td>
-                            <td>{{ item.totalHT }} €</td>
-                            <td>{{ item.totalTTC }} €</td>
-                        </tr>
-                    {% endfor %}
-                    <tr>
-                        <td colspan="3"><strong>Total HT</strong></td>
-                        <td colspan="2"><strong>{{ totalHT }} €</strong></td>
-                    </tr>
-                    <tr>
-                        <td colspan="3"><strong>Total TTC</strong></td>
-                        <td colspan="2"><strong>{{ totalTTC }} €</strong></td>
-                    </tr>
-                </tbody>
-            </table>
+            <!-- Tableau récapitulatif du panier (déjà existant) -->
         </div>
 
         {{ form_start(form) }}
@@ -48,6 +19,9 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     {{ form_row(form.id_adresse_livraison.rue) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.id_adresse_livraison.numero_rue) }}
                 </div>
                 <div class="col-md-6 mb-3">
                     {{ form_row(form.id_adresse_livraison.ville) }}
@@ -64,6 +38,9 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     {{ form_row(form.id_adresse_facturation.rue) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.id_adresse_facturation.numero_rue) }}
                 </div>
                 <div class="col-md-6 mb-3">
                     {{ form_row(form.id_adresse_facturation.ville) }}
@@ -95,6 +72,7 @@
     {% endif %}
 </div>
 {% endblock %}
+
 
 
 

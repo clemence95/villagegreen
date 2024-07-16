@@ -27,6 +27,9 @@ class Adresse
     #[ORM\Column(type: 'string', length: 255)]
     private $pays;
 
+    #[ORM\Column(type: 'string', length: 10, nullable: true)]
+    private $numero_rue;
+
     #[ORM\OneToMany(mappedBy: 'id_adresse_facturation', targetEntity: Client::class)]
     private $clients_facturation;
 
@@ -53,6 +56,18 @@ class Adresse
     public function setRue(string $rue): self
     {
         $this->rue = $rue;
+
+        return $this;
+    }
+
+    public function getNumeroRue(): ?string
+    {
+        return $this->numero_rue;
+    }
+
+    public function setNumeroRue(?string $numero_rue): self
+    {
+        $this->numero_rue = $numero_rue;
 
         return $this;
     }
@@ -153,5 +168,6 @@ class Adresse
         return $this;
     }
 }
+
 
 

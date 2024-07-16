@@ -15,6 +15,9 @@ class AdresseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('numero_rue', TextType::class, [
+                'label' => 'Numéro de Rue',
+            ])
             ->add('rue', TextType::class, [
                 'label' => 'Rue',
             ])
@@ -36,3 +39,4 @@ class AdresseType extends AbstractType
         ]);
     }
 }
+
