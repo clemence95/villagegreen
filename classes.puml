@@ -1,0 +1,141 @@
+@startuml
+
+!define table(x) entity x << (T, white) >>
+!define primary_key(x) <b><&key> x</b>
+!define column(x) <&media-record> x
+
+skinparam backgroundcolor White
+skinparam class {
+  BackgroundColor GhostWhite
+  ArrowColor Black
+  BorderColor Gray
+}
+skinparam shadowing false
+skinparam legend {
+  backgroundColor #GhostWhite
+  entrySeparator #GhostWhite
+}
+
+class Produit {
+  primary_key( id ) : int
+  -libelleCourt : string 
+  -libelleLong : string 
+  -referenceFournisseur : string 
+  -prixAchat : float 
+  -prixVente : float 
+  -stock : int 
+  -actif : bool 
+  -photo : string 
+}
+
+class Employe {
+  primary_key( id ) : int
+  -nom : string UNIQUE
+  -roles : array 
+  -password : string 
+  -prenom : string 
+  -email : string 
+  -telephone : string 
+}
+
+class Fournisseur {
+  primary_key( id ) : int
+  -nom_entreprise : string 
+  -contact : string 
+  -telephone : string 
+  -siret : string 
+  -importateur : bool 
+  -fabricant : bool 
+}
+
+class Adresse {
+  primary_key( id ) : int
+  -rue : string 
+  -ville : string 
+  -code_postal : string 
+  -pays : string 
+  -numero_rue : string 
+}
+
+class Categorie {
+  primary_key( id ) : int
+  -nom : string 
+  -image : string 
+}
+
+class Client {
+  primary_key( id ) : int
+  -email : string UNIQUE
+  -roles : array 
+  -password : string 
+  -nom : string 
+  -prenom : string 
+  -siret : string 
+  -entreprise : string 
+  -reference_client : string UNIQUE
+  -coefficientParticulier : float 
+  -coefficientProfessionnel : float 
+  -telephone : string 
+  -type_client : string 
+  -confirmationToken : string 
+  -isEmailConfirmed : bool 
+  -plainPassword : string 
+}
+
+class LigneCommande {
+  primary_key( id ) : int
+  -quantite : int 
+  -prix_unitaire : float 
+}
+
+class Commande {
+  primary_key( id ) : int
+  -date_commande : DateTimeInterface 
+  -statut : string 
+  -montant_total : float 
+  -reduction_supplementaire : float 
+  -mode_paiement : string 
+  -information_reglement : string 
+  -bon_livraison : string 
+  -facture : string 
+}
+
+Produit "*" -- "1" Categorie
+Produit "*" -- "1" Fournisseur
+Fournisseur "*" -- "1" Adresse
+Adresse "1" -- "*" Client
+Adresse "1" -- "*" Client
+Categorie "*" -- "1" Categorie
+Client "*" -- "1" Adresse
+Client "*" -- "1" Adresse
+Client "*" -- "1" Employe
+LigneCommande "*" -- "1" Commande
+LigneCommande "*" -- "1" Produit
+Commande "*" -- "1" Adresse
+Commande "*" -- "1" Adresse
+Commande "*" -- "1" Client
+
+package Legend {
+  legend
+    <#GhostWhite,#GhostWhite>|= Color |= Group |
+  end legend
+  class Class {
+    -privateAttribute:type
+    #protectedAttribute:type
+    +publicAttribute:type
+    -privateMethod()
+    #protectedMethod()
+    +publicMethod()
+  }
+
+  abstract Abstract {
+    attribute:type
+  }
+}
+
+note top of Legend
+  This document complies with plantuml.com recommendations
+  (See https://plantuml.com/en/class-diagram).
+end note
+
+@enduml
