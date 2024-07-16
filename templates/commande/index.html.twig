@@ -1,3 +1,5 @@
+{# templates/commande/index.html.twig #}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Commander{% endblock %}
@@ -7,16 +9,58 @@
     <h1>Passer une commande</h1>
     
     {% if app.user %}
+        <h2>Récapitulatif de votre panier</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire HT</th>
+                    <th>Total HT</th>
+                    <th>Total TTC</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in produits %}
+                    <tr>
+                        <td>{{ item.produit.libelleCourt }}</td>
+                        <td>{{ item.quantite }}</td>
+                        <td>{{ item.produit.prixVente }} €</td>
+                        <td>{{ item.totalHT }} €</td>
+                        <td>{{ item.totalTTC }} €</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="3"><strong>Total HT</strong></td>
+                    <td colspan="2"><strong>{{ totalHT }} €</strong></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><strong>Total TTC</strong></td>
+                    <td colspan="2"><strong>{{ totalTTC }} €</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
         {{ form_start(form) }}
             <div class="mb-3">
-                {{ form_label(form.adresseLivraison) }}
-                {{ form_widget(form.adresseLivraison, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.adresseLivraison) }}
+                {{ form_label(form.id_adresse_livraison) }}
+                {{ form_widget(form.id_adresse_livraison, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.id_adresse_livraison) }}
             </div>
             <div class="mb-3">
-                {{ form_label(form.adresseFacturation) }}
-                {{ form_widget(form.adresseFacturation, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.adresseFacturation) }}
+                {{ form_label(form.id_adresse_facturation) }}
+                {{ form_widget(form.id_adresse_facturation, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.id_adresse_facturation) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.mode_paiement) }}
+                {{ form_widget(form.mode_paiement, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.mode_paiement) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.information_reglement) }}
+                {{ form_widget(form.information_reglement, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.information_reglement) }}
             </div>
             <button type="submit" class="btn btn-success">Commander</button>
         {{ form_end(form) }}
@@ -27,3 +71,5 @@
     {% endif %}
 </div>
 {% endblock %}
+
+
