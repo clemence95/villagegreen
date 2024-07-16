@@ -10,64 +10,70 @@
     
     {% if app.user %}
         <h2>Récapitulatif de votre panier</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Produit</th>
-                    <th>Quantité</th>
-                    <th>Prix unitaire HT</th>
-                    <th>Total HT</th>
-                    <th>Total TTC</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in produits %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>{{ item.produit.libelleCourt }}</td>
-                        <td>{{ item.quantite }}</td>
-                        <td>{{ item.produit.prixVente }} €</td>
-                        <td>{{ item.totalHT }} €</td>
-                        <td>{{ item.totalTTC }} €</td>
+                        <th>Produit</th>
+                        <th>Quantité</th>
+                        <th>Prix unitaire HT</th>
+                        <th>Total HT</th>
+                        <th>Total TTC</th>
                     </tr>
-                {% endfor %}
-                <tr>
-                    <td colspan="3"><strong>Total HT</strong></td>
-                    <td colspan="2"><strong>{{ totalHT }} €</strong></td>
-                </tr>
-                <tr>
-                    <td colspan="3"><strong>Total TTC</strong></td>
-                    <td colspan="2"><strong>{{ totalTTC }} €</strong></td>
-                </tr>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for item in produits %}
+                        <tr>
+                            <td>{{ item.produit.libelleCourt }}</td>
+                            <td>{{ item.quantite }}</td>
+                            <td>{{ item.produit.prixVente }} €</td>
+                            <td>{{ item.totalHT }} €</td>
+                            <td>{{ item.totalTTC }} €</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="3"><strong>Total HT</strong></td>
+                        <td colspan="2"><strong>{{ totalHT }} €</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><strong>Total TTC</strong></td>
+                        <td colspan="2"><strong>{{ totalTTC }} €</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         {{ form_start(form) }}
             <h3>Adresse de Livraison</h3>
-            <div class="mb-3">
-                {{ form_row(form.id_adresse_livraison.rue) }}
-            </div>
-            <div class="mb-3">
-                {{ form_row(form.id_adresse_livraison.ville) }}
-            </div>
-            <div class="mb-3">
-                {{ form_row(form.id_adresse_livraison.code_postal) }}
-            </div>
-            <div class="mb-3">
-                {{ form_row(form.id_adresse_livraison.pays) }}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.id_adresse_livraison.rue) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.id_adresse_livraison.ville) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.id_adresse_livraison.code_postal) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.id_adresse_livraison.pays) }}
+                </div>
             </div>
 
             <h3>Adresse de Facturation</h3>
-            <div class="mb-3">
-                {{ form_row(form.id_adresse_facturation.rue) }}
-            </div>
-            <div class="mb-3">
-                {{ form_row(form.id_adresse_facturation.ville) }}
-            </div>
-            <div class="mb-3">
-                {{ form_row(form.id_adresse_facturation.code_postal) }}
-            </div>
-            <div class="mb-3">
-                {{ form_row(form.id_adresse_facturation.pays) }}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.id_adresse_facturation.rue) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.id_adresse_facturation.ville) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.id_adresse_facturation.code_postal) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.id_adresse_facturation.pays) }}
+                </div>
             </div>
 
             <div class="mb-3">
@@ -89,6 +95,8 @@
     {% endif %}
 </div>
 {% endblock %}
+
+
 
 
 

@@ -5,7 +5,6 @@
 namespace App\Controller;
 
 use App\Entity\Commande;
-use App\Entity\Adresse;
 use App\Entity\Produit;
 use App\Form\CommandeType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,7 +44,8 @@ class CommandeController extends AbstractController
         $totalTTC = $totalHT * (1 + $tva);
 
         $commande = new Commande();
-        $form = $this->createForm(CommandeType::class, $commande);
+        $user = $this->getUser();
+        $form = $this->createForm(CommandeType::class, $commande, ['user' => $user]);
 
         $form->handleRequest($request);
 
@@ -100,6 +100,8 @@ class CommandeController extends AbstractController
         return 'facture_' . $commande->getId() . '.pdf';
     }
 }
+
+
 
 
 

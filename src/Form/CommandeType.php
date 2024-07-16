@@ -5,18 +5,27 @@
 namespace App\Form;
 
 use App\Entity\Commande;
+use App\Entity\Client;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class CommandeType extends AbstractType
 {
+    private $user;
+
+    public function __construct(?Client $user)
+    {
+        $this->user = $user;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $isProfessional = $this->user && $this->user->getTypeClient() === 'professionnel';
+
         $builder
             ->add('id_adresse_livraison', AdresseType::class, [
                 'label' => 'Adresse de Livraison',
@@ -25,12 +34,16 @@ class CommandeType extends AbstractType
                 'label' => 'Adresse de Facturation',
             ])
             ->add('mode_paiement', ChoiceType::class, [
-                'choices' => [
-                    'Carte de crédit' => 'carte_credit',
-                    'PayPal' => 'paypal',
-                    'Virement bancaire' => 'virement_bancaire',
-                    'Chèque' => 'cheque',
-                ],
+                'choices' => $isProfessional
+                    ? [
+                        'Virement bancaire' => 'virement_bancaire',
+                        'Chèque' => 'cheque',
+                      ]
+                    : [
+                        'Carte de crédit' => 'carte_credit',
+                        'PayPal' => 'paypal',
+                        'Virement bancaire' => 'virement_bancaire',
+                      ],
                 'label' => 'Mode de Paiement',
             ])
             ->add('information_reglement', TextareaType::class, [
@@ -42,8 +55,10 @@ class CommandeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Commande::class,
+            'user' => null,
         ]);
     }
 }
+
 
 
