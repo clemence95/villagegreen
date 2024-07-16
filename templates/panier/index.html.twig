@@ -44,7 +44,7 @@
                 <h5 class="card-title">Résumé du Panier</h5>
                 <p class="card-text">Total Quantité: {{ totalQuantite }}</p>
                 <p class="card-text">Total Prix: {{ totalPrix | number_format(2, ',', ' ') }} €</p>
-                <a href="#" class="btn btn-success">Commander</a>
+                <a href="{{ path('commander') }}" class="btn btn-success">Commander</a>
             </div>
         </div>
         <div class="mt-4">
