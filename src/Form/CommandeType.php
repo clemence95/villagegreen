@@ -5,42 +5,44 @@
 namespace App\Form;
 
 use App\Entity\Commande;
+use App\Entity\Adresse;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class CommandeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date_commande', DateTimeType::class, [
-                'label' => 'Date de la commande',
+            ->add('id_adresse_livraison', EntityType::class, [
+                'class' => Adresse::class,
+                'choice_label' => function (Adresse $adresse) {
+                    return $adresse->getRue() . ', ' . $adresse->getVille() . ', ' . $adresse->getCodePostal() . ', ' . $adresse->getPays();
+                },
+                'label' => 'Adresse de Livraison',
             ])
-            ->add('statut', TextType::class, [
-                'label' => 'Statut',
+            ->add('id_adresse_facturation', EntityType::class, [
+                'class' => Adresse::class,
+                'choice_label' => function (Adresse $adresse) {
+                    return $adresse->getRue() . ', ' . $adresse->getVille() . ', ' . $adresse->getCodePostal() . ', ' . $adresse->getPays();
+                },
+                'label' => 'Adresse de Facturation',
             ])
-            ->add('montant_total', MoneyType::class, [
-                'label' => 'Montant total',
+            ->add('mode_paiement', ChoiceType::class, [
+                'choices' => [
+                    'Carte de crédit' => 'carte_credit',
+                    'PayPal' => 'paypal',
+                    'Virement bancaire' => 'virement_bancaire',
+                    'Chèque' => 'cheque',
+                ],
+                'label' => 'Mode de Paiement',
             ])
-            ->add('reduction_supplementaire', MoneyType::class, [
-                'label' => 'Réduction supplémentaire',
-                'required' => false,
-            ])
-            ->add('mode_paiement', TextType::class, [
-                'label' => 'Mode de paiement',
-            ])
-            ->add('information_reglement', TextType::class, [
-                'label' => 'Information de règlement',
-            ])
-            ->add('id_adresse_facturation', TextType::class, [
-                'label' => 'Adresse de facturation',
-            ])
-            ->add('id_adresse_livraison', TextType::class, [
-                'label' => 'Adresse de livraison',
+            ->add('information_reglement', TextareaType::class, [
+                'label' => 'Information de Règlement',
             ]);
     }
 

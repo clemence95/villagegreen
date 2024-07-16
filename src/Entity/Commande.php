@@ -1,5 +1,7 @@
 <?php
 
+// src/Entity/Commande.php
+
 namespace App\Entity;
 
 use App\Repository\CommandeRepository;
@@ -10,7 +12,7 @@ class Commande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(type: 'datetime')]
@@ -40,6 +42,12 @@ class Commande
     #[ORM\ManyToOne(targetEntity: Client::class)]
     private ?Client $id_client = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $bon_livraison = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $facture = null;
+
     // Getters and Setters
     public function getId(): ?int
     {
@@ -54,7 +62,6 @@ class Commande
     public function setDateCommande(\DateTimeInterface $date_commande): self
     {
         $this->date_commande = $date_commande;
-
         return $this;
     }
 
@@ -66,7 +73,6 @@ class Commande
     public function setStatut(string $statut): self
     {
         $this->statut = $statut;
-
         return $this;
     }
 
@@ -78,7 +84,6 @@ class Commande
     public function setMontantTotal(float $montant_total): self
     {
         $this->montant_total = $montant_total;
-
         return $this;
     }
 
@@ -90,7 +95,6 @@ class Commande
     public function setReductionSupplementaire(?float $reduction_supplementaire): self
     {
         $this->reduction_supplementaire = $reduction_supplementaire;
-
         return $this;
     }
 
@@ -102,7 +106,6 @@ class Commande
     public function setModePaiement(string $mode_paiement): self
     {
         $this->mode_paiement = $mode_paiement;
-
         return $this;
     }
 
@@ -114,7 +117,6 @@ class Commande
     public function setInformationReglement(string $information_reglement): self
     {
         $this->information_reglement = $information_reglement;
-
         return $this;
     }
 
@@ -126,7 +128,6 @@ class Commande
     public function setIdAdresseFacturation(?Adresse $id_adresse_facturation): self
     {
         $this->id_adresse_facturation = $id_adresse_facturation;
-
         return $this;
     }
 
@@ -138,7 +139,6 @@ class Commande
     public function setIdAdresseLivraison(?Adresse $id_adresse_livraison): self
     {
         $this->id_adresse_livraison = $id_adresse_livraison;
-
         return $this;
     }
 
@@ -150,7 +150,28 @@ class Commande
     public function setIdClient(?Client $id_client): self
     {
         $this->id_client = $id_client;
+        return $this;
+    }
 
+    public function getBonLivraison(): ?string
+    {
+        return $this->bon_livraison;
+    }
+
+    public function setBonLivraison(?string $bon_livraison): self
+    {
+        $this->bon_livraison = $bon_livraison;
+        return $this;
+    }
+
+    public function getFacture(): ?string
+    {
+        return $this->facture;
+    }
+
+    public function setFacture(?string $facture): self
+    {
+        $this->facture = $facture;
         return $this;
     }
 }

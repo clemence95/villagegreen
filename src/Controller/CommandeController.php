@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Adresse;
 use App\Entity\Produit;
 use App\Entity\Commande;
 use App\Form\CommandeType;
@@ -58,6 +57,11 @@ class CommandeController extends AbstractController
             $entityManager->persist($commande);
             $entityManager->flush();
 
+            // Générer le bon de livraison et la facture
+            $commande->setBonLivraison($this->generateBonLivraison($commande));
+            $commande->setFacture($this->generateFacture($commande));
+            $entityManager->flush();
+
             // Vider le panier après la commande
             $session->remove('panier');
 
@@ -79,6 +83,20 @@ class CommandeController extends AbstractController
         return $this->render('commande/success.html.twig', [
             'message' => 'Votre commande a été passée avec succès !',
         ]);
+    }
+
+    private function generateBonLivraison(Commande $commande): string
+    {
+        // Logique pour générer le bon de livraison
+        // Par exemple, générer un PDF et retourner le chemin ou l'URL
+        return 'chemin/vers/bon/livraison.pdf';
+    }
+
+    private function generateFacture(Commande $commande): string
+    {
+        // Logique pour générer la facture
+        // Par exemple, générer un PDF et retourner le chemin ou l'URL
+        return 'chemin/vers/facture.pdf';
     }
 }
 
