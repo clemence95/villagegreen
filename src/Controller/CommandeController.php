@@ -1,33 +1,34 @@
 <?php
 
+// src/Controller/CommandeController.php
+
 namespace App\Controller;
 
-use App\Entity\Produit;
 use App\Entity\Commande;
+use App\Entity\Adresse;
+use App\Entity\Produit;
 use App\Form\CommandeType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CommandeController extends AbstractController
 {
     #[Route('/commander', name: 'commander')]
     public function commander(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Vérifiez si l'utilisateur est connecté
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        // Récupérer le panier depuis la session
         $session = $request->getSession();
         $panier = $session->get('panier', []);
         $produits = [];
         $totalHT = 0;
         $totalTTC = 0;
-        $tva = 0.2; // Supposons une TVA de 20%
+        $tva = 0.2;
 
         foreach ($panier as $id => $quantite) {
             $produit = $entityManager->getRepository(Produit::class)->find($id);
@@ -49,7 +50,14 @@ class CommandeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Enregistrer la commande dans la base de données
+            $livraison = $form->get('id_adresse_livraison')->getData();
+            $facturation = $form->get('id_adresse_facturation')->getData();
+
+            $entityManager->persist($livraison);
+            $entityManager->persist($facturation);
+
+            $commande->setIdAdresseLivraison($livraison);
+            $commande->setIdAdresseFacturation($facturation);
             $commande->setIdClient($this->getUser());
             $commande->setDateCommande(new \DateTime());
             $commande->setStatut('En attente');
@@ -57,15 +65,12 @@ class CommandeController extends AbstractController
             $entityManager->persist($commande);
             $entityManager->flush();
 
-            // Générer le bon de livraison et la facture
             $commande->setBonLivraison($this->generateBonLivraison($commande));
             $commande->setFacture($this->generateFacture($commande));
             $entityManager->flush();
 
-            // Vider le panier après la commande
             $session->remove('panier');
 
-            // Rediriger vers une page de succès ou afficher un message de succès
             return $this->redirectToRoute('commande_success');
         }
 
@@ -87,18 +92,16 @@ class CommandeController extends AbstractController
 
     private function generateBonLivraison(Commande $commande): string
     {
-        // Logique pour générer le bon de livraison
-        // Par exemple, générer un PDF et retourner le chemin ou l'URL
-        return 'chemin/vers/bon/livraison.pdf';
+        return 'bon_de_livraison_' . $commande->getId() . '.pdf';
     }
 
     private function generateFacture(Commande $commande): string
     {
-        // Logique pour générer la facture
-        // Par exemple, générer un PDF et retourner le chemin ou l'URL
-        return 'chemin/vers/facture.pdf';
+        return 'facture_' . $commande->getId() . '.pdf';
     }
 }
+
+
 
 
 

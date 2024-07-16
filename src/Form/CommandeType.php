@@ -5,31 +5,23 @@
 namespace App\Form;
 
 use App\Entity\Commande;
-use App\Entity\Adresse;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class CommandeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id_adresse_livraison', EntityType::class, [
-                'class' => Adresse::class,
-                'choice_label' => function (Adresse $adresse) {
-                    return $adresse->getRue() . ', ' . $adresse->getVille() . ', ' . $adresse->getCodePostal() . ', ' . $adresse->getPays();
-                },
+            ->add('id_adresse_livraison', AdresseType::class, [
                 'label' => 'Adresse de Livraison',
             ])
-            ->add('id_adresse_facturation', EntityType::class, [
-                'class' => Adresse::class,
-                'choice_label' => function (Adresse $adresse) {
-                    return $adresse->getRue() . ', ' . $adresse->getVille() . ', ' . $adresse->getCodePostal() . ', ' . $adresse->getPays();
-                },
+            ->add('id_adresse_facturation', AdresseType::class, [
                 'label' => 'Adresse de Facturation',
             ])
             ->add('mode_paiement', ChoiceType::class, [
@@ -53,3 +45,5 @@ class CommandeType extends AbstractType
         ]);
     }
 }
+
+
