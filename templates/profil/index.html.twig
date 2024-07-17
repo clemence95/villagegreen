@@ -1,11 +1,9 @@
-{# templates/profil/index.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Profil{% endblock %}
 
 {% block body %}
-<div class="container-profil mt-5">
+<div class="container-profil mt-5"> <!-- Augmenté la classe mt-5 à mt-5 -->
     <div class="card">
         <div class="card-body">
             <h1 class="card-title">Profil de {{ user.prenom }} {{ user.nom }}</h1>
@@ -16,41 +14,8 @@
             </dl>
         </div>
     </div>
-
-    <div class="mt-4">
-        <h2>Vos Commandes</h2>
-        {% if commandes is not empty %}
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID Commande</th>
-                            <th>Date</th>
-                            <th>Montant Total</th>
-                            <th>Statut</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for commande in commandes %}
-                            <tr>
-                                <td>{{ commande.id }}</td>
-                                <td>{{ commande.dateCommande|date('d/m/Y H:i') }}</td>
-                                <td>{{ commande.montantTotal }} €</td>
-                                <td>{{ commande.statut }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        {% else %}
-            <div class="alert alert-info" role="alert">
-                Vous n'avez pas encore passé de commande.
-            </div>
-        {% endif %}
-    </div>
 </div>
 {% endblock %}
-
 
 
 
