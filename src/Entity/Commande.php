@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Client;
 use App\Entity\Adresse;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CommandeRepository;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -50,8 +52,16 @@ class Commande
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $facture = null;
 
-    #[ORM\Column(type: 'json')]
-    private array $produits = [];
+    /**
+     * @var Collection<int, Produit>
+     */
+    #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'commande')]
+    private Collection $produit;
+
+    public function __construct()
+    {
+        $this->produit = new ArrayCollection();
+    }
 
     // Getters and Setters...
 
@@ -181,34 +191,11 @@ class Commande
         return $this;
     }
 
-    public function getProduits(): array
+    /**
+     * @return Collection<int, Produit>
+     */
+    public function getProduit(): Collection
     {
-        return $this->produits;
-    }
-
-    public function setProduits(array $produits): self
-    {
-        $this->produits = $produits;
-        return $this;
-    }
-
-    public function addProduit(Produit $produit, int $quantite): self
-    {
-        $this->produits[] = [
-            'produit_id' => $produit->getId(),
-            'quantite' => $quantite,
-        ];
-        return $this;
-    }
-
-    public function removeProduit(Produit $produit): self
-    {
-        foreach ($this->produits as $key => $produitData) {
-            if ($produitData['produit_id'] === $produit->getId()) {
-                unset($this->produits[$key]);
-                break;
-            }
-        }
-        return $this;
+        return $this->produit;
     }
 }

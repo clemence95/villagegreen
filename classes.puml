@@ -92,11 +92,11 @@ class Commande {
   -informationReglement : string 
   -bonLivraison : string 
   -facture : string 
-  -produits : array 
 }
 
 Produit "*" -- "1" Categorie
 Produit "*" -- "1" Fournisseur
+Produit "*" -- "1" Commande
 Fournisseur "*" -- "1" Adresse
 Adresse "1" -- "*" Client
 Adresse "1" -- "*" Client

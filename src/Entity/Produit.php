@@ -45,6 +45,9 @@ class Produit
     #[ORM\JoinColumn(nullable: false)]
     private ?Fournisseur $idFournisseur = null;
 
+    #[ORM\ManyToOne(inversedBy: 'produit')]
+    private ?Commande $commande = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -157,6 +160,18 @@ class Produit
     public function setIdFournisseur(?Fournisseur $idFournisseur): self
     {
         $this->idFournisseur = $idFournisseur;
+        return $this;
+    }
+
+    public function getCommande(): ?Commande
+    {
+        return $this->commande;
+    }
+
+    public function setCommande(?Commande $commande): static
+    {
+        $this->commande = $commande;
+
         return $this;
     }
 }

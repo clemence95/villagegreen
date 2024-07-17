@@ -40,7 +40,7 @@
                                     <ul>
                                         {% for produitData in commande.produits %}
                                             {# Récupérer le produit à partir de son ID #}
-                                            {% set produit = produitData.produit_id %}
+                                            {% set produit = produitData.produit %}
                                             <li>
                                                 {{ produit.libelleCourt }} - {{ produitData.quantite }} pièce(s)
                                                 <!-- Ajoutez d'autres détails du produit si nécessaire -->
@@ -61,7 +61,6 @@
     </div>
 </div>
 {% endblock %}
-
 
 
 
