@@ -82,22 +82,17 @@ class Client {
   -plainPassword : string 
 }
 
-class LigneCommande {
-  primary_key( id ) : int
-  -quantite : int 
-  -prix_unitaire : float 
-}
-
 class Commande {
   primary_key( id ) : int
-  -date_commande : DateTimeInterface 
+  -dateCommande : DateTimeInterface 
   -statut : string 
-  -montant_total : float 
-  -reduction_supplementaire : float 
-  -mode_paiement : string 
-  -information_reglement : string 
-  -bon_livraison : string 
+  -montantTotal : float 
+  -reductionSupplementaire : float 
+  -modePaiement : string 
+  -informationReglement : string 
+  -bonLivraison : string 
   -facture : string 
+  -produits : array 
 }
 
 Produit "*" -- "1" Categorie
@@ -109,8 +104,6 @@ Categorie "*" -- "1" Categorie
 Client "*" -- "1" Adresse
 Client "*" -- "1" Adresse
 Client "*" -- "1" Employe
-LigneCommande "*" -- "1" Commande
-LigneCommande "*" -- "1" Produit
 Commande "*" -- "1" Adresse
 Commande "*" -- "1" Adresse
 Commande "*" -- "1" Client

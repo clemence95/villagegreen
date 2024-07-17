@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\CommandeRepository;
+use App\Entity\Client;
+use App\Entity\Adresse;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommandeRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 class Commande
@@ -14,38 +17,41 @@ class Commande
     private ?int $id = null;
 
     #[ORM\Column(type: 'datetime')]
-    private ?\DateTimeInterface $date_commande = null;
+    private ?\DateTimeInterface $dateCommande = null;
 
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $statut = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    private ?float $montant_total = null;
+    private ?float $montantTotal = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
-    private ?float $reduction_supplementaire = null;
+    private ?float $reductionSupplementaire = null;
 
     #[ORM\Column(type: 'string', length: 50)]
-    private ?string $mode_paiement = null;
+    private ?string $modePaiement = null;
 
     #[ORM\Column(type: 'text')]
-    private ?string $information_reglement = null;
+    private ?string $informationReglement = null;
 
     #[ORM\ManyToOne(targetEntity: Adresse::class)]
-    private ?Adresse $adresse_facturation = null;
+    private ?Adresse $adresseFacturation = null;
 
     #[ORM\ManyToOne(targetEntity: Adresse::class)]
-    private ?Adresse $adresse_livraison = null;
+    private ?Adresse $adresseLivraison = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'commandes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $bon_livraison = null;
+    private ?string $bonLivraison = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $facture = null;
+
+    #[ORM\Column(type: 'json')]
+    private array $produits = [];
 
     // Getters and Setters...
 
@@ -56,12 +62,12 @@ class Commande
 
     public function getDateCommande(): ?\DateTimeInterface
     {
-        return $this->date_commande;
+        return $this->dateCommande;
     }
 
-    public function setDateCommande(\DateTimeInterface $date_commande): self
+    public function setDateCommande(\DateTimeInterface $dateCommande): self
     {
-        $this->date_commande = $date_commande;
+        $this->dateCommande = $dateCommande;
         return $this;
     }
 
@@ -78,67 +84,67 @@ class Commande
 
     public function getMontantTotal(): ?float
     {
-        return $this->montant_total;
+        return $this->montantTotal;
     }
 
-    public function setMontantTotal(float $montant_total): self
+    public function setMontantTotal(float $montantTotal): self
     {
-        $this->montant_total = $montant_total;
+        $this->montantTotal = $montantTotal;
         return $this;
     }
 
     public function getReductionSupplementaire(): ?float
     {
-        return $this->reduction_supplementaire;
+        return $this->reductionSupplementaire;
     }
 
-    public function setReductionSupplementaire(?float $reduction_supplementaire): self
+    public function setReductionSupplementaire(?float $reductionSupplementaire): self
     {
-        $this->reduction_supplementaire = $reduction_supplementaire;
+        $this->reductionSupplementaire = $reductionSupplementaire;
         return $this;
     }
 
     public function getModePaiement(): ?string
     {
-        return $this->mode_paiement;
+        return $this->modePaiement;
     }
 
-    public function setModePaiement(string $mode_paiement): self
+    public function setModePaiement(string $modePaiement): self
     {
-        $this->mode_paiement = $mode_paiement;
+        $this->modePaiement = $modePaiement;
         return $this;
     }
 
     public function getInformationReglement(): ?string
     {
-        return $this->information_reglement;
+        return $this->informationReglement;
     }
 
-    public function setInformationReglement(string $information_reglement): self
+    public function setInformationReglement(string $informationReglement): self
     {
-        $this->information_reglement = $information_reglement;
+        $this->informationReglement = $informationReglement;
         return $this;
     }
 
     public function getAdresseFacturation(): ?Adresse
     {
-        return $this->adresse_facturation;
+        return $this->adresseFacturation;
     }
 
-    public function setAdresseFacturation(?Adresse $adresse_facturation): self
+    public function setAdresseFacturation(?Adresse $adresseFacturation): self
     {
-        $this->adresse_facturation = $adresse_facturation;
+        $this->adresseFacturation = $adresseFacturation;
         return $this;
     }
 
     public function getAdresseLivraison(): ?Adresse
     {
-        return $this->adresse_livraison;
+        return $this->adresseLivraison;
     }
 
-    public function setAdresseLivraison(?Adresse $adresse_livraison): self
+    public function setAdresseLivraison(?Adresse $adresseLivraison): self
     {
-        $this->adresse_livraison = $adresse_livraison;
+        $this->adresseLivraison = $adresseLivraison;
         return $this;
     }
 
@@ -155,12 +161,12 @@ class Commande
 
     public function getBonLivraison(): ?string
     {
-        return $this->bon_livraison;
+        return $this->bonLivraison;
     }
 
-    public function setBonLivraison(?string $bon_livraison): self
+    public function setBonLivraison(?string $bonLivraison): self
     {
-        $this->bon_livraison = $bon_livraison;
+        $this->bonLivraison = $bonLivraison;
         return $this;
     }
 
@@ -174,5 +180,35 @@ class Commande
         $this->facture = $facture;
         return $this;
     }
-}
 
+    public function getProduits(): array
+    {
+        return $this->produits;
+    }
+
+    public function setProduits(array $produits): self
+    {
+        $this->produits = $produits;
+        return $this;
+    }
+
+    public function addProduit(Produit $produit, int $quantite): self
+    {
+        $this->produits[] = [
+            'produit_id' => $produit->getId(),
+            'quantite' => $quantite,
+        ];
+        return $this;
+    }
+
+    public function removeProduit(Produit $produit): self
+    {
+        foreach ($this->produits as $key => $produitData) {
+            if ($produitData['produit_id'] === $produit->getId()) {
+                unset($this->produits[$key]);
+                break;
+            }
+        }
+        return $this;
+    }
+}

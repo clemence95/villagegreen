@@ -1,5 +1,3 @@
-{# templates/profil/index.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Profil{% endblock %}
@@ -28,6 +26,7 @@
                             <th>Date</th>
                             <th>Montant Total</th>
                             <th>Statut</th>
+                            <th>Produits Commandés</th> {# Nouvelle colonne pour afficher les produits #}
                         </tr>
                     </thead>
                     <tbody>
@@ -37,6 +36,18 @@
                                 <td>{{ commande.dateCommande|date('d/m/Y H:i') }}</td>
                                 <td>{{ commande.montantTotal }} €</td>
                                 <td>{{ commande.statut }}</td>
+                                <td>
+                                    <ul>
+                                        {% for produitData in commande.produits %}
+                                            {# Récupérer le produit à partir de son ID #}
+                                            {% set produit = produitData.produit_id %}
+                                            <li>
+                                                {{ produit.libelleCourt }} - {{ produitData.quantite }} pièce(s)
+                                                <!-- Ajoutez d'autres détails du produit si nécessaire -->
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -50,6 +61,7 @@
     </div>
 </div>
 {% endblock %}
+
 
 
 
