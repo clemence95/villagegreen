@@ -62,6 +62,11 @@
                     </div>
                 </div>
 
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="sameAddress">
+                    <label class="form-check-label" for="sameAddress">L'adresse de facturation est la même que l'adresse de livraison</label>
+                </div>
+
                 <h3>Adresse de Facturation</h3>
                 <div class="row">
                     <div class="col-md-6 mb-3">
@@ -104,7 +109,26 @@
         </div>
     {% endif %}
 </div>
+
+<script>
+document.getElementById('sameAddress').addEventListener('change', function() {
+    if (this.checked) {
+        document.getElementById('{{ form.id_adresse_facturation.rue.vars.id }}').value = document.getElementById('{{ form.id_adresse_livraison.rue.vars.id }}').value;
+        document.getElementById('{{ form.id_adresse_facturation.numero_rue.vars.id }}').value = document.getElementById('{{ form.id_adresse_livraison.numero_rue.vars.id }}').value;
+        document.getElementById('{{ form.id_adresse_facturation.ville.vars.id }}').value = document.getElementById('{{ form.id_adresse_livraison.ville.vars.id }}').value;
+        document.getElementById('{{ form.id_adresse_facturation.code_postal.vars.id }}').value = document.getElementById('{{ form.id_adresse_livraison.code_postal.vars.id }}').value;
+        document.getElementById('{{ form.id_adresse_facturation.pays.vars.id }}').value = document.getElementById('{{ form.id_adresse_livraison.pays.vars.id }}').value;
+    } else {
+        document.getElementById('{{ form.id_adresse_facturation.rue.vars.id }}').value = '';
+        document.getElementById('{{ form.id_adresse_facturation.numero_rue.vars.id }}').value = '';
+        document.getElementById('{{ form.id_adresse_facturation.ville.vars.id }}').value = '';
+        document.getElementById('{{ form.id_adresse_facturation.code_postal.vars.id }}').value = '';
+        document.getElementById('{{ form.id_adresse_facturation.pays.vars.id }}').value = '';
+    }
+});
+</script>
 {% endblock %}
+
 
 
 
