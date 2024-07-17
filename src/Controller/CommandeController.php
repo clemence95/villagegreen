@@ -59,7 +59,7 @@ class CommandeController extends AbstractController
             $commande->setAdresseLivraison($livraison);
             $commande->setAdresseFacturation($facturation);
             $commande->setClient($this->getUser());
-            $commande->setDateCommande(new \DateTime());
+            $commande->setDateCommande(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
             $commande->setStatut('En attente');
             $commande->setMontantTotal($totalTTC);
             $entityManager->persist($commande);
@@ -100,6 +100,7 @@ class CommandeController extends AbstractController
         return 'facture_' . $commande->getId() . '.pdf';
     }
 }
+
 
 
 
