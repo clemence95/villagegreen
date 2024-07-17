@@ -1,7 +1,5 @@
 <?php
 
-// src/Entity/Commande.php
-
 namespace App\Entity;
 
 use App\Repository\CommandeRepository;
@@ -34,13 +32,14 @@ class Commande
     private ?string $information_reglement = null;
 
     #[ORM\ManyToOne(targetEntity: Adresse::class)]
-    private ?Adresse $id_adresse_facturation = null;
+    private ?Adresse $adresse_facturation = null;
 
     #[ORM\ManyToOne(targetEntity: Adresse::class)]
-    private ?Adresse $id_adresse_livraison = null;
+    private ?Adresse $adresse_livraison = null;
 
-    #[ORM\ManyToOne(targetEntity: Client::class)]
-    private ?Client $id_client = null;
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'commandes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Client $client = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $bon_livraison = null;
@@ -48,7 +47,8 @@ class Commande
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $facture = null;
 
-    // Getters and Setters
+    // Getters and Setters...
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,36 +120,36 @@ class Commande
         return $this;
     }
 
-    public function getIdAdresseFacturation(): ?Adresse
+    public function getAdresseFacturation(): ?Adresse
     {
-        return $this->id_adresse_facturation;
+        return $this->adresse_facturation;
     }
 
-    public function setIdAdresseFacturation(?Adresse $id_adresse_facturation): self
+    public function setAdresseFacturation(?Adresse $adresse_facturation): self
     {
-        $this->id_adresse_facturation = $id_adresse_facturation;
+        $this->adresse_facturation = $adresse_facturation;
         return $this;
     }
 
-    public function getIdAdresseLivraison(): ?Adresse
+    public function getAdresseLivraison(): ?Adresse
     {
-        return $this->id_adresse_livraison;
+        return $this->adresse_livraison;
     }
 
-    public function setIdAdresseLivraison(?Adresse $id_adresse_livraison): self
+    public function setAdresseLivraison(?Adresse $adresse_livraison): self
     {
-        $this->id_adresse_livraison = $id_adresse_livraison;
+        $this->adresse_livraison = $adresse_livraison;
         return $this;
     }
 
-    public function getIdClient(): ?Client
+    public function getClient(): ?Client
     {
-        return $this->id_client;
+        return $this->client;
     }
 
-    public function setIdClient(?Client $id_client): self
+    public function setClient(?Client $client): self
     {
-        $this->id_client = $id_client;
+        $this->client = $client;
         return $this;
     }
 
@@ -175,3 +175,4 @@ class Commande
         return $this;
     }
 }
+

@@ -50,15 +50,15 @@ class CommandeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $livraison = $form->get('id_adresse_livraison')->getData();
-            $facturation = $form->get('id_adresse_facturation')->getData();
+            $livraison = $form->get('adresse_livraison')->getData();
+            $facturation = $form->get('adresse_facturation')->getData();
 
             $entityManager->persist($livraison);
             $entityManager->persist($facturation);
 
-            $commande->setIdAdresseLivraison($livraison);
-            $commande->setIdAdresseFacturation($facturation);
-            $commande->setIdClient($this->getUser());
+            $commande->setAdresseLivraison($livraison);
+            $commande->setAdresseFacturation($facturation);
+            $commande->setClient($this->getUser());
             $commande->setDateCommande(new \DateTime());
             $commande->setStatut('En attente');
             $commande->setMontantTotal($totalTTC);

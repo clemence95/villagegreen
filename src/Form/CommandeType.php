@@ -27,10 +27,10 @@ class CommandeType extends AbstractType
         $isProfessional = $this->user && $this->user->getTypeClient() === 'professionnel';
 
         $builder
-            ->add('id_adresse_livraison', AdresseType::class, [
+            ->add('adresse_livraison', AdresseType::class, [
                 'label' => 'Adresse de Livraison',
             ])
-            ->add('id_adresse_facturation', AdresseType::class, [
+            ->add('adresse_facturation', AdresseType::class, [
                 'label' => 'Adresse de Facturation',
             ])
             ->add('mode_paiement', ChoiceType::class, [

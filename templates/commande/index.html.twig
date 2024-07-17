@@ -46,19 +46,19 @@
                 <h3>Adresse de Livraison</h3>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        {{ form_row(form.id_adresse_livraison.rue) }}
+                        {{ form_row(form.adresse_livraison.rue) }}
                     </div>
                     <div class="col-md-6 mb-3">
-                        {{ form_row(form.id_adresse_livraison.numero_rue) }}
+                        {{ form_row(form.adresse_livraison.numero_rue) }}
                     </div>
                     <div class="col-md-6 mb-3">
-                        {{ form_row(form.id_adresse_livraison.ville) }}
+                        {{ form_row(form.adresse_livraison.ville) }}
                     </div>
                     <div class="col-md-6 mb-3">
-                        {{ form_row(form.id_adresse_livraison.code_postal) }}
+                        {{ form_row(form.adresse_livraison.code_postal) }}
                     </div>
                     <div class="col-md-6 mb-3">
-                        {{ form_row(form.id_adresse_livraison.pays) }}
+                        {{ form_row(form.adresse_livraison.pays) }}
                     </div>
                 </div>
 
@@ -70,19 +70,19 @@
                 <h3>Adresse de Facturation</h3>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        {{ form_row(form.id_adresse_facturation.rue) }}
+                        {{ form_row(form.adresse_facturation.rue) }}
                     </div>
                     <div class="col-md-6 mb-3">
-                        {{ form_row(form.id_adresse_facturation.numero_rue) }}
+                        {{ form_row(form.adresse_facturation.numero_rue) }}
                     </div>
                     <div class="col-md-6 mb-3">
-                        {{ form_row(form.id_adresse_facturation.ville) }}
+                        {{ form_row(form.adresse_facturation.ville) }}
                     </div>
                     <div class="col-md-6 mb-3">
-                        {{ form_row(form.id_adresse_facturation.code_postal) }}
+                        {{ form_row(form.adresse_facturation.code_postal) }}
                     </div>
                     <div class="col-md-6 mb-3">
-                        {{ form_row(form.id_adresse_facturation.pays) }}
+                        {{ form_row(form.adresse_facturation.pays) }}
                     </div>
                 </div>
 
@@ -113,17 +113,17 @@
 <script>
 document.getElementById('sameAddress').addEventListener('change', function() {
     if (this.checked) {
-        document.getElementById('{{ form.id_adresse_facturation.rue.vars.id }}').value = document.getElementById('{{ form.id_adresse_livraison.rue.vars.id }}').value;
-        document.getElementById('{{ form.id_adresse_facturation.numero_rue.vars.id }}').value = document.getElementById('{{ form.id_adresse_livraison.numero_rue.vars.id }}').value;
-        document.getElementById('{{ form.id_adresse_facturation.ville.vars.id }}').value = document.getElementById('{{ form.id_adresse_livraison.ville.vars.id }}').value;
-        document.getElementById('{{ form.id_adresse_facturation.code_postal.vars.id }}').value = document.getElementById('{{ form.id_adresse_livraison.code_postal.vars.id }}').value;
-        document.getElementById('{{ form.id_adresse_facturation.pays.vars.id }}').value = document.getElementById('{{ form.id_adresse_livraison.pays.vars.id }}').value;
+        document.getElementById('{{ form.adresse_facturation.rue.vars.id }}').value = document.getElementById('{{ form.adresse_livraison.rue.vars.id }}').value;
+        document.getElementById('{{ form.adresse_facturation.numero_rue.vars.id }}').value = document.getElementById('{{ form.adresse_livraison.numero_rue.vars.id }}').value;
+        document.getElementById('{{ form.adresse_facturation.ville.vars.id }}').value = document.getElementById('{{ form.adresse_livraison.ville.vars.id }}').value;
+        document.getElementById('{{ form.adresse_facturation.code_postal.vars.id }}').value = document.getElementById('{{ form.adresse_livraison.code_postal.vars.id }}').value;
+        document.getElementById('{{ form.adresse_facturation.pays.vars.id }}').value = document.getElementById('{{ form.adresse_livraison.pays.vars.id }}').value;
     } else {
-        document.getElementById('{{ form.id_adresse_facturation.rue.vars.id }}').value = '';
-        document.getElementById('{{ form.id_adresse_facturation.numero_rue.vars.id }}').value = '';
-        document.getElementById('{{ form.id_adresse_facturation.ville.vars.id }}').value = '';
-        document.getElementById('{{ form.id_adresse_facturation.code_postal.vars.id }}').value = '';
-        document.getElementById('{{ form.id_adresse_facturation.pays.vars.id }}').value = '';
+        document.getElementById('{{ form.adresse_facturation.rue.vars.id }}').value = '';
+        document.getElementById('{{ form.adresse_facturation.numero_rue.vars.id }}').value = '';
+        document.getElementById('{{ form.adresse_facturation.ville.vars.id }}').value = '';
+        document.getElementById('{{ form.adresse_facturation.code_postal.vars.id }}').value = '';
+        document.getElementById('{{ form.adresse_facturation.pays.vars.id }}').value = '';
     }
 });
 </script>
