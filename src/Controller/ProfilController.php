@@ -1,20 +1,31 @@
 <?php
+
 // src/Controller/ProfilController.php
 
 namespace App\Controller;
 
+use App\Entity\Commande;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProfilController extends AbstractController
 {
-    #[Route('/profil', name: 'app_profil')]
-    public function index(): Response
+    #[Route('/profil', name: 'profil')]
+    public function profil(EntityManagerInterface $entityManager): Response
     {
-        // Rend la vue Twig 'profil/index.html.twig'
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Récupérer les commandes de l'utilisateur
+        $commandes = $entityManager->getRepository(Commande::class)->findBy(['client' => $user]);
+
         return $this->render('profil/index.html.twig', [
-            'user' => $this->getUser(),  // Récupère l'utilisateur connecté
+            'user' => $user,
+            'commandes' => $commandes,
         ]);
     }
 }
