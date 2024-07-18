@@ -80,6 +80,9 @@ class CommandeController extends AbstractController
 
             $entityManager->flush();  // Persist the CommandeProduits
 
+            // Re-fetch the Commande entity to ensure it has the latest data
+            $entityManager->refresh($commande);
+
             // Generate PDFs for Bon de Livraison and Facture
             $bonLivraison = $this->generateBonLivraison($commande);
             $facture = $this->generateFacture($commande);
@@ -147,6 +150,7 @@ class CommandeController extends AbstractController
         return $fileName;
     }
 }
+
 
 
 
