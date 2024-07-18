@@ -13,28 +13,28 @@ class Adresse
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $rue;
+    private ?string $rue = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $ville;
+    private ?string $ville = null;
 
     #[ORM\Column(type: 'string', length: 50)]
-    private $code_postal;
+    private ?string $code_postal = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $pays;
+    private ?string $pays = null;
 
     #[ORM\Column(type: 'string', length: 10, nullable: true)]
-    private $numero_rue;
+    private ?string $numero_rue = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_adresse_facturation', targetEntity: Client::class)]
-    private $clients_facturation;
+    #[ORM\OneToMany(mappedBy: 'adresseFacturation', targetEntity: Client::class)]
+    private Collection $clients_facturation;
 
-    #[ORM\OneToMany(mappedBy: 'id_adresse_livraison', targetEntity: Client::class)]
-    private $clients_livraison;
+    #[ORM\OneToMany(mappedBy: 'adresseLivraison', targetEntity: Client::class)]
+    private Collection $clients_livraison;
 
     public function __construct()
     {
@@ -43,6 +43,7 @@ class Adresse
     }
 
     // Getters and Setters
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,7 +121,7 @@ class Adresse
     {
         if (!$this->clients_facturation->contains($client)) {
             $this->clients_facturation[] = $client;
-            $client->setIdAdresseFacturation($this);
+            $client->setAdresseFacturation($this);
         }
 
         return $this;
@@ -130,8 +131,8 @@ class Adresse
     {
         if ($this->clients_facturation->removeElement($client)) {
             // set the owning side to null (unless already changed)
-            if ($client->getIdAdresseFacturation() === $this) {
-                $client->setIdAdresseFacturation(null);
+            if ($client->getAdresseFacturation() === $this) {
+                $client->setAdresseFacturation(null);
             }
         }
 
@@ -150,7 +151,7 @@ class Adresse
     {
         if (!$this->clients_livraison->contains($client)) {
             $this->clients_livraison[] = $client;
-            $client->setIdAdresseLivraison($this);
+            $client->setAdresseLivraison($this);
         }
 
         return $this;
@@ -160,8 +161,8 @@ class Adresse
     {
         if ($this->clients_livraison->removeElement($client)) {
             // set the owning side to null (unless already changed)
-            if ($client->getIdAdresseLivraison() === $this) {
-                $client->setIdAdresseLivraison(null);
+            if ($client->getAdresseLivraison() === $this) {
+                $client->setAdresseLivraison(null);
             }
         }
 

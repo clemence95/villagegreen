@@ -103,8 +103,6 @@ Produit "*" -- "1" Categorie
 Produit "*" -- "1" Fournisseur
 Produit "*" -- "1" Commande
 Fournisseur "*" -- "1" Adresse
-Adresse "1" -- "*" Client
-Adresse "1" -- "*" Client
 Categorie "*" -- "1" Categorie
 Client "*" -- "1" Adresse
 Client "*" -- "1" Adresse
