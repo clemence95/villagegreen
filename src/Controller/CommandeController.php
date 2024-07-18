@@ -5,6 +5,7 @@
 namespace App\Controller;
 
 use App\Entity\Commande;
+use App\Entity\CommandeProduit;
 use App\Entity\Produit;
 use App\Form\CommandeType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -63,6 +64,20 @@ class CommandeController extends AbstractController
             $commande->setStatut('En attente');
             $commande->setMontantTotal($totalTTC);
             $entityManager->persist($commande);
+            $entityManager->flush();  // Persist the Commande first to get its ID
+
+            foreach ($panier as $id => $quantite) {
+                $produit = $entityManager->getRepository(Produit::class)->find($id);
+                if ($produit) {
+                    $commandeProduit = new CommandeProduit();
+                    $commandeProduit->setCommande($commande);
+                    $commandeProduit->setProduit($produit);
+                    $commandeProduit->setQuantite((float)$quantite);  // Store as decimal
+
+                    $entityManager->persist($commandeProduit);
+                }
+            }
+
             $entityManager->flush();
 
             $commande->setBonLivraison($this->generateBonLivraison($commande));
@@ -100,6 +115,7 @@ class CommandeController extends AbstractController
         return 'facture_' . $commande->getId() . '.pdf';
     }
 }
+
 
 
 

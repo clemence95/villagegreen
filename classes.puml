@@ -82,6 +82,11 @@ class Client {
   -plainPassword : string 
 }
 
+class CommandeProduit {
+  primary_key( id ) : int
+  -quantite : float 
+}
+
 class Commande {
   primary_key( id ) : int
   -dateCommande : DateTimeInterface 
@@ -104,6 +109,8 @@ Categorie "*" -- "1" Categorie
 Client "*" -- "1" Adresse
 Client "*" -- "1" Adresse
 Client "*" -- "1" Employe
+CommandeProduit "*" -- "1" Commande
+CommandeProduit "*" -- "1" Produit
 Commande "*" -- "1" Adresse
 Commande "*" -- "1" Adresse
 Commande "*" -- "1" Client

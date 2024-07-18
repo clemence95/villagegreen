@@ -6,27 +6,27 @@
 <div class="container-profil mt-5">
     <div class="card">
         <div class="card-body">
-            <h1 class="card-title">Profil de {{ user.prenom }} {{ user.nom }}</h1>
+            <h1 class="card-title">Profil de {{ user.prenom|e }} {{ user.nom|e }}</h1>
             <dl class="row">
-                <dt class="col-sm-3">Email:</dt>
-                <dd class="col-sm-9">{{ user.email }}</dd>
+                <dt class="col-sm-3">{{ 'Email:'|trans }}</dt>
+                <dd class="col-sm-9">{{ user.email|e }}</dd>
                 {# Ajoutez d'autres champs de profil ici si nécessaire #}
             </dl>
         </div>
     </div>
 
     <div class="mt-4">
-        <h2>Vos Commandes</h2>
+        <h2>{{ 'Vos Commandes'|trans }}</h2>
         {% if commandes is not empty %}
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>ID Commande</th>
-                            <th>Date</th>
-                            <th>Montant Total</th>
-                            <th>Statut</th>
-                            <th>Produits Commandés</th> {# Nouvelle colonne pour afficher les produits #}
+                            <th>{{ 'ID Commande'|trans }}</th>
+                            <th>{{ 'Date'|trans }}</th>
+                            <th>{{ 'Montant Total'|trans }}</th>
+                            <th>{{ 'Statut'|trans }}</th>
+                            <th>{{ 'Produits Commandés'|trans }}</th> {# Nouvelle colonne pour afficher les produits #}
                         </tr>
                     </thead>
                     <tbody>
@@ -35,15 +35,12 @@
                                 <td>{{ commande.id }}</td>
                                 <td>{{ commande.dateCommande|date('d/m/Y H:i') }}</td>
                                 <td>{{ commande.montantTotal }} €</td>
-                                <td>{{ commande.statut }}</td>
+                                <td>{{ commande.statut|trans }}</td>
                                 <td>
                                     <ul>
-                                        {% for produitData in commande.produits %}
-                                            {# Récupérer le produit à partir de son ID #}
-                                            {% set produit = produitData.produit %}
+                                        {% for commandeProduit in commande.commandeProduits %}
                                             <li>
-                                                {{ produit.libelleCourt }} - {{ produitData.quantite }} pièce(s)
-                                                <!-- Ajoutez d'autres détails du produit si nécessaire -->
+                                                {{ commandeProduit.produit.libelleCourt|e }} - {{ commandeProduit.quantite }} {{ 'pièce(s)'|trans }}
                                             </li>
                                         {% endfor %}
                                     </ul>
@@ -55,12 +52,13 @@
             </div>
         {% else %}
             <div class="alert alert-info" role="alert">
-                Vous n'avez pas encore passé de commande.
+                {{ 'Vous n\'avez pas encore passé de commande.'|trans }}
             </div>
         {% endif %}
     </div>
 </div>
 {% endblock %}
+
 
 
 

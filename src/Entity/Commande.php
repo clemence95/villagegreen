@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Client;
-use App\Entity\Adresse;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -53,14 +51,14 @@ class Commande
     private ?string $facture = null;
 
     /**
-     * @var Collection<int, Produit>
+     * @var Collection<int, CommandeProduit>
      */
-    #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'commande')]
-    private Collection $produit;
+    #[ORM\OneToMany(targetEntity: CommandeProduit::class, mappedBy: 'commande', cascade: ['persist', 'remove'])]
+    private Collection $commandeProduits;
 
     public function __construct()
     {
-        $this->produit = new ArrayCollection();
+        $this->commandeProduits = new ArrayCollection();
     }
 
     // Getters and Setters...
@@ -192,10 +190,32 @@ class Commande
     }
 
     /**
-     * @return Collection<int, Produit>
+     * @return Collection<int, CommandeProduit>
      */
-    public function getProduit(): Collection
+    public function getCommandeProduits(): Collection
     {
-        return $this->produit;
+        return $this->commandeProduits;
+    }
+
+    public function addCommandeProduit(CommandeProduit $commandeProduit): self
+    {
+        if (!$this->commandeProduits->contains($commandeProduit)) {
+            $this->commandeProduits[] = $commandeProduit;
+            $commandeProduit->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandeProduit(CommandeProduit $commandeProduit): self
+    {
+        if ($this->commandeProduits->removeElement($commandeProduit)) {
+            // set the owning side to null (unless already changed)
+            if ($commandeProduit->getCommande() === $this) {
+                $commandeProduit->setCommande(null);
+            }
+        }
+
+        return $this;
     }
 }
