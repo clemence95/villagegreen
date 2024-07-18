@@ -26,7 +26,9 @@
                             <th>{{ 'Date'|trans }}</th>
                             <th>{{ 'Montant Total'|trans }}</th>
                             <th>{{ 'Statut'|trans }}</th>
-                            <th>{{ 'Produits Commandés'|trans }}</th> {# Nouvelle colonne pour afficher les produits #}
+                            <th>{{ 'Produits Commandés'|trans }}</th>
+                            <th>{{ 'Bon de Livraison'|trans }}</th>
+                            <th>{{ 'Facture'|trans }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,6 +47,20 @@
                                         {% endfor %}
                                     </ul>
                                 </td>
+                                <td>
+                                    {% if commande.bonLivraison %}
+                                        <a href="{{ asset('uploads/bons_livraison/' ~ commande.bonLivraison) }}" target="_blank">{{ 'Télécharger'|trans }}</a>
+                                    {% else %}
+                                        {{ 'Non disponible'|trans }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if commande.facture %}
+                                        <a href="{{ asset('uploads/factures/' ~ commande.facture) }}" target="_blank">{{ 'Télécharger'|trans }}</a>
+                                    {% else %}
+                                        {{ 'Non disponible'|trans }}
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -58,6 +74,7 @@
     </div>
 </div>
 {% endblock %}
+
 
 
 

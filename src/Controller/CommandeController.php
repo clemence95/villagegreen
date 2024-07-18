@@ -1,7 +1,5 @@
 <?php
 
-// src/Controller/CommandeController.php
-
 namespace App\Controller;
 
 use App\Entity\Commande;
@@ -9,6 +7,8 @@ use App\Entity\CommandeProduit;
 use App\Entity\Produit;
 use App\Form\CommandeType;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,8 +80,12 @@ class CommandeController extends AbstractController
 
             $entityManager->flush();
 
-            $commande->setBonLivraison($this->generateBonLivraison($commande));
-            $commande->setFacture($this->generateFacture($commande));
+            // Generate PDFs for Bon de Livraison and Facture
+            $bonLivraison = $this->generateBonLivraison($commande);
+            $facture = $this->generateFacture($commande);
+
+            $commande->setBonLivraison($bonLivraison);
+            $commande->setFacture($facture);
             $entityManager->flush();
 
             $session->remove('panier');
@@ -107,14 +111,35 @@ class CommandeController extends AbstractController
 
     private function generateBonLivraison(Commande $commande): string
     {
-        return 'bon_de_livraison_' . $commande->getId() . '.pdf';
+        $dompdf = new Dompdf();
+        $html = $this->renderView('pdf/bon_livraison.html.twig', ['commande' => $commande]);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $fileName = 'bon_de_livraison_' . $commande->getId() . '.pdf';
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/bons_livraison/' . $fileName;
+        file_put_contents($filePath, $dompdf->output());
+
+        return $fileName;
     }
 
     private function generateFacture(Commande $commande): string
     {
-        return 'facture_' . $commande->getId() . '.pdf';
+        $dompdf = new Dompdf();
+        $html = $this->renderView('pdf/facture.html.twig', ['commande' => $commande]);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $fileName = 'facture_' . $commande->getId() . '.pdf';
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/factures/' . $fileName;
+        file_put_contents($filePath, $dompdf->output());
+
+        return $fileName;
     }
 }
+
 
 
 

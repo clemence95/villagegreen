@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bon de Livraison</title>
+    <style>
+        body { font-family: DejaVu Sans, sans-serif; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Bon de Livraison</h1>
+    <p><strong>Commande n°:</strong> {{ commande.id }}</p>
+    <p><strong>Date:</strong> {{ commande.dateCommande|date('d/m/Y H:i') }}</p>
+    <h2>Adresse de Livraison</h2>
+    <p>{{ commande.adresseLivraison.rue }} {{ commande.adresseLivraison.numeroRue }}</p>
+    <p>{{ commande.adresseLivraison.codePostal }} {{ commande.adresseLivraison.ville }}</p>
+    <p>{{ commande.adresseLivraison.pays }}</p>
+    <h2>Produits</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for commandeProduit in commande.commandeProduits %}
+                <tr>
+                    <td>{{ commandeProduit.produit.libelleCourt }}</td>
+                    <td>{{ commandeProduit.quantite }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
