@@ -78,7 +78,7 @@ class CommandeController extends AbstractController
                 }
             }
 
-            $entityManager->flush();
+            $entityManager->flush();  // Persist the CommandeProduits
 
             // Generate PDFs for Bon de Livraison and Facture
             $bonLivraison = $this->generateBonLivraison($commande);
@@ -112,7 +112,11 @@ class CommandeController extends AbstractController
     private function generateBonLivraison(Commande $commande): string
     {
         $dompdf = new Dompdf();
-        $html = $this->renderView('pdf/bon_livraison.html.twig', ['commande' => $commande]);
+        $currentDateTime = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $html = $this->renderView('pdf/bon_livraison.html.twig', [
+            'commande' => $commande,
+            'currentDateTime' => $currentDateTime
+        ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
@@ -127,7 +131,11 @@ class CommandeController extends AbstractController
     private function generateFacture(Commande $commande): string
     {
         $dompdf = new Dompdf();
-        $html = $this->renderView('pdf/facture.html.twig', ['commande' => $commande]);
+        $currentDateTime = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $html = $this->renderView('pdf/facture.html.twig', [
+            'commande' => $commande,
+            'currentDateTime' => $currentDateTime
+        ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
@@ -139,6 +147,7 @@ class CommandeController extends AbstractController
         return $fileName;
     }
 }
+
 
 
 

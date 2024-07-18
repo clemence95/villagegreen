@@ -12,9 +12,9 @@
 <body>
     <h1>Bon de Livraison</h1>
     <p><strong>Commande n°:</strong> {{ commande.id }}</p>
-    <p><strong>Date:</strong> {{ commande.dateCommande|date('d/m/Y H:i') }}</p>
+    <p><strong>Date de commande:</strong> {{ "now"|date("d/m/Y H:i", "Europe/Paris") }}</p>
     <h2>Adresse de Livraison</h2>
-    <p>{{ commande.adresseLivraison.rue }} {{ commande.adresseLivraison.numeroRue }}</p>
+    <p>{{ commande.adresseLivraison.numeroRue }} {{ commande.adresseLivraison.rue }}</p>
     <p>{{ commande.adresseLivraison.codePostal }} {{ commande.adresseLivraison.ville }}</p>
     <p>{{ commande.adresseLivraison.pays }}</p>
     <h2>Produits</h2>
@@ -36,4 +36,5 @@
     </table>
 </body>
 </html>
+
 

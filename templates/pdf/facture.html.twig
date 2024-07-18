@@ -12,9 +12,9 @@
 <body>
     <h1>Facture</h1>
     <p><strong>Commande n°:</strong> {{ commande.id }}</p>
-    <p><strong>Date:</strong> {{ commande.dateCommande|date('d/m/Y H:i') }}</p>
+    <p><strong>Date de commande:</strong> {{ "now"|date("d/m/Y H:i", "Europe/Paris") }}</p>
     <h2>Adresse de Facturation</h2>
-    <p>{{ commande.adresseFacturation.rue }} {{ commande.adresseFacturation.numeroRue }}</p>
+    <p>{{ commande.adresseFacturation.numeroRue }} {{ commande.adresseFacturation.rue }}</p>
     <p>{{ commande.adresseFacturation.codePostal }} {{ commande.adresseFacturation.ville }}</p>
     <p>{{ commande.adresseFacturation.pays }}</p>
     <h2>Produits</h2>
@@ -44,3 +44,4 @@
     <p><strong>Total TTC:</strong> {{ commande.montantTotal }} €</p>
 </body>
 </html>
+
