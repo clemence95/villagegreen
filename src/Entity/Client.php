@@ -2,9 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Adresse;
-use App\Entity\Employe;
-use App\Entity\Commande;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -62,10 +59,10 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $type_client = null;
 
     #[ORM\ManyToOne(targetEntity: Adresse::class, inversedBy: 'clients_facturation')]
-    private ?Adresse $id_adresse_facturation = null;
+    private ?Adresse $adresseFacturation = null;
 
     #[ORM\ManyToOne(targetEntity: Adresse::class, inversedBy: 'clients_livraison')]
-    private ?Adresse $id_adresse_livraison = null;
+    private ?Adresse $adresseLivraison = null;
 
     #[ORM\ManyToOne(targetEntity: Employe::class)]
     private ?Employe $id_commercial = null;
@@ -284,26 +281,26 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getIdAdresseFacturation(): ?Adresse
+    public function getAdresseFacturation(): ?Adresse
     {
-        return $this->id_adresse_facturation;
+        return $this->adresseFacturation;
     }
 
-    public function setIdAdresseFacturation(?Adresse $id_adresse_facturation): self
+    public function setAdresseFacturation(?Adresse $adresseFacturation): self
     {
-        $this->id_adresse_facturation = $id_adresse_facturation;
+        $this->adresseFacturation = $adresseFacturation;
 
         return $this;
     }
 
-    public function getIdAdresseLivraison(): ?Adresse
+    public function getAdresseLivraison(): ?Adresse
     {
-        return $this->id_adresse_livraison;
+        return $this->adresseLivraison;
     }
 
-    public function setIdAdresseLivraison(?Adresse $id_adresse_livraison): self
+    public function setAdresseLivraison(?Adresse $adresseLivraison): self
     {
-        $this->id_adresse_livraison = $id_adresse_livraison;
+        $this->adresseLivraison = $adresseLivraison;
 
         return $this;
     }
