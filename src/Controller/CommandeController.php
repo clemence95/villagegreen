@@ -84,8 +84,9 @@ class CommandeController extends AbstractController
             $entityManager->refresh($commande);
 
             // Generate PDFs for Bon de Livraison and Facture
-            $bonLivraison = $this->generateBonLivraison($commande);
-            $facture = $this->generateFacture($commande);
+            $logoUrl = $this->generateUrl('accueil', [], true) . 'build/images/Logo.png';
+            $bonLivraison = $this->generateBonLivraison($commande, $logoUrl);
+            $facture = $this->generateFacture($commande, $logoUrl);
 
             $commande->setBonLivraison($bonLivraison);
             $commande->setFacture($facture);
@@ -112,13 +113,14 @@ class CommandeController extends AbstractController
         ]);
     }
 
-    private function generateBonLivraison(Commande $commande): string
+    private function generateBonLivraison(Commande $commande, string $logoUrl): string
     {
         $dompdf = new Dompdf();
         $currentDateTime = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
         $html = $this->renderView('pdf/bon_livraison.html.twig', [
             'commande' => $commande,
-            'currentDateTime' => $currentDateTime
+            'currentDateTime' => $currentDateTime,
+            'logoUrl' => $logoUrl
         ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
@@ -131,13 +133,14 @@ class CommandeController extends AbstractController
         return $fileName;
     }
 
-    private function generateFacture(Commande $commande): string
+    private function generateFacture(Commande $commande, string $logoUrl): string
     {
         $dompdf = new Dompdf();
         $currentDateTime = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
         $html = $this->renderView('pdf/facture.html.twig', [
             'commande' => $commande,
-            'currentDateTime' => $currentDateTime
+            'currentDateTime' => $currentDateTime,
+            'logoUrl' => $logoUrl
         ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');

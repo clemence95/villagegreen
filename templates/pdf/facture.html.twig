@@ -10,6 +10,9 @@
     </style>
 </head>
 <body>
+    <div style="text-align: center;">
+        <img src="{{ logoUrl }}" alt="Logo" class="logo" />
+    </div>
     <h1>Facture</h1>
     <p><strong>Commande n°:</strong> {{ commande.id }}</p>
     <p><strong>Date de commande:</strong> {{ "now"|date("d/m/Y H:i", "Europe/Paris") }}</p>
