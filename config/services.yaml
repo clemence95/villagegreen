@@ -55,4 +55,6 @@ services:
     App\Controller\InscriptionController:
         autowire: true
 
-
+    App\Service\AdresseService:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'

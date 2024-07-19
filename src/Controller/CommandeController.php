@@ -1,11 +1,13 @@
 <?php
 
+// src/Controller/CommandeController.php
 namespace App\Controller;
 
 use App\Entity\Commande;
 use App\Entity\CommandeProduit;
 use App\Entity\Produit;
 use App\Form\CommandeType;
+use App\Service\AdresseService;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommandeController extends AbstractController
 {
     #[Route('/commander', name: 'commander')]
-    public function commander(Request $request, EntityManagerInterface $entityManager): Response
+    public function commander(Request $request, EntityManagerInterface $entityManager, AdresseService $adresseService): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -53,8 +55,8 @@ class CommandeController extends AbstractController
             $livraison = $form->get('adresse_livraison')->getData();
             $facturation = $form->get('adresse_facturation')->getData();
 
-            $entityManager->persist($livraison);
-            $entityManager->persist($facturation);
+            $livraison = $adresseService->findOrCreateAdresse($livraison);
+            $facturation = $adresseService->findOrCreateAdresse($facturation);
 
             $commande->setAdresseLivraison($livraison);
             $commande->setAdresseFacturation($facturation);
@@ -152,6 +154,7 @@ class CommandeController extends AbstractController
         return $fileName;
     }
 }
+
 
 
 
