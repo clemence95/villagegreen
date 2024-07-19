@@ -8,7 +8,6 @@ use App\Entity\Produit;
 use App\Form\CommandeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
-use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
