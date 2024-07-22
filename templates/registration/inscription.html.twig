@@ -1,5 +1,3 @@
-{# templates/registration/inscription.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
@@ -18,81 +16,77 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Inscription</div>
-                    <div class="card-body">
-                        {{ form_start(registrationForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                <h2 class="mb-4">Inscription</h2>
+                {{ form_start(registrationForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
 
-                            <div class="form-group">
-                                {{ form_label(registrationForm.email) }}
-                                {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Email', 'required': 'required'}}) }}
-                                <div class="form_errors">
-                                    {{ form_errors(registrationForm.email) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                {{ form_label(registrationForm.plainPassword) }}
-                                {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe', 'required': 'required'}}) }}
-                                <div class="form_errors">
-                                    {{ form_errors(registrationForm.plainPassword) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                {{ form_label(registrationForm.nom) }}
-                                {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control', 'placeholder': 'Nom', 'required': 'required'}}) }}
-                                <div class="form_errors">
-                                    {{ form_errors(registrationForm.nom) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                {{ form_label(registrationForm.prenom) }}
-                                {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Prénom', 'required': 'required'}}) }}
-                                <div class="form_errors">
-                                    {{ form_errors(registrationForm.prenom) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                {{ form_label(registrationForm.telephone) }}
-                                {{ form_widget(registrationForm.telephone, {'attr': {'class': 'form-control', 'placeholder': 'Téléphone', 'required': 'required'}}) }}
-                                <div class="form_errors">
-                                    {{ form_errors(registrationForm.telephone) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                {{ form_label(registrationForm.type_client) }}
-                                {{ form_widget(registrationForm.type_client, {'attr': {'required': 'required'}}) }}
-                                <div class="form_errors">
-                                    {{ form_errors(registrationForm.type_client) }}
-                                </div>
-                            </div>
-
-                            <div id="professional-fields" class="hidden">
-                                <div class="form-group">
-                                    {{ form_label(registrationForm.siret) }}
-                                    {{ form_widget(registrationForm.siret, {'attr': {'class': 'form-control', 'placeholder': 'SIRET'}}) }}
-                                    <div class="form_errors">
-                                        {{ form_errors(registrationForm.siret) }}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    {{ form_label(registrationForm.entreprise) }}
-                                    {{ form_widget(registrationForm.entreprise, {'attr': {'class': 'form-control', 'placeholder': 'Entreprise'}}) }}
-                                    <div class="form_errors">
-                                        {{ form_errors(registrationForm.entreprise) }}
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary mt-3">S'inscrire</button>
-                        
-                        {{ form_end(registrationForm) }}
+                    <div class="form-group mb-3">
+                        {{ form_label(registrationForm.email) }}
+                        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Email', 'required': 'required'}}) }}
+                        <div class="form_errors">
+                            {{ form_errors(registrationForm.email) }}
+                        </div>
                     </div>
-                </div>
+
+                    <div class="form-group mb-3">
+                        {{ form_label(registrationForm.plainPassword) }}
+                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe', 'required': 'required'}}) }}
+                        <div class="form_errors">
+                            {{ form_errors(registrationForm.plainPassword) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        {{ form_label(registrationForm.nom) }}
+                        {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control', 'placeholder': 'Nom', 'required': 'required'}}) }}
+                        <div class="form_errors">
+                            {{ form_errors(registrationForm.nom) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        {{ form_label(registrationForm.prenom) }}
+                        {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Prénom', 'required': 'required'}}) }}
+                        <div class="form_errors">
+                            {{ form_errors(registrationForm.prenom) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        {{ form_label(registrationForm.telephone) }}
+                        {{ form_widget(registrationForm.telephone, {'attr': {'class': 'form-control', 'placeholder': 'Téléphone', 'required': 'required'}}) }}
+                        <div class="form_errors">
+                            {{ form_errors(registrationForm.telephone) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        {{ form_label(registrationForm.type_client) }}
+                        {{ form_widget(registrationForm.type_client, {'attr': {'required': 'required'}}) }}
+                        <div class="form_errors">
+                            {{ form_errors(registrationForm.type_client) }}
+                        </div>
+                    </div>
+
+                    <div id="professional-fields" class="hidden">
+                        <div class="form-group mb-3">
+                            {{ form_label(registrationForm.siret) }}
+                            {{ form_widget(registrationForm.siret, {'attr': {'class': 'form-control', 'placeholder': 'SIRET'}}) }}
+                            <div class="form_errors">
+                                {{ form_errors(registrationForm.siret) }}
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form_label(registrationForm.entreprise) }}
+                            {{ form_widget(registrationForm.entreprise, {'attr': {'class': 'form-control', 'placeholder': 'Entreprise'}}) }}
+                            <div class="form_errors">
+                                {{ form_errors(registrationForm.entreprise) }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary mt-3">S'inscrire</button>
+                
+                {{ form_end(registrationForm) }}
             </div>
         </div>
     </div>

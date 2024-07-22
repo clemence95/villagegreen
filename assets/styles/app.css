@@ -1,20 +1,20 @@
 /* Global styles */
 html, body {
-    height: 100%;
-    margin: 0;
     font-family: Arial, sans-serif;
     text-size-adjust: 100%; /* Pour les navigateurs modernes */
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
-/* Contenu principal */
 body {
     display: flex;
     flex-direction: column;
-    background-color:bisque;
-}
-
-.main-content {
-    flex: 1;
+    background-image: url('/assets/images/bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh; /* Assure que la hauteur minimale est de 100% de la vue */
+    background-attachment: fixed;
 }
 
 /* Footer */
@@ -22,16 +22,34 @@ footer {
     background-color: transparent;
     text-align: center;
     padding: 1rem;
-    position: relative;
     width: 100%;
     bottom: 0;
     left: 0;
 }
 
 .bg-main-content {
-    background-color: blanchedalmond;
+    background-color: rgba(255, 235, 205, 0.6); /* blanchedalmond avec 80% d'opacité */
     padding: 20px; /* Ajoute un padding pour éviter que le contenu touche les bords */
     border-radius: 10px; /* Optionnel : pour des coins arrondis */
+    flex: 1; /* Permet au contenu principal de s'étendre pour remplir l'espace disponible */
+}
+
+.card {
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05); /* Ajustez l'échelle selon vos préférences */
+}
+
+.card a {
+    text-decoration: none; /* Retire la décoration de lien */
+    color: inherit; /* Utilise la couleur parente par défaut */
+    transition: color 0.3s ease; /* Ajoute une transition pour le changement de couleur */
+}
+
+.card a:hover {
+    color: green /* Change la couleur au survol */
 }
 
 
