@@ -1,18 +1,16 @@
 /* Global styles */
 html, body {
     height: 100%;
+    margin: 0;
     font-family: Arial, sans-serif;
     text-size-adjust: 100%; /* Pour les navigateurs modernes */
-    background-image: url('/assets/images/bg.jpg');
 }
 
 /* Contenu principal */
 body {
     display: flex;
     flex-direction: column;
-    background-image: url('/public/build/images/bg.jpg');
-    height: 100%;
-    width: 100%;
+    background-color:bisque;
 }
 
 .main-content {
