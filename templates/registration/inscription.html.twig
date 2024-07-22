@@ -9,6 +9,15 @@
         .hidden {
             display: none;
         }
+        .form-label {
+            font-size: 1.25rem; /* Taille de texte plus grande pour les labels */
+        }
+        .form-control {
+            font-size: 1.25rem; /* Taille de texte plus grande pour les champs de formulaire */
+        }
+        .btn-primary {
+            font-size: 1.25rem; /* Taille de texte plus grande pour le bouton */
+        }
     </style>
 {% endblock %}
 
@@ -20,7 +29,7 @@
                 {{ form_start(registrationForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
 
                     <div class="form-group mb-3">
-                        {{ form_label(registrationForm.email) }}
+                        {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Email', 'required': 'required'}}) }}
                         <div class="form_errors">
                             {{ form_errors(registrationForm.email) }}
@@ -28,7 +37,7 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        {{ form_label(registrationForm.plainPassword) }}
+                        {{ form_label(registrationForm.plainPassword, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe', 'required': 'required'}}) }}
                         <div class="form_errors">
                             {{ form_errors(registrationForm.plainPassword) }}
@@ -36,7 +45,7 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        {{ form_label(registrationForm.nom) }}
+                        {{ form_label(registrationForm.nom, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control', 'placeholder': 'Nom', 'required': 'required'}}) }}
                         <div class="form_errors">
                             {{ form_errors(registrationForm.nom) }}
@@ -44,7 +53,7 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        {{ form_label(registrationForm.prenom) }}
+                        {{ form_label(registrationForm.prenom, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Prénom', 'required': 'required'}}) }}
                         <div class="form_errors">
                             {{ form_errors(registrationForm.prenom) }}
@@ -52,7 +61,7 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        {{ form_label(registrationForm.telephone) }}
+                        {{ form_label(registrationForm.telephone, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(registrationForm.telephone, {'attr': {'class': 'form-control', 'placeholder': 'Téléphone', 'required': 'required'}}) }}
                         <div class="form_errors">
                             {{ form_errors(registrationForm.telephone) }}
@@ -60,7 +69,7 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        {{ form_label(registrationForm.type_client) }}
+                        {{ form_label(registrationForm.type_client, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(registrationForm.type_client, {'attr': {'required': 'required'}}) }}
                         <div class="form_errors">
                             {{ form_errors(registrationForm.type_client) }}
@@ -69,14 +78,14 @@
 
                     <div id="professional-fields" class="hidden">
                         <div class="form-group mb-3">
-                            {{ form_label(registrationForm.siret) }}
+                            {{ form_label(registrationForm.siret, null, {'label_attr': {'class': 'form-label'}}) }}
                             {{ form_widget(registrationForm.siret, {'attr': {'class': 'form-control', 'placeholder': 'SIRET'}}) }}
                             <div class="form_errors">
                                 {{ form_errors(registrationForm.siret) }}
                             </div>
                         </div>
                         <div class="form-group mb-3">
-                            {{ form_label(registrationForm.entreprise) }}
+                            {{ form_label(registrationForm.entreprise, null, {'label_attr': {'class': 'form-label'}}) }}
                             {{ form_widget(registrationForm.entreprise, {'attr': {'class': 'form-control', 'placeholder': 'Entreprise'}}) }}
                             <div class="form_errors">
                                 {{ form_errors(registrationForm.entreprise) }}
