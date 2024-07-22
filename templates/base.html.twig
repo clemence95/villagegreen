@@ -7,9 +7,15 @@
     <link rel="stylesheet" href="{{ asset('/styles/app.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ asset('/build/images/Logo.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
+    <style>
+        .footer-opaque {
+            background-color: rgba(0, 0, 0, 0.8); /* Fond noir avec 80% d'opacité */
+        }
+    </style>
 </head>
 <body>
     <!-- Navbar horizontale -->
@@ -97,8 +103,41 @@
     </div>
     
     <!-- Footer -->
-    <footer class="bg-transparent text-light text-center py-3">
-        <p>&copy; 2024 VillageGreen</p>
+    <footer class="footer-opaque text-light text-center py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>Liens utiles</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ path('accueil') }}" class="text-light">Accueil</a></li>
+                        <li><a href="{{ path('produits') }}" class="text-light">Produits</a></li>
+                        <li><a href="#services" class="text-light">Services</a></li>
+                        <li><a href="#about" class="text-light">À propos</a></li>
+                        <li><a href="#contact" class="text-light">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-telephone"></i> +33 1 23 45 67 89</li>
+                        <li><i class="bi bi-envelope"></i> contact@villagegreen.com</li>
+                        <li><i class="bi bi-geo-alt"></i> 123 Rue de Paris, 75001 Paris, France</li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Suivez-nous</h5>
+                    <a href="#" class="text-light me-2"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-light me-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-light me-2"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-light me-2"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <p>&copy; 2024 VillageGreen. Tous droits réservés.</p>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <!-- Bootstrap JS et JS personnalisé -->
@@ -122,6 +161,7 @@
     {% endblock %}
 </body>
 </html>
+
 
 
 

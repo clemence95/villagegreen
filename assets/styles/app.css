@@ -17,14 +17,8 @@ body {
     background-attachment: fixed;
 }
 
-/* Footer */
-footer {
-    background-color: transparent;
-    text-align: center;
-    padding: 1rem;
-    width: 100%;
-    bottom: 0;
-    left: 0;
+.footer-opaque {
+    background-color: rgba(0, 0, 0, 0.8); /* Fond noir avec 80% d'opacité */
 }
 
 .bg-main-content {
