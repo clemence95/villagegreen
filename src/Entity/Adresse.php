@@ -30,17 +30,6 @@ class Adresse
     #[ORM\Column(type: 'string', length: 10, nullable: true)]
     private ?string $numero_rue = null;
 
-    #[ORM\OneToMany(mappedBy: 'adresseFacturation', targetEntity: Client::class)]
-    private Collection $clients_facturation;
-
-    #[ORM\OneToMany(mappedBy: 'adresseLivraison', targetEntity: Client::class)]
-    private Collection $clients_livraison;
-
-    public function __construct()
-    {
-        $this->clients_facturation = new ArrayCollection();
-        $this->clients_livraison = new ArrayCollection();
-    }
 
     // Getters and Setters
 
@@ -109,65 +98,6 @@ class Adresse
         return $this;
     }
 
-    /**
-     * @return Collection|Client[]
-     */
-    public function getClientsFacturation(): Collection
-    {
-        return $this->clients_facturation;
-    }
-
-    public function addClientFacturation(Client $client): self
-    {
-        if (!$this->clients_facturation->contains($client)) {
-            $this->clients_facturation[] = $client;
-            $client->setAdresseFacturation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeClientFacturation(Client $client): self
-    {
-        if ($this->clients_facturation->removeElement($client)) {
-            // set the owning side to null (unless already changed)
-            if ($client->getAdresseFacturation() === $this) {
-                $client->setAdresseFacturation(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Client[]
-     */
-    public function getClientsLivraison(): Collection
-    {
-        return $this->clients_livraison;
-    }
-
-    public function addClientLivraison(Client $client): self
-    {
-        if (!$this->clients_livraison->contains($client)) {
-            $this->clients_livraison[] = $client;
-            $client->setAdresseLivraison($this);
-        }
-
-        return $this;
-    }
-
-    public function removeClientLivraison(Client $client): self
-    {
-        if ($this->clients_livraison->removeElement($client)) {
-            // set the owning side to null (unless already changed)
-            if ($client->getAdresseLivraison() === $this) {
-                $client->setAdresseLivraison(null);
-            }
-        }
-
-        return $this;
-    }
 }
 
 

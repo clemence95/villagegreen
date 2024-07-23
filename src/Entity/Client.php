@@ -58,12 +58,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $type_client = null;
 
-    #[ORM\ManyToOne(targetEntity: Adresse::class, inversedBy: 'clients_facturation')]
-    private ?Adresse $adresseFacturation = null;
-
-    #[ORM\ManyToOne(targetEntity: Adresse::class, inversedBy: 'clients_livraison')]
-    private ?Adresse $adresseLivraison = null;
-
     #[ORM\ManyToOne(targetEntity: Employe::class)]
     private ?Employe $id_commercial = null;
 
@@ -277,30 +271,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTypeClient(string $type_client): self
     {
         $this->type_client = $type_client;
-
-        return $this;
-    }
-
-    public function getAdresseFacturation(): ?Adresse
-    {
-        return $this->adresseFacturation;
-    }
-
-    public function setAdresseFacturation(?Adresse $adresseFacturation): self
-    {
-        $this->adresseFacturation = $adresseFacturation;
-
-        return $this;
-    }
-
-    public function getAdresseLivraison(): ?Adresse
-    {
-        return $this->adresseLivraison;
-    }
-
-    public function setAdresseLivraison(?Adresse $adresseLivraison): self
-    {
-        $this->adresseLivraison = $adresseLivraison;
 
         return $this;
     }
