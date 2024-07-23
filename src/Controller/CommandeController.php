@@ -85,7 +85,7 @@ class CommandeController extends AbstractController
             $entityManager->refresh($commande);
 
             // Generate PDFs for Bon de Livraison and Facture
-            $logoUrl = $this->generateUrl('accueil', [], true) . 'build/images/Logo.png';
+            $logoUrl = $this->generateUrl('accueil', [], true) . 'assets/images/Logo.png';
             $bonLivraison = $this->generateBonLivraison($commande, $logoUrl);
             $facture = $this->generateFacture($commande, $logoUrl);
 
