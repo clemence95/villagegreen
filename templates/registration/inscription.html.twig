@@ -9,6 +9,25 @@
         .hidden {
             display: none;
         }
+        .form-fieldset {
+            border: 1px solid black; /* Bordure noire */
+            padding: 1.5em;
+            margin-bottom: 1.5em;
+            border-radius: 0.5em;
+            position: relative;
+        }
+        .form-legend {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+            color: black; /* Couleur du texte de la légende */
+            padding: 0 0.5em;
+            position: absolute;
+            top: -0.7em; /* Ajustez cette valeur pour centrer verticalement */
+            left: 1em; /* Ajustez cette valeur pour centrer horizontalement */
+            background: white;
+            border-radius: 0.5em; /* Arrondir les coins */
+        }
     </style>
 {% endblock %}
 
@@ -16,8 +35,11 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h2 class="mb-4">Inscription</h2>
+                <h2 class="form-title mb-4">Inscription</h2>
                 {{ form_start(registrationForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+
+                <fieldset class="form-fieldset">
+                    <legend class="form-legend">Informations personnelles</legend>
 
                     <div class="form-group mb-3">
                         {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'form-label'}}) }}
@@ -58,33 +80,39 @@
                             {{ form_errors(registrationForm.telephone) }}
                         </div>
                     </div>
+                </fieldset>
+
+                <fieldset class="form-fieldset">
+                    <legend class="form-legend">Type de client</legend>
 
                     <div class="form-group mb-3">
-                        {{ form_label(registrationForm.type_client, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(registrationForm.type_client, {'attr': {'required': 'required'}}) }}
                         <div class="form_errors">
                             {{ form_errors(registrationForm.type_client) }}
                         </div>
                     </div>
+                </fieldset>
 
-                    <div id="professional-fields" class="hidden">
-                        <div class="form-group mb-3">
-                            {{ form_label(registrationForm.siret, null, {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(registrationForm.siret, {'attr': {'class': 'form-control', 'placeholder': 'SIRET'}}) }}
-                            <div class="form_errors">
-                                {{ form_errors(registrationForm.siret) }}
-                            </div>
-                        </div>
-                        <div class="form-group mb-3">
-                            {{ form_label(registrationForm.entreprise, null, {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(registrationForm.entreprise, {'attr': {'class': 'form-control', 'placeholder': 'Entreprise'}}) }}
-                            <div class="form_errors">
-                                {{ form_errors(registrationForm.entreprise) }}
-                            </div>
+                <fieldset id="professional-fields" class="form-fieldset hidden">
+                    <legend class="form-legend">Informations professionnelles</legend>
+
+                    <div class="form-group mb-3">
+                        {{ form_label(registrationForm.siret, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(registrationForm.siret, {'attr': {'class': 'form-control', 'placeholder': 'SIRET'}}) }}
+                        <div class="form_errors">
+                            {{ form_errors(registrationForm.siret) }}
                         </div>
                     </div>
+                    <div class="form-group mb-3">
+                        {{ form_label(registrationForm.entreprise, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(registrationForm.entreprise, {'attr': {'class': 'form-control', 'placeholder': 'Entreprise'}}) }}
+                        <div class="form_errors">
+                            {{ form_errors(registrationForm.entreprise) }}
+                        </div>
+                    </div>
+                </fieldset>
                     
-                    <button type="submit" class="btn btn-primary mt-3">S'inscrire</button>
+                <button type="submit" class="btn btn-primary mt-3">S'inscrire</button>
                 
                 {{ form_end(registrationForm) }}
             </div>
@@ -123,6 +151,7 @@
         });
     </script>
 {% endblock %}
+
 
 
 
