@@ -1,22 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profil{% endblock %}
+{% block title %}Liste des Produits{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <h1 class="text-center">Dashboard de {{ app.user.nom }}</h1>
+    <h1>Liste des Produits</h1>
 
-                <dl class="text-center">
-                    <dt>Email:</dt>
-                    <dd>{{ app.user.email }}</dd>
-                    {# Ajoutez d'autres champs de profil ici #}
-                </dl>
-            </div>
-        </div>
-    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Libelle Court</th>
+                <th>Libelle Long</th>
+                <th>Prix Achat</th>
+                <th>Prix Vente</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for produit in produits %}
+            <tr>
+                <td>{{ produit.id }}</td>
+                <td>{{ produit.libelleCourt }}</td>
+                <td>{{ produit.libelleLong }}</td>
+                <td>{{ produit.prixAchat }}</td>
+                <td>{{ produit.prixVente }}</td>
+                <td>
+                    <a href="{{ path('app_produit_show', {'id': produit.id}) }}" class="btn btn-info">Voir</a>
+                    <a href="{{ path('app_produit_edit', {'id': produit.id}) }}" class="btn btn-warning">Éditer</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_produit_new') }}" class="btn btn-success">Créer un nouveau Produit</a>
 {% endblock %}
+
 
 
 
