@@ -48,6 +48,7 @@ security:
         - { path: ^/dashboard, roles: ROLE_ADMIN }
         - { path: ^/profil, roles: ROLE_USER }
         - { path: ^/commander, roles: ROLE_USER }
+        - { path: ^/produit, roles: ROLE_ADMIN }
 
 
 
