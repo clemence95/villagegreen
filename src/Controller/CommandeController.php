@@ -2,17 +2,19 @@
 
 namespace App\Controller;
 
-use App\Entity\Commande;
-use App\Entity\CommandeProduit;
+use Dompdf\Dompdf;
+use App\Entity\Client;
+use App\Entity\Employe;
 use App\Entity\Produit;
+use App\Entity\Commande;
 use App\Form\CommandeType;
+use App\Entity\CommandeProduit;
 use App\Service\AdresseService;
 use Doctrine\ORM\EntityManagerInterface;
-use Dompdf\Dompdf;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CommandeController extends AbstractController
 {
@@ -61,9 +63,9 @@ class CommandeController extends AbstractController
             $commande->setAdresseFacturation($facturation);
 
             // Vérifiez si l'utilisateur est un client ou un employé
-            if ($user instanceof \App\Entity\Client) {
+            if ($user instanceof Client) {
                 $commande->setClient($user);
-            } elseif ($user instanceof \App\Entity\Employe) {
+            } elseif ($user instanceof Employe) {
                 $commande->setEmploye($user);
             } else {
                 throw new \Exception('L’utilisateur doit être soit un client, soit un employé.');

@@ -1,5 +1,4 @@
 <?php
-// src/Controller/ProfilController.php
 
 namespace App\Controller;
 
@@ -20,7 +19,13 @@ class ProfilController extends AbstractController
         }
 
         // Récupérer les commandes de l'utilisateur
-        $commandes = $entityManager->getRepository(Commande::class)->findBy(['client' => $user]);
+        $commandes = [];
+
+        if ($user instanceof \App\Entity\Client) {
+            $commandes = $entityManager->getRepository(Commande::class)->findBy(['client' => $user]);
+        } elseif ($user instanceof \App\Entity\Employe) {
+            $commandes = $entityManager->getRepository(Commande::class)->findBy(['employe' => $user]);
+        }
 
         return $this->render('profil/index.html.twig', [
             'user' => $user,
@@ -28,4 +33,5 @@ class ProfilController extends AbstractController
         ]);
     }
 }
+
 
