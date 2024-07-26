@@ -32,10 +32,6 @@ class ProduitType extends AbstractType
                 'class' => Fournisseur::class,
                 'choice_label' => 'id',
             ])
-            ->add('commande', EntityType::class, [
-                'class' => Commande::class,
-                'choice_label' => 'id',
-            ])
         ;
     }
 

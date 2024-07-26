@@ -101,7 +101,6 @@ class Commande {
 
 Produit "*" -- "1" Categorie
 Produit "*" -- "1" Fournisseur
-Produit "*" -- "1" Commande
 Fournisseur "*" -- "1" Adresse
 Categorie "*" -- "1" Categorie
 Client "*" -- "1" Employe
