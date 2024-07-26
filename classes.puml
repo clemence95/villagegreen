@@ -109,6 +109,7 @@ CommandeProduit "*" -- "1" Produit
 Commande "*" -- "1" Adresse
 Commande "*" -- "1" Adresse
 Commande "*" -- "1" Client
+Commande "*" -- "1" Employe
 
 package Legend {
   legend

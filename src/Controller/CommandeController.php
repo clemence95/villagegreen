@@ -1,6 +1,5 @@
 <?php
 
-// src/Controller/CommandeController.php
 namespace App\Controller;
 
 use App\Entity\Commande;
@@ -60,7 +59,16 @@ class CommandeController extends AbstractController
 
             $commande->setAdresseLivraison($livraison);
             $commande->setAdresseFacturation($facturation);
-            $commande->setClient($this->getUser());
+
+            // Vérifiez si l'utilisateur est un client ou un employé
+            if ($user instanceof \App\Entity\Client) {
+                $commande->setClient($user);
+            } elseif ($user instanceof \App\Entity\Employe) {
+                $commande->setEmploye($user);
+            } else {
+                throw new \Exception('L’utilisateur doit être soit un client, soit un employé.');
+            }
+
             $commande->setDateCommande(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
             $commande->setStatut('En attente');
             $commande->setMontantTotal($totalTTC);
@@ -154,6 +162,8 @@ class CommandeController extends AbstractController
         return $fileName;
     }
 }
+
+
 
 
 

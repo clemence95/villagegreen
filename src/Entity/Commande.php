@@ -40,7 +40,7 @@ class Commande
     private ?Adresse $adresseLivraison = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'commandes')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Client $client = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
@@ -48,6 +48,10 @@ class Commande
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $facture = null;
+
+    #[ORM\ManyToOne(targetEntity: Employe::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Employe $employe = null;
 
     /**
      * @var Collection<int, CommandeProduit>
@@ -215,6 +219,17 @@ class Commande
             }
         }
 
+        return $this;
+    }
+
+    public function getEmploye(): ?Employe
+    {
+        return $this->employe;
+    }
+
+    public function setEmploye(?Employe $employe): self
+    {
+        $this->employe = $employe;
         return $this;
     }
 }
