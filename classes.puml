@@ -84,7 +84,7 @@ class Client {
 
 class CommandeProduit {
   primary_key( id ) : int
-  -quantite : float 
+  -quantite : string 
 }
 
 class Commande {

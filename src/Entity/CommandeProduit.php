@@ -14,6 +14,7 @@ class CommandeProduit
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'commandeProduits')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Commande $commande = null;
 
     #[ORM\ManyToOne(inversedBy: 'commandeProduits')]
@@ -21,7 +22,7 @@ class CommandeProduit
     private ?Produit $produit = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    private ?float $quantite = null;
+    private ?string $quantite = null;
 
     public function getId(): ?int
     {
@@ -52,15 +53,16 @@ class CommandeProduit
         return $this;
     }
 
-    public function getQuantite(): ?float
+    public function getQuantite(): ?string
     {
         return $this->quantite;
     }
 
-    public function setQuantite(float $quantite): self
+    public function setQuantite(string $quantite): self
     {
         $this->quantite = $quantite;
 
         return $this;
     }
 }
+

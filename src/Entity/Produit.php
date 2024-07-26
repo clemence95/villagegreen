@@ -47,10 +47,7 @@ class Produit
     #[ORM\JoinColumn(nullable: false)]
     private ?Fournisseur $idFournisseur = null;
 
-    /**
-     * @var Collection<int, CommandeProduit>
-     */
-    #[ORM\OneToMany(targetEntity: CommandeProduit::class, mappedBy: 'Produit')]
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: CommandeProduit::class)]
     private Collection $commandeProduits;
 
     public function __construct()
@@ -181,17 +178,17 @@ class Produit
         return $this->commandeProduits;
     }
 
-    public function addCommandeProduit(CommandeProduit $commandeProduit): static
+    public function addCommandeProduit(CommandeProduit $commandeProduit): self
     {
         if (!$this->commandeProduits->contains($commandeProduit)) {
-            $this->commandeProduits->add($commandeProduit);
+            $this->commandeProduits[] = $commandeProduit;
             $commandeProduit->setProduit($this);
         }
 
         return $this;
     }
 
-    public function removeCommandeProduit(CommandeProduit $commandeProduit): static
+    public function removeCommandeProduit(CommandeProduit $commandeProduit): self
     {
         if ($this->commandeProduits->removeElement($commandeProduit)) {
             // set the owning side to null (unless already changed)
@@ -203,6 +200,7 @@ class Produit
         return $this;
     }
 }
+
 
 
 
