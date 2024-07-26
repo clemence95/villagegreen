@@ -13,6 +13,8 @@
                 <th>Libelle Long</th>
                 <th>Prix Achat</th>
                 <th>Prix Vente</th>
+                <th>Catégorie</th>
+                <th>Sous-Catégorie</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -24,6 +26,8 @@
                 <td>{{ produit.libelleLong }}</td>
                 <td>{{ produit.prixAchat }}</td>
                 <td>{{ produit.prixVente }}</td>
+                <td>{{ produit.sousCategorie.categorieParent.nom }}</td>
+                <td>{{ produit.sousCategorie.nom }}</td>
                 <td>
                     <a href="{{ path('app_produit_show', {'id': produit.id}) }}" class="btn btn-info">Voir</a>
                     <a href="{{ path('app_produit_edit', {'id': produit.id}) }}" class="btn btn-warning">Éditer</a>
