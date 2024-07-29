@@ -3,52 +3,57 @@
 {% block title %}Produit{% endblock %}
 
 {% block body %}
-    <h1>Produit</h1>
+    <div class="container mt-5">
+        <h1>Produit</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ produit.id }}</td>
-            </tr>
-            <tr>
-                <th>LibelleCourt</th>
-                <td>{{ produit.libelleCourt }}</td>
-            </tr>
-            <tr>
-                <th>LibelleLong</th>
-                <td>{{ produit.libelleLong }}</td>
-            </tr>
-            <tr>
-                <th>ReferenceFournisseur</th>
-                <td>{{ produit.referenceFournisseur }}</td>
-            </tr>
-            <tr>
-                <th>PrixAchat</th>
-                <td>{{ produit.prixAchat }}</td>
-            </tr>
-            <tr>
-                <th>PrixVente</th>
-                <td>{{ produit.prixVente }}</td>
-            </tr>
-            <tr>
-                <th>Stock</th>
-                <td>{{ produit.stock }}</td>
-            </tr>
-            <tr>
-                <th>Actif</th>
-                <td>{{ produit.actif ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Photo</th>
-                <td>{{ produit.photo }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th scope="row">Id</th>
+                    <td>{{ produit.id }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">LibelleCourt</th>
+                    <td>{{ produit.libelleCourt }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">LibelleLong</th>
+                    <td>{{ produit.libelleLong }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">ReferenceFournisseur</th>
+                    <td>{{ produit.referenceFournisseur }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">PrixAchat</th>
+                    <td>{{ produit.prixAchat }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">PrixVente</th>
+                    <td>{{ produit.prixVente }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Stock</th>
+                    <td>{{ produit.stock }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Actif</th>
+                    <td>{{ produit.actif ? 'Yes' : 'No' }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Photo</th>
+                    <td>{{ produit.photo }}</td>
+                </tr>
+            </tbody>
+        </table>
 
-    <a href="{{ path('app_produit_index') }}">back to list</a>
+        <div class="d-flex justify-content-between mt-3">
+            <a href="{{ path('app_produit_index') }}" class="btn btn-primary">Back to list</a>
+            <a href="{{ path('app_produit_edit', {'id': produit.id}) }}" class="btn btn-secondary">Edit</a>
+        </div>
 
-    <a href="{{ path('app_produit_edit', {'id': produit.id}) }}">edit</a>
-
-    {{ include('produit/_delete_form.html.twig') }}
+        <div class="mt-3">
+            {{ include('produit/_delete_form.html.twig', { 'attr': {'class': 'btn btn-danger'} }) }}
+        </div>
+    </div>
 {% endblock %}
