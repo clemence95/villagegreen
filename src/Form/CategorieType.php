@@ -17,7 +17,7 @@ class CategorieType extends AbstractType
             ->add('image')
             ->add('categorieParent', EntityType::class, [
                 'class' => Categorie::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nom',
             ])
         ;
     }

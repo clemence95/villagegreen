@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container mt-5">
-        <h1>Categorie</h1>
+        <h1>{{ categorie.categorieParent ? 'Sous-categorie' : 'Categorie' }}</h1>
 
         <table class="table table-striped">
             <tbody>
@@ -20,14 +20,22 @@
                     <th scope="row">Image</th>
                     <td>{{ categorie.image }}</td>
                 </tr>
+                {% if categorie.categorieParent %}
+                <tr>
+                    <th scope="row">Categorie Parent</th>
+                    <td>{{ categorie.categorieParent.nom }}</td>
+                </tr>
+                {% endif %}
             </tbody>
         </table>
 
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between mt-3">
             <a href="{{ path('app_categorie_index') }}" class="btn btn-primary">Back to list</a>
             <a href="{{ path('app_categorie_edit', {'id': categorie.id}) }}" class="btn btn-secondary">Edit</a>
         </div>
 
-        {{ include('categorie/_delete_form.html.twig') }}
+        <div class="mt-3">
+            {{ include('categorie/_delete_form.html.twig') }}
+        </div>
     </div>
 {% endblock %}
