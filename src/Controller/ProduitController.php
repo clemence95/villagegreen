@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Produit;
-use App\Entity\Categorie;
 use App\Form\ProduitType;
 use App\Repository\ProduitRepository;
 use App\Repository\CategorieRepository;
@@ -41,7 +40,7 @@ class ProduitController extends AbstractController
 
         return $this->render('produit/new.html.twig', [
             'produit' => $produit,
-            'form' => $form,
+            'form' => $form->createView(), // Ajoutez cette ligne
         ]);
     }
 
@@ -67,7 +66,7 @@ class ProduitController extends AbstractController
 
         return $this->render('produit/edit.html.twig', [
             'produit' => $produit,
-            'form' => $form,
+            'form' => $form->createView(), // Ajoutez cette ligne
         ]);
     }
 

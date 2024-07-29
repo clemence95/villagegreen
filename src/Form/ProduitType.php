@@ -27,17 +27,17 @@ class ProduitType extends AbstractType
                     'Oui' => true,
                     'Non' => false,
                 ],
-                'expanded' => true,  // Render as radio buttons
+                'expanded' => true,
                 'multiple' => false,
             ])
             ->add('photo')
             ->add('sousCategorie', EntityType::class, [
                 'class' => Categorie::class,
-                'choice_label' => 'nom',
+                'choice_label' => 'nom',  
             ])
             ->add('idFournisseur', EntityType::class, [
                 'class' => Fournisseur::class,
-                'choice_label' => 'nom_entreprise',
+                'choice_label' => 'nom_entreprise',  
             ]);
     }
 
