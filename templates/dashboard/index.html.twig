@@ -7,100 +7,99 @@
         <h1>Tableau de Bord</h1>
 
         <h2 class="mt-4">Liste des Produits</h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Libelle Court</th>
-                    <th>Libelle Long</th>
-                    <th>Prix Achat</th>
-                    <th>Prix Vente</th>
-                    <th>Catégorie</th>
-                    <th>Sous-Catégorie</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for produit in produits %}
-                <tr>
-                    <td>{{ produit.id }}</td>
-                    <td>{{ produit.libelleCourt }}</td>
-                    <td>{{ produit.libelleLong }}</td>
-                    <td>{{ produit.prixAchat }}</td>
-                    <td>{{ produit.prixVente }}</td>
-                    <td>{{ produit.sousCategorie.categorieParent ? produit.sousCategorie.categorieParent.nom : 'N/A' }}</td>
-                    <td>{{ produit.sousCategorie.nom }}</td>
-                    <td>
-                        <a href="{{ path('app_produit_show', {'id': produit.id}) }}" class="btn btn-info">Voir</a>
-                        <a href="{{ path('app_produit_edit', {'id': produit.id}) }}" class="btn btn-warning">Éditer</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
-        <a href="{{ path('app_produit_new') }}" class="btn btn-success">Créer un nouveau Produit</a>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Libelle Court</th>
+                        <th>Libelle Long</th>
+                        <th>Prix Achat</th>
+                        <th>Prix Vente</th>
+                        <th>Catégorie</th>
+                        <th>Sous-Catégorie</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for produit in produits %}
+                    <tr>
+                        <td>{{ produit.id }}</td>
+                        <td>{{ produit.libelleCourt }}</td>
+                        <td>{{ produit.libelleLong }}</td>
+                        <td>{{ produit.prixAchat }}</td>
+                        <td>{{ produit.prixVente }}</td>
+                        <td>{{ produit.sousCategorie.categorieParent ? produit.sousCategorie.categorieParent.nom : 'N/A' }}</td>
+                        <td>{{ produit.sousCategorie.nom }}</td>
+                        <td>
+                            <a href="{{ path('app_produit_show', {'id': produit.id}) }}" class="btn btn-info btn-sm">Voir</a>
+                            <a href="{{ path('app_produit_edit', {'id': produit.id}) }}" class="btn btn-warning btn-sm">Éditer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a href="{{ path('app_produit_new') }}" class="btn btn-success mt-3">Créer un nouveau Produit</a>
 
         <h2 class="mt-4">Liste des Catégories Principales</h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nom</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for categorie in categories %}
-                {% if not categorie.categorieParent %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>{{ categorie.id }}</td>
-                        <td>{{ categorie.nom }}</td>
-                        <td>
-                            <a href="{{ path('app_categorie_show', {'id': categorie.id}) }}" class="btn btn-info">Voir</a>
-                            <a href="{{ path('app_categorie_edit', {'id': categorie.id}) }}" class="btn btn-warning">Éditer</a>
-                            {{ include('categorie/_delete_form.html.twig', { 'attr': {'class': 'd-inline-block'} }) }}
-                        </td>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Actions</th>
                     </tr>
-                {% endif %}
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for categorie in categories %}
+                    {% if not categorie.categorieParent %}
+                        <tr>
+                            <td>{{ categorie.id }}</td>
+                            <td>{{ categorie.nom }}</td>
+                            <td>
+                                <a href="{{ path('app_categorie_show', {'id': categorie.id}) }}" class="btn btn-info btn-sm">Voir</a>
+                                <a href="{{ path('app_categorie_edit', {'id': categorie.id}) }}" class="btn btn-warning btn-sm">Éditer</a>
+                                {{ include('categorie/_delete_form.html.twig', { 'attr': {'class': 'd-inline-block'} }) }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
         <h2 class="mt-4">Liste des Sous-Catégories</h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nom</th>
-                    <th>Catégorie Parente</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for categorie in categories %}
-                {% if categorie.categorieParent %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>{{ categorie.id }}</td>
-                        <td>{{ categorie.nom }}</td>
-                        <td>{{ categorie.categorieParent.nom }}</td>
-                        <td>
-                            <a href="{{ path('app_categorie_show', {'id': categorie.id}) }}" class="btn btn-info">Voir</a>
-                            <a href="{{ path('app_categorie_edit', {'id': categorie.id}) }}" class="btn btn-warning">Éditer</a>
-                            {{ include('categorie/_delete_form.html.twig', { 'attr': {'class': 'd-inline-block'} }) }}
-                        </td>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Catégorie Parente</th>
+                        <th>Actions</th>
                     </tr>
-                {% endif %}
-            {% endfor %}
-            </tbody>
-        </table>
-
-        <a href="{{ path('app_categorie_new') }}" class="btn btn-success">Créer une nouvelle Catégorie</a>
+                </thead>
+                <tbody>
+                {% for categorie in categories %}
+                    {% if categorie.categorieParent %}
+                        <tr>
+                            <td>{{ categorie.id }}</td>
+                            <td>{{ categorie.nom }}</td>
+                            <td>{{ categorie.categorieParent.nom }}</td>
+                            <td>
+                                <a href="{{ path('app_categorie_show', {'id': categorie.id}) }}" class="btn btn-info btn-sm">Voir</a>
+                                <a href="{{ path('app_categorie_edit', {'id': categorie.id}) }}" class="btn btn-warning btn-sm">Éditer</a>
+                                {{ include('categorie/_delete_form.html.twig', { 'attr': {'class': 'd-inline-block'} }) }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a href="{{ path('app_categorie_new') }}" class="btn btn-success mt-3">Créer une nouvelle Catégorie</a>
     </div>
 {% endblock %}
-
-
-
-
-
 
