@@ -3,11 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Categorie;
-use App\Entity\Commande;
 use App\Entity\Fournisseur;
 use App\Entity\Produit;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,17 +22,23 @@ class ProduitType extends AbstractType
             ->add('prixAchat')
             ->add('prixVente')
             ->add('stock')
-            ->add('actif')
+            ->add('actif', ChoiceType::class, [
+                'choices' => [
+                    'Oui' => true,
+                    'Non' => false,
+                ],
+                'expanded' => true,  // Render as radio buttons
+                'multiple' => false,
+            ])
             ->add('photo')
             ->add('sousCategorie', EntityType::class, [
                 'class' => Categorie::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nom',
             ])
             ->add('idFournisseur', EntityType::class, [
                 'class' => Fournisseur::class,
-                'choice_label' => 'id',
-            ])
-        ;
+                'choice_label' => 'nom_entreprise',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -42,3 +48,4 @@ class ProduitType extends AbstractType
         ]);
     }
 }
+

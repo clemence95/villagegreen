@@ -3,7 +3,7 @@
 {% block title %}{{ produit.id ? 'Edit' : 'New' }} Produit{% endblock %}
 
 {% block body %}
-    <h1>{{ produit.id ? 'Edit' : 'New' }} Produit</h1>
+    <h1 class="mt-5">{{ produit.id ? 'Edit' : 'New' }} Produit</h1>
 
     {{ include('produit/_form.html.twig', {'button_label': produit.id ? 'Update' : 'Create'}) }}
 

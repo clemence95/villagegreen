@@ -1,4 +1,78 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+    <div class="form-group">
+        {{ form_label(form.libelleCourt, null, {'label_attr': {'class': 'control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.libelleCourt, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.libelleLong, null, {'label_attr': {'class': 'control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.libelleLong, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.referenceFournisseur, null, {'label_attr': {'class': 'control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.referenceFournisseur, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.prixAchat, null, {'label_attr': {'class': 'control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.prixAchat, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.prixVente, null, {'label_attr': {'class': 'control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.prixVente, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.stock, null, {'label_attr': {'class': 'control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.stock, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.actif, null, {'label_attr': {'class': 'control-label'}}) }}
+        <div class="col-sm-10">
+            <div class="form-check form-check-inline">
+                {{ form_widget(form.actif.0, {'attr': {'class': 'form-check-input'}}) }}
+                <label class="form-check-label">{{ form_label(form.actif.0, 'Oui') }}</label>
+            </div>
+            <div class="form-check form-check-inline">
+                {{ form_widget(form.actif.1, {'attr': {'class': 'form-check-input'}}) }}
+                <label class="form-check-label">{{ form_label(form.actif.1, 'Non') }}</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.photo, null, {'label_attr': {'class': 'control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.photo, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.sousCategorie, null, {'label_attr': {'class': 'control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.sousCategorie, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.idFournisseur, null, {'label_attr': {'class': 'control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.idFournisseur, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    
+    <!-- Bouton en bas du formulaire -->
+    <div class="form-group mt-4">
+        <div class="col-sm-12 text-right">
+            <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+        </div>
+    </div>
 {{ form_end(form) }}
+
+
