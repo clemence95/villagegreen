@@ -44,6 +44,28 @@ class CategorieController extends AbstractController
         ]);
     }
 
+    #[Route('/new-parent', name: 'app_categorie_new_parent', methods: ['GET', 'POST'])]
+    public function newParent(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $categorie = new Categorie();
+        $form = $this->createForm(CategorieType::class, $categorie, [
+            'categorie_parent' => false // Désactiver le champ catégorie parente
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($categorie);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_categorie_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('categorie/new_parent.html.twig', [
+            'categorie' => $categorie,
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_categorie_show', methods: ['GET'])]
     public function show(Categorie $categorie): Response
     {

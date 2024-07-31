@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Catégorie Parent{% endblock %}
+
+{% block body %}
+    <h1 class="mt-5">Nouvelle Catégorie</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Créer</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_categorie_index') }}" class="btn btn-secondary mt-3">Dashboard</a>
+{% endblock %}
