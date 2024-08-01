@@ -50,7 +50,7 @@ security:
         - { path: ^/commander, roles: ROLE_USER }
         - { path: ^/produits-management, roles: ROLE_ADMIN }
         - { path: ^/categorie-management, roles: ROLE_ADMIN }
-        - { path: ^/api/produits, roles: ROLE_ADMIN }
+        - { path: ^/api, roles: ROLE_ADMIN }
 
 
 
