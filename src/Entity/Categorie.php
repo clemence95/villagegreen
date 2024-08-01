@@ -2,33 +2,44 @@
 
 namespace App\Entity;
 
-use App\Repository\CategorieRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
-#[ORM\Entity(repositoryClass: CategorieRepository::class)]
+use App\Repository\CategorieRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\ApiResource;
+#[ORM\Entity]
+#[ApiResource(
+    normalizationContext: ['groups' => ['categorie:read']],
+    denormalizationContext: ['groups' => ['categorie:write']]
+)]
 class Categorie
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['categorie:read', 'produit:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 50)]
+    #[Groups(['categorie:read', 'categorie:write', 'produit:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['categorie:read', 'categorie:write'])]
     private ?string $image = null;
 
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'categorieParent')]
+    #[Groups(['categorie:read'])]
     private Collection $sousCategories;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'sousCategories')]
     #[ORM\JoinColumn(name: 'categorie_parent_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[Groups(['categorie:read', 'categorie:write'])]
     private ?self $categorieParent = null;
 
     #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'sousCategorie')]
+    #[Groups(['categorie:read'])]
     private Collection $produits;
 
     public function __construct()

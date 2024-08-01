@@ -7,49 +7,66 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProduitRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Attribute\Groups;
+
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['produit:read']],
+    denormalizationContext: ['groups' => ['produit:write']]
+)]
 class Produit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['produit:read', 'categorie:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['produit:read', 'produit:write', 'categorie:read'])]
     private ?string $libelleCourt = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['produit:read', 'produit:write'])]
     private ?string $libelleLong = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['produit:read', 'produit:write'])]
     private ?string $referenceFournisseur = null;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(['produit:read', 'produit:write'])]
     private ?float $prixAchat = null;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(['produit:read', 'produit:write'])]
     private ?float $prixVente = null;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(['produit:read', 'produit:write'])]
     private ?int $stock = null;
 
     #[ORM\Column(type: 'boolean')]
+    #[Groups(['produit:read', 'produit:write'])]
     private ?bool $actif = null;
 
     #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'produits')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['produit:read', 'produit:write'])]
     private ?Categorie $sousCategorie = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['produit:read', 'produit:write'])]
     private ?string $photo = null;
 
     #[ORM\ManyToOne(targetEntity: Fournisseur::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['produit:read', 'produit:write'])]
     private ?Fournisseur $idFournisseur = null;
 
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: CommandeProduit::class)]
+    #[Groups(['produit:read'])]
     private Collection $commandeProduits;
 
     public function __construct()
