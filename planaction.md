@@ -6,7 +6,7 @@
 - Deux entités distinctes pour `Client` et `Employe` pourraient compliquer la gestion des utilisateurs.
 
 ### Solution :
-- Regrouper les utilisateurs sous une seule entité `User` avec des rôles (par exemple, `ROLE_USER` pour les clients et `ROLE_ADMIN` pour les employés).
+- Regrouper les utilisateurs sous une seule entité `User` avec des rôles (par exemple, `ROLE_USER` pour les clients et `ROLE_ADMIN` pour les employés). 
 
 ### Actions :
 - Fusionner les entités `Client` et `Employe` dans une seule entité `User`.
@@ -89,5 +89,3 @@
 - Implémenter des requêtes pour calculer les indicateurs de performance (chiffre d'affaires mois par mois, produits les plus commandés, etc.).
 - Assurer que le tableau de bord est sécurisé et accessible uniquement aux administrateurs.
 
-
-bordel
