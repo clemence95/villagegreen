@@ -48,16 +48,26 @@
                                     </ul>
                                 </td>
                                 <td>
-                                    {% if commande.bonLivraison %}
-                                        <a href="{{ asset('uploads/bons_livraison/' ~ commande.bonLivraison) }}" target="_blank">{{ 'Télécharger'|trans }}</a>
-                                    {% else %}
+                                    {% set bonLivraisonTrouve = false %}
+                                    {% for document in commande.documents %}
+                                        {% if document.type == 'bon_livraison' %}
+                                            <a href="{{ asset('uploads/documents/' ~ document.fileName) }}" target="_blank">{{ 'Télécharger'|trans }}</a>
+                                            {% set bonLivraisonTrouve = true %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if not bonLivraisonTrouve %}
                                         {{ 'Non disponible'|trans }}
                                     {% endif %}
                                 </td>
                                 <td>
-                                    {% if commande.facture %}
-                                        <a href="{{ asset('uploads/factures/' ~ commande.facture) }}" target="_blank">{{ 'Télécharger'|trans }}</a>
-                                    {% else %}
+                                    {% set factureTrouvee = false %}
+                                    {% for document in commande.documents %}
+                                        {% if document.type == 'facture' %}
+                                            <a href="{{ asset('uploads/documents/' ~ document.fileName) }}" target="_blank">{{ 'Télécharger'|trans }}</a>
+                                            {% set factureTrouvee = true %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if not factureTrouvee %}
                                         {{ 'Non disponible'|trans }}
                                     {% endif %}
                                 </td>
@@ -74,6 +84,7 @@
     </div>
 </div>
 {% endblock %}
+
 
 
 

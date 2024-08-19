@@ -82,6 +82,13 @@ class Client {
   -plainPassword : string 
 }
 
+class Document {
+  primary_key( id ) : int
+  -type : string 
+  -dateCreation : DateTimeInterface 
+  -fileName : string 
+}
+
 class CommandeProduit {
   primary_key( id ) : int
   -quantite : string 
@@ -95,8 +102,6 @@ class Commande {
   -reductionSupplementaire : float 
   -modePaiement : string 
   -informationReglement : string 
-  -bonLivraison : string 
-  -facture : string 
 }
 
 Produit "*" -- "1" Categorie
@@ -104,6 +109,7 @@ Produit "*" -- "1" Fournisseur
 Fournisseur "*" -- "1" Adresse
 Categorie "*" -- "1" Categorie
 Client "*" -- "1" Employe
+Document "*" -- "1" Commande
 CommandeProduit "*" -- "1" Commande
 CommandeProduit "*" -- "1" Produit
 Commande "*" -- "1" Adresse

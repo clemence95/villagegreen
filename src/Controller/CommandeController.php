@@ -7,6 +7,7 @@ use App\Entity\Client;
 use App\Entity\Employe;
 use App\Entity\Produit;
 use App\Entity\Commande;
+use App\Entity\Document;
 use App\Form\CommandeType;
 use App\Entity\CommandeProduit;
 use App\Service\AdresseService;
@@ -62,7 +63,6 @@ class CommandeController extends AbstractController
             $commande->setAdresseLivraison($livraison);
             $commande->setAdresseFacturation($facturation);
 
-            // Vérifiez si l'utilisateur est un client ou un employé
             if ($user instanceof Client) {
                 $commande->setClient($user);
             } elseif ($user instanceof Employe) {
@@ -83,7 +83,7 @@ class CommandeController extends AbstractController
                     $commandeProduit = new CommandeProduit();
                     $commandeProduit->setCommande($commande);
                     $commandeProduit->setProduit($produit);
-                    $commandeProduit->setQuantite((float)$quantite);  // Store as decimal
+                    $commandeProduit->setQuantite((float)$quantite);
 
                     $entityManager->persist($commandeProduit);
                 }
@@ -94,13 +94,26 @@ class CommandeController extends AbstractController
             // Re-fetch the Commande entity to ensure it has the latest data
             $entityManager->refresh($commande);
 
-            // Generate PDFs for Bon de Livraison and Facture
-            $logoUrl = $this->generateUrl('accueil', [], true) . 'assets/images/Logo.png';
-            $bonLivraison = $this->generateBonLivraison($commande, $logoUrl);
-            $facture = $this->generateFacture($commande, $logoUrl);
+            // Generate and persist Bon de Livraison document
+            $bonLivraisonFileName = $this->generateBonLivraison($commande);
+            $bonLivraisonDocument = new Document();
+            $bonLivraisonDocument->setType(Document::TYPE_BON_LIVRAISON);
+            $bonLivraisonDocument->setDateCreation(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+            $bonLivraisonDocument->setFileName($bonLivraisonFileName);
+            $bonLivraisonDocument->setCommande($commande);
 
-            $commande->setBonLivraison($bonLivraison);
-            $commande->setFacture($facture);
+            $entityManager->persist($bonLivraisonDocument);
+
+            // Generate and persist Facture document
+            $factureFileName = $this->generateFacture($commande);
+            $factureDocument = new Document();
+            $factureDocument->setType(Document::TYPE_FACTURE);
+            $factureDocument->setDateCreation(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+            $factureDocument->setFileName($factureFileName);
+            $factureDocument->setCommande($commande);
+
+            $entityManager->persist($factureDocument);
+
             $entityManager->flush();
 
             $session->remove('panier');
@@ -124,41 +137,39 @@ class CommandeController extends AbstractController
         ]);
     }
 
-    private function generateBonLivraison(Commande $commande, string $logoUrl): string
+    private function generateBonLivraison(Commande $commande): string
     {
         $dompdf = new Dompdf();
         $currentDateTime = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
         $html = $this->renderView('pdf/bon_livraison.html.twig', [
             'commande' => $commande,
             'currentDateTime' => $currentDateTime,
-            'logoUrl' => $logoUrl
         ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
         $fileName = 'bon_de_livraison_' . $commande->getId() . '.pdf';
-        $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/bons_livraison/' . $fileName;
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/documents/' . $fileName;
         file_put_contents($filePath, $dompdf->output());
 
         return $fileName;
     }
 
-    private function generateFacture(Commande $commande, string $logoUrl): string
+    private function generateFacture(Commande $commande): string
     {
         $dompdf = new Dompdf();
         $currentDateTime = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
         $html = $this->renderView('pdf/facture.html.twig', [
             'commande' => $commande,
             'currentDateTime' => $currentDateTime,
-            'logoUrl' => $logoUrl
         ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
         $fileName = 'facture_' . $commande->getId() . '.pdf';
-        $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/factures/' . $fileName;
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/documents/' . $fileName;
         file_put_contents($filePath, $dompdf->output());
 
         return $fileName;

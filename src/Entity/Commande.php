@@ -43,25 +43,20 @@ class Commande
     #[ORM\JoinColumn(nullable: true)]
     private ?Client $client = null;
 
-    #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $bonLivraison = null;
-
-    #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $facture = null;
-
     #[ORM\ManyToOne(targetEntity: Employe::class)]
     #[ORM\JoinColumn(nullable: true)]
     private ?Employe $employe = null;
 
-    /**
-     * @var Collection<int, CommandeProduit>
-     */
     #[ORM\OneToMany(targetEntity: CommandeProduit::class, mappedBy: 'commande', cascade: ['persist', 'remove'])]
     private Collection $commandeProduits;
+
+    #[ORM\OneToMany(targetEntity: Document::class, mappedBy: 'commande', cascade: ['persist', 'remove'])]
+    private Collection $documents;
 
     public function __construct()
     {
         $this->commandeProduits = new ArrayCollection();
+        $this->documents = new ArrayCollection();
     }
 
     // Getters and Setters...
@@ -170,31 +165,17 @@ class Commande
         return $this;
     }
 
-    public function getBonLivraison(): ?string
+    public function getEmploye(): ?Employe
     {
-        return $this->bonLivraison;
+        return $this->employe;
     }
 
-    public function setBonLivraison(?string $bonLivraison): self
+    public function setEmploye(?Employe $employe): self
     {
-        $this->bonLivraison = $bonLivraison;
+        $this->employe = $employe;
         return $this;
     }
 
-    public function getFacture(): ?string
-    {
-        return $this->facture;
-    }
-
-    public function setFacture(?string $facture): self
-    {
-        $this->facture = $facture;
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, CommandeProduit>
-     */
     public function getCommandeProduits(): Collection
     {
         return $this->commandeProduits;
@@ -222,14 +203,30 @@ class Commande
         return $this;
     }
 
-    public function getEmploye(): ?Employe
+    public function getDocuments(): Collection
     {
-        return $this->employe;
+        return $this->documents;
     }
 
-    public function setEmploye(?Employe $employe): self
+    public function addDocument(Document $document): self
     {
-        $this->employe = $employe;
+        if (!$this->documents->contains($document)) {
+            $this->documents[] = $document;
+            $document->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(Document $document): self
+    {
+        if ($this->documents->removeElement($document)) {
+            // set the owning side to null (unless already changed)
+            if ($document->getCommande() === $this) {
+                $document->setCommande(null);
+            }
+        }
+
         return $this;
     }
 }
