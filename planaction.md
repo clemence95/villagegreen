@@ -69,7 +69,7 @@
 - Migrer la logique du CRUD vers un logiciel de bureau en utilisant une technologie appropriée.
 
 ### Actions :
-- Choisir une technologie pour développer le logiciel de bureau (Electron, JavaFX, WPF).
+- Choisir une technologie pour développer le logiciel de bureau (Electron, JavaFX, WPF ...).
 - Migrer les opérations CRUD pour qu'elles soient consommées via une API backend.
 - Concevoir l'interface utilisateur du logiciel de bureau pour la gestion des produits et des catégories.
 - Implémenter la gestion des rôles et des permissions pour que seules les personnes autorisées puissent accéder aux fonctionnalités CRUD.
@@ -87,6 +87,5 @@
 
 ### Actions :
 - Implémenter des requêtes pour calculer les indicateurs de performance (chiffre d'affaires mois par mois, produits les plus commandés, etc.).
-- Utiliser une bibliothèque de graphiques (par ex. Chart.js) pour afficher les données de manière visuelle.
 - Assurer que le tableau de bord est sécurisé et accessible uniquement aux administrateurs.
 
