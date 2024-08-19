@@ -15,19 +15,20 @@
 
 ---
 
-## 2. Relation OneToMany entre `BonDeLivraison` et `Commande`
+## 2. Relation OneToMany entre `Commande` et `BonDeLivraison`
 
 ### Problème :
-- `BonDeLivraison` est actuellement un attribut de l'entité `Commande`, mais il devrait être modélisé comme une entité distincte avec une relation ManyToOne.
+- `BonDeLivraison` est actuellement un attribut de l'entité `Commande`, mais il devrait être modélisé comme une entité distincte avec une relation OneToMany.
 
 ### Solution :
 - Créer une entité `BonDeLivraison` distincte avec une relation ManyToOne vers `Commande`.
+- La `Commande` aura une relation OneToMany vers `BonDeLivraison`.
 
 ### Actions :
+- Créer l'entité `BonDeLivraison` avec une relation ManyToOne vers `Commande`.
 - Mettre en place une relation OneToMany entre `Commande` et `BonDeLivraison`.
 - Mettre à jour la base de données avec les migrations nécessaires.
 
----
 
 ## 3. Sécuriser les APIs et Implémenter un Système de Voter
 
