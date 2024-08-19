@@ -89,3 +89,5 @@
 - Implémenter des requêtes pour calculer les indicateurs de performance (chiffre d'affaires mois par mois, produits les plus commandés, etc.).
 - Assurer que le tableau de bord est sécurisé et accessible uniquement aux administrateurs.
 
+
+bordel
