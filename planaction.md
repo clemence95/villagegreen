@@ -24,7 +24,6 @@
 - Créer une entité `BonDeLivraison` distincte avec une relation ManyToOne vers `Commande`.
 
 ### Actions :
-- Créer l'entité `BonDeLivraison`.
 - Mettre en place une relation OneToMany entre `Commande` et `BonDeLivraison`.
 - Mettre à jour la base de données avec les migrations nécessaires.
 
@@ -61,18 +60,20 @@
 
 ---
 
-## 5. Finaliser le CRUD pour la Gestion des Produits
+## 5. Développer un Logiciel de Bureau pour la Gestion des Produits
 
 ### Problème :
-- Le CRUD pour la gestion des produits est partiellement implémenté mais nécessite des ajustements.
+- Le CRUD pour la gestion des produits est actuellement implémenté sur le site web, mais il doit être déployé sous forme de logiciel de bureau pour répondre au cahier des charges.
 
 ### Solution :
-- Compléter le CRUD pour gérer les produits et les catégories, et restreindre l'accès aux utilisateurs ayant le rôle `ROLE_ADMIN`.
+- Migrer la logique du CRUD vers un logiciel de bureau en utilisant une technologie appropriée.
 
 ### Actions :
-- Finaliser le CRUD pour l'ajout, la modification, et la suppression de produits et de catégories.
-- Assurer que les rôles sont correctement gérés et que seules les personnes autorisées peuvent accéder aux actions du CRUD.
-- Implémenter une interface utilisateur intuitive pour la gestion des produits.
+- Choisir une technologie pour développer le logiciel de bureau (Electron, JavaFX, WPF).
+- Migrer les opérations CRUD pour qu'elles soient consommées via une API backend.
+- Concevoir l'interface utilisateur du logiciel de bureau pour la gestion des produits et des catégories.
+- Implémenter la gestion des rôles et des permissions pour que seules les personnes autorisées puissent accéder aux fonctionnalités CRUD.
+- Packager le logiciel pour le déployer sur les postes informatiques de l'entreprise.
 
 ---
 
@@ -88,3 +89,4 @@
 - Implémenter des requêtes pour calculer les indicateurs de performance (chiffre d'affaires mois par mois, produits les plus commandés, etc.).
 - Utiliser une bibliothèque de graphiques (par ex. Chart.js) pour afficher les données de manière visuelle.
 - Assurer que le tableau de bord est sécurisé et accessible uniquement aux administrateurs.
+
