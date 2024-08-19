@@ -18,7 +18,7 @@
 ## 2. Relation OneToMany entre `Commande` et `BonDeLivraison`
 
 ### Problème :
-- `BonDeLivraison` est actuellement un attribut de l'entité `Commande`, mais il devrait être modélisé comme une entité distincte avec une relation OneToMany.
+- `BonDeLivraison` est actuellement un attribut de l'entité `Commande`, mais il devrait être modélisé comme une entité distincte avec une relation ManyToOne.
 
 ### Solution :
 - Créer une entité `BonDeLivraison` distincte avec une relation ManyToOne vers `Commande`.
