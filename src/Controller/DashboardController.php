@@ -14,6 +14,9 @@ class DashboardController extends AbstractController
     #[Route('/dashboard', name: 'app_dashboard')]
     public function index(CategorieRepository $categorieRepository, ProduitRepository $produitRepository): Response
     {
+        // Vérification que l'utilisateur a le rôle ROLE_ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $categories = $categorieRepository->findAll();
         $produits = $produitRepository->findAll();
 
@@ -23,6 +26,5 @@ class DashboardController extends AbstractController
         ]);
     }
 }
-
 
 
