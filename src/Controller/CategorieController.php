@@ -19,6 +19,9 @@ class CategorieController extends AbstractController
     #[Route('/', name: 'app_categorie_index', methods: ['GET'])]
     public function index(CategorieRepository $categorieRepository): Response
     {
+        // Vérification que l'utilisateur a le rôle ROLE_ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         return $this->render('dashboard/index.html.twig', [
             'categories' => $categorieRepository->findAll(),
         ]);
@@ -27,6 +30,9 @@ class CategorieController extends AbstractController
     #[Route('/new', name: 'app_categorie_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        // Vérification que l'utilisateur a le rôle ROLE_ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $categorie = new Categorie();
         $form = $this->createForm(CategorieType::class, $categorie);
         $form->handleRequest($request);
@@ -47,6 +53,9 @@ class CategorieController extends AbstractController
     #[Route('/new-parent', name: 'app_categorie_new_parent', methods: ['GET', 'POST'])]
     public function newParent(Request $request, EntityManagerInterface $entityManager): Response
     {
+        // Vérification que l'utilisateur a le rôle ROLE_ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $categorie = new Categorie();
         $form = $this->createForm(CategorieType::class, $categorie, [
             'categorie_parent' => false // Désactiver le champ catégorie parente
@@ -69,6 +78,9 @@ class CategorieController extends AbstractController
     #[Route('/{id}', name: 'app_categorie_show', methods: ['GET'])]
     public function show(Categorie $categorie): Response
     {
+        // Vérification que l'utilisateur a le rôle ROLE_ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         return $this->render('categorie/show.html.twig', [
             'categorie' => $categorie,
         ]);
@@ -77,6 +89,9 @@ class CategorieController extends AbstractController
     #[Route('/{id}/edit', name: 'app_categorie_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Categorie $categorie, EntityManagerInterface $entityManager): Response
     {
+        // Vérification que l'utilisateur a le rôle ROLE_ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $form = $this->createForm(CategorieType::class, $categorie);
         $form->handleRequest($request);
 
@@ -95,6 +110,9 @@ class CategorieController extends AbstractController
     #[Route('/{id}', name: 'app_categorie_delete', methods: ['POST'])]
     public function delete(Request $request, Categorie $categorie, EntityManagerInterface $entityManager): Response
     {
+        // Vérification que l'utilisateur a le rôle ROLE_ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         if ($this->isCsrfTokenValid('delete'.$categorie->getId(), $request->request->get('_token'))) {
             $entityManager->remove($categorie);
             $entityManager->flush();
