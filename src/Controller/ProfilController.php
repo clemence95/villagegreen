@@ -1,5 +1,6 @@
 <?php
 
+// src/Controller/ProfilController.php
 namespace App\Controller;
 
 use App\Entity\Commande;
@@ -14,9 +15,14 @@ class ProfilController extends AbstractController
     public function profil(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+
         if (!$user) {
+            // Si l'utilisateur n'est pas connecté, le rediriger vers la page de connexion
             return $this->redirectToRoute('app_login');
         }
+
+        // Vérifier que l'utilisateur a bien les droits de voir son propre profil
+        $this->denyAccessUnlessGranted('view_user', $user);
 
         // Récupérer les commandes de l'utilisateur
         $commandes = [];
@@ -27,6 +33,7 @@ class ProfilController extends AbstractController
             $commandes = $entityManager->getRepository(Commande::class)->findBy(['employe' => $user]);
         }
 
+        // Rendre la vue profil avec les informations utilisateur et les commandes
         return $this->render('profil/index.html.twig', [
             'user' => $user,
             'commandes' => $commandes,
