@@ -22,10 +22,10 @@ class Commande
     private ?string $statut = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    private ?float $montantTotal = null;
+    private ?string $montantTotal = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
-    private ?float $reductionSupplementaire = null;
+    private ?string $reductionSupplementaire = null;
 
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $modePaiement = null;

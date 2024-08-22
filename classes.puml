@@ -73,8 +73,8 @@ class Client {
   -siret : string 
   -entreprise : string 
   -reference_client : string UNIQUE
-  -coefficientParticulier : float 
-  -coefficientProfessionnel : float 
+  -coefficientParticulier : string 
+  -coefficientProfessionnel : string 
   -telephone : string 
   -type_client : string 
   -confirmationToken : string 
@@ -98,8 +98,8 @@ class Commande {
   primary_key( id ) : int
   -dateCommande : DateTimeInterface 
   -statut : string 
-  -montantTotal : float 
-  -reductionSupplementaire : float 
+  -montantTotal : string 
+  -reductionSupplementaire : string 
   -modePaiement : string 
   -informationReglement : string 
 }
