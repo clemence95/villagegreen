@@ -1,18 +1,17 @@
-# config/packages/security.yaml
 security:
+    # Gestion des hasheurs de mots de passe pour Client et Employe
     password_hashers:
         App\Entity\Client:
             algorithm: auto
         App\Entity\Employe:
             algorithm: auto
 
+    # Hiérarchie des rôles
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
 
+    # Fournisseurs d'utilisateurs (providers)
     providers:
-        chain_provider:
-            chain:
-                providers: [client_provider, employe_provider]
         client_provider:
             entity:
                 class: App\Entity\Client
@@ -21,18 +20,30 @@ security:
             entity:
                 class: App\Entity\Employe
                 property: nom
+        chain_provider:
+            chain:
+                providers: [client_provider, employe_provider]
 
+    # Configuration des firewalls
     firewalls:
         api:
             pattern: ^/api/
             stateless: true
-            
+            provider: employe_provider  # Spécifie explicitement employe_provider pour JWT
+            json_login:
+                check_path: /api/login
+                username_path: username
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            jwt: ~
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
         main:
-            provider: chain_provider
+            provider: chain_provider  # Utilise chain_provider pour le frontend
             form_login:
                 login_path: login
                 check_path: login
@@ -54,6 +65,9 @@ security:
         - { path: ^/commander, roles: ROLE_USER }
         - { path: ^/produits-management, roles: ROLE_ADMIN }
         - { path: ^/categorie-management, roles: ROLE_ADMIN }
+        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+
 
 
 
