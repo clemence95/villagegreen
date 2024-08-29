@@ -7,10 +7,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity]
 #[ApiResource(
-    normalizationContext: ['groups' => ['categorie:read']],
-    denormalizationContext: ['groups' => ['categorie:write']]
+    normalizationContext: ['groups' => ['user:read']],
+    denormalizationContext: ['groups' => ['user:write']],
+    security: "is_granted('ROLE_ADMIN')"
 )]
 class Categorie
 {
@@ -21,14 +24,17 @@ class Categorie
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 50)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 50)]
     #[Groups(['categorie:read', 'categorie:write', 'produit:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Url]
     #[Groups(['categorie:read', 'categorie:write'])]
     private ?string $image = null;
 
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'categorieParent')]
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'categorieParent', cascade: ['persist', 'remove'])]
     #[Groups(['categorie:read'])]
     private Collection $sousCategories;
 
@@ -37,7 +43,7 @@ class Categorie
     #[Groups(['categorie:read', 'categorie:write'])]
     private ?self $categorieParent = null;
 
-    #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'sousCategorie')]
+    #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'sousCategorie', cascade: ['persist', 'remove'])]
     #[Groups(['categorie:read'])]
     private Collection $produits;
 
@@ -120,7 +126,6 @@ class Categorie
             $this->produits[] = $produit;
             $produit->setSousCategorie($this);
         }
-
         return $this;
     }
 
@@ -131,10 +136,15 @@ class Categorie
                 $produit->setSousCategorie(null);
             }
         }
-
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->getNom();
+    }
 }
+
 
 
 
