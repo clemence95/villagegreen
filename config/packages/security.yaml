@@ -23,6 +23,10 @@ security:
                 property: nom
 
     firewalls:
+        api:
+            pattern: ^/api/
+            stateless: true
+            
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
