@@ -11,8 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource(
-    normalizationContext: ['groups' => ['user:read']],
-    denormalizationContext: ['groups' => ['user:write']],
+    normalizationContext: ['groups' => ['categorie:read']],
+    denormalizationContext: ['groups' => ['categorie:write']],
     security: "is_granted('ROLE_ADMIN')"
 )]
 class Categorie
@@ -144,6 +144,7 @@ class Categorie
         return $this->getNom();
     }
 }
+
 
 
 
