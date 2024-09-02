@@ -40,7 +40,7 @@ class Employe {
 
 class Fournisseur {
   primary_key( id ) : int
-  -nom_entreprise : string 
+  -nomEntreprise : string 
   -contact : string 
   -telephone : string 
   -siret : string 

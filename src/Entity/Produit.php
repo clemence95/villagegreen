@@ -9,11 +9,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['produit:read']],
-    denormalizationContext: ['groups' => ['produit:write']]
+    denormalizationContext: ['groups' => ['produit:write']],
+    security: "is_granted('ROLE_ADMIN')"
 )]
 class Produit
 {
