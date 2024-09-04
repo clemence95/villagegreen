@@ -6,53 +6,74 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CommandeRepository;
+use ApiPlatform\Metadata\ApiResource;
+use JMS\Serializer\Annotation\Groups as AnnotationGroups;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => ['categorie:read']],
+    denormalizationContext: ['groups' => ['categorie:write']],
+    security: "is_granted('ROLE_ADMIN')"
+)]
 class Commande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['commande:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups(['commande:read', 'commande:write'])]
     private ?\DateTimeInterface $dateCommande = null;
 
     #[ORM\Column(type: 'string', length: 50)]
+    #[Groups(['commande:read', 'commande:write'])]
     private ?string $statut = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    private ?string $montantTotal = null;
+    #[Groups(['commande:read', 'commande:write'])]
+    private ?float $montantTotal = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
-    private ?string $reductionSupplementaire = null;
+    #[Groups(['commande:read', 'commande:write'])]
+    private ?float $reductionSupplementaire = null;
 
     #[ORM\Column(type: 'string', length: 50)]
+    #[Groups(['commande:read', 'commande:write'])]
     private ?string $modePaiement = null;
 
     #[ORM\Column(type: 'text')]
+    #[Groups(['commande:read', 'commande:write'])]
     private ?string $informationReglement = null;
 
     #[ORM\ManyToOne(targetEntity: Adresse::class)]
+    #[Groups(['commande:read', 'commande:write'])]
     private ?Adresse $adresseFacturation = null;
 
     #[ORM\ManyToOne(targetEntity: Adresse::class)]
+    #[Groups(['commande:read', 'commande:write'])]
     private ?Adresse $adresseLivraison = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'commandes')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['commande:read', 'commande:write'])]
     private ?Client $client = null;
 
     #[ORM\ManyToOne(targetEntity: Employe::class)]
     #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['commande:read', 'commande:write'])]
     private ?Employe $employe = null;
 
     #[ORM\OneToMany(targetEntity: CommandeProduit::class, mappedBy: 'commande', cascade: ['persist', 'remove'])]
+    #[Groups(['commande:read', 'commande:write'])]
     private Collection $commandeProduits;
 
     #[ORM\OneToMany(targetEntity: Document::class, mappedBy: 'commande', cascade: ['persist', 'remove'])]
+    #[Groups(['commande:read', 'commande:write'])]
     private Collection $documents;
-
+    
     public function __construct()
     {
         $this->commandeProduits = new ArrayCollection();
