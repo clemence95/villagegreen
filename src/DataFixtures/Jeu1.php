@@ -67,8 +67,11 @@ class Jeu1 extends Fixture
 
     private function getRandomImageUrl(): string
     {
-        return 'https://picsum.photos/200/300';
+        // URL à partir du répertoire public
+        return '/build/images/corde.jpg';
     }
+    
+    
 }
 
 
