@@ -30,7 +30,6 @@ class Categorie
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Url]
     #[Groups(['categorie:read', 'categorie:write'])]
     private ?string $image = null;
 
