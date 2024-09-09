@@ -98,8 +98,8 @@ class Commande {
   primary_key( id ) : int
   -dateCommande : DateTimeInterface 
   -statut : string 
-  -montantTotal : float 
-  -reductionSupplementaire : float 
+  -montantTotal : string 
+  -reductionSupplementaire : string 
   -modePaiement : string 
   -informationReglement : string 
 }

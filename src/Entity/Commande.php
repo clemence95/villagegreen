@@ -33,11 +33,11 @@ class Commande
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     #[Groups(['commande:read', 'commande:write'])]
-    private ?float $montantTotal = null;
+    private ?string $montantTotal = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
     #[Groups(['commande:read', 'commande:write'])]
-    private ?float $reductionSupplementaire = null;
+    private ?string $reductionSupplementaire = null;
 
     #[ORM\Column(type: 'string', length: 50)]
     #[Groups(['commande:read', 'commande:write'])]
