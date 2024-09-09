@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CommandeRepository;
 use ApiPlatform\Metadata\ApiResource;
-use JMS\Serializer\Annotation\Groups as AnnotationGroups;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
