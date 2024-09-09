@@ -2,34 +2,46 @@
 
 namespace App\Entity;
 
-use App\Repository\AdresseRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\AdresseRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AdresseRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => ['commande:read']],
+    denormalizationContext: ['groups' => ['commande:write']],
+    security: "is_granted('ROLE_ADMIN')"
+)]
 class Adresse
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['commande:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['commande:read', 'commande:write'])]
     private ?string $rue = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['commande:read', 'commande:write'])]
     private ?string $ville = null;
 
     #[ORM\Column(type: 'string', length: 50)]
+    #[Groups(['commande:read', 'commande:write'])]
     private ?string $code_postal = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['commande:read', 'commande:write'])]
     private ?string $pays = null;
 
     #[ORM\Column(type: 'string', length: 10, nullable: true)]
+    #[Groups(['commande:read', 'commande:write'])]
     private ?string $numero_rue = null;
-
 
     // Getters and Setters
 
