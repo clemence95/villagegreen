@@ -2,74 +2,105 @@
 
 namespace App\Entity;
 
-use App\Repository\ClientRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Metadata\ApiFilter;
+use App\Repository\ClientRepository;
+use ApiPlatform\Metadata\ApiResource;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ORM\Table(name: 'client')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', columns: ['email'])]
+#[ApiResource(
+    normalizationContext: ['groups' => ['client:read']],
+    denormalizationContext: ['groups' => ['client:write']],
+    security: "is_granted('ROLE_ADMIN') or object == user" // Seulement pour admin ou le client concerné
+)]
+#[ApiFilter(SearchFilter::class, properties: [
+    'reference_client' => 'exact'  // Recherche exacte par référence du client
+])]
+#[ApiFilter(OrderFilter::class, properties: ['reference_client', 'nom', 'prenom'], arguments: ['orderParameterName' => 'order'])]
 class Client implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['client:read', 'commande:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Assert\NotBlank(message: "L'email ne peut pas être vide")]
     #[Assert\Email(message: "L'email '{{ value }}' n'est pas un email valide.")]
+    #[Groups(['client:read', 'client:write'])]
     private ?string $email = null;
 
     #[ORM\Column(type: 'json')]
+    #[Groups(['client:read', 'client:write'])]
     private array $roles = [];
 
     #[ORM\Column(type: 'string')]
+    #[Groups(['client:write'])]
     private ?string $password = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['client:read', 'client:write'])]
     private ?string $nom = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['client:read', 'client:write'])]
     private ?string $prenom = null;
 
     #[ORM\Column(type: 'string', length: 14, nullable: true)]
+    #[Groups(['client:read', 'client:write'])]
     private ?string $siret = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['client:read', 'client:write'])]
     private ?string $entreprise = null;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Groups(['client:read', 'client:write'])]
     private ?string $reference_client = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
+    #[Groups(['client:read', 'client:write'])]
     private ?string $coefficientParticulier = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
+    #[Groups(['client:read', 'client:write'])]
     private ?string $coefficientProfessionnel = null;
 
     #[ORM\Column(type: 'string', length: 50)]
+    #[Groups(['client:read', 'client:write'])]
     private ?string $telephone = null;
 
     #[ORM\Column(type: 'string', length: 50)]
+    #[Groups(['client:read', 'client:write'])]
     private ?string $type_client = null;
 
     #[ORM\ManyToOne(targetEntity: Employe::class)]
+    #[Groups(['client:read', 'client:write'])]
     private ?Employe $id_commercial = null;
 
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    #[Groups(['client:write'])]
     private ?string $confirmationToken = null;
 
     #[ORM\Column(type: 'boolean')]
+    #[Groups(['client:read', 'client:write'])]
     private bool $isEmailConfirmed = false;
 
     private ?string $plainPassword = null;
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Commande::class)]
+    #[Groups(['client:read'])]
     private Collection $commandes;
 
     public function __construct()
@@ -78,7 +109,8 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     // Getters and Setters...
-
+    
+    #[Groups(['client:read'])]
     public function getCommandes(): Collection
     {
         return $this->commandes;

@@ -2,19 +2,28 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\CommandeRepository;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use App\Repository\CommandeRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['categorie:read']],
-    denormalizationContext: ['groups' => ['categorie:write']],
+    normalizationContext: ['groups' => ['commande:read']],
+    denormalizationContext: ['groups' => ['commande:write']],
     security: "is_granted('ROLE_ADMIN')"
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+    'client.nom' => 'partial',  // Recherche partielle par nom de client
+    'statut' => 'partial',  // Recherche partielle par statut
+    'dateCommande' => 'exact',  // Recherche exacte par date
+])]
+#[ApiFilter(OrderFilter::class, properties: ['dateCommande', 'client.nom', 'montantTotal'], arguments: ['orderParameterName' => 'order'])]
 class Commande
 {
     #[ORM\Id]
