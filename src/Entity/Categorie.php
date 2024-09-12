@@ -20,13 +20,13 @@ class Categorie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['categorie:read', 'produit:read'])]
+    #[Groups(['categorie:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 50)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 50)]
-    #[Groups(['categorie:read', 'categorie:write', 'produit:read'])]
+    #[Groups(['categorie:read', 'categorie:write'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
@@ -46,12 +46,14 @@ class Categorie
     #[Groups(['categorie:read'])]
     private Collection $produits;
 
+    // Constructeur pour initialiser les collections
     public function __construct()
     {
         $this->sousCategories = new ArrayCollection();
         $this->produits = new ArrayCollection();
     }
 
+    // Getters et setters pour chaque propriété
     public function getId(): ?int
     {
         return $this->id;
@@ -65,41 +67,7 @@ class Categorie
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-        return $this;
-    }
 
-    public function getCategorieParent(): ?self
-    {
-        return $this->categorieParent;
-    }
-
-    public function setCategorieParent(?self $categorieParent): self
-    {
-        $this->categorieParent = $categorieParent;
-        return $this;
-    }
-
-    public function getSousCategories(): Collection
-    {
-        return $this->sousCategories;
-    }
-
-    public function addSousCategorie(self $sousCategorie): self
-    {
-        if (!$this->sousCategories->contains($sousCategorie)) {
-            $this->sousCategories->add($sousCategorie);
-            $sousCategorie->setCategorieParent($this);
-        }
-        return $this;
-    }
-
-    public function removeSousCategorie(self $sousCategorie): self
-    {
-        if ($this->sousCategories->removeElement($sousCategorie)) {
-            if ($sousCategorie->getCategorieParent() === $this) {
-                $sousCategorie->setCategorieParent(null);
-            }
-        }
         return $this;
     }
 
@@ -111,9 +79,55 @@ class Categorie
     public function setImage(string $image): self
     {
         $this->image = $image;
+
         return $this;
     }
 
+    public function getCategorieParent(): ?self
+    {
+        return $this->categorieParent;
+    }
+
+    public function setCategorieParent(?self $categorieParent): self
+    {
+        $this->categorieParent = $categorieParent;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getSousCategories(): Collection
+    {
+        return $this->sousCategories;
+    }
+
+    public function addSousCategorie(self $sousCategorie): self
+    {
+        if (!$this->sousCategories->contains($sousCategorie)) {
+            $this->sousCategories[] = $sousCategorie;
+            $sousCategorie->setCategorieParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSousCategorie(self $sousCategorie): self
+    {
+        if ($this->sousCategories->removeElement($sousCategorie)) {
+            // set the owning side to null (unless already changed)
+            if ($sousCategorie->getCategorieParent() === $this) {
+                $sousCategorie->setCategorieParent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Produit[]
+     */
     public function getProduits(): Collection
     {
         return $this->produits;
@@ -125,22 +139,20 @@ class Categorie
             $this->produits[] = $produit;
             $produit->setSousCategorie($this);
         }
+
         return $this;
     }
 
     public function removeProduit(Produit $produit): self
     {
         if ($this->produits->removeElement($produit)) {
+            // set the owning side to null (unless already changed)
             if ($produit->getSousCategorie() === $this) {
                 $produit->setSousCategorie(null);
             }
         }
-        return $this;
-    }
 
-    public function __toString(): string
-    {
-        return $this->getNom();
+        return $this;
     }
 }
 
