@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 #[ApiResource(
@@ -40,14 +41,17 @@ class Produit
     private ?string $referenceFournisseur = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    #[Assert\PositiveOrZero(message: 'Le prix d\'achat ne peut pas être négatif')]
     #[Groups(['produit:read', 'produit:write'])]
     private ?string $prixAchat = null;
     
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    #[Assert\PositiveOrZero(message: 'Le prix de vente ne peut pas être négatif')]
     #[Groups(['produit:read', 'produit:write'])]
     private ?string $prixVente = null;
     
     #[ORM\Column(type: 'integer')]
+    #[Assert\PositiveOrZero(message: 'Le stock ne peut pas être négatif')]
     #[Groups(['produit:read', 'produit:write'])]
     private ?int $stock = null;
 
