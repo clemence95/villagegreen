@@ -25,7 +25,7 @@ class Fournisseur
     #[Groups(['fournisseur:read', 'fournisseur:write', 'produit:read'])]
     private ?string $nomEntreprise = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)] // Rendu nullable
     #[Groups(['fournisseur:read', 'fournisseur:write'])]
     private ?string $contact = null;
 
