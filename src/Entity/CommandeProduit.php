@@ -83,5 +83,6 @@ class CommandeProduit
 
         return $this;
     }
+
 }
 

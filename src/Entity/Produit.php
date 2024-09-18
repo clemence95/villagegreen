@@ -28,7 +28,7 @@ class Produit
     #[Groups(['produit:read_minimal', 'produit:read', 'categorie:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)] // longueur réduite à 50 pour libelleCourt
+    #[ORM\Column(length: 50)]
     #[Groups(['produit:read_minimal', 'produit:write', 'categorie:read'])]
     private ?string $libelleCourt = null;
 
@@ -36,7 +36,7 @@ class Produit
     #[Groups(['produit:read', 'produit:write'])]
     private ?string $libelleLong = null;
 
-    #[ORM\Column(length: 50)] // longueur définie pour referenceFournisseur
+    #[ORM\Column(length: 50)]
     #[Groups(['produit:read', 'produit:write'])]
     private ?string $referenceFournisseur = null;
 
@@ -44,12 +44,7 @@ class Produit
     #[Assert\PositiveOrZero(message: 'Le prix d\'achat ne peut pas être négatif')]
     #[Groups(['produit:read', 'produit:write'])]
     private ?string $prixAchat = null;
-    
-    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    #[Assert\PositiveOrZero(message: 'Le prix de vente ne peut pas être négatif')]
-    #[Groups(['produit:read', 'produit:write'])]
-    private ?string $prixVente = null;
-    
+
     #[ORM\Column(type: 'integer')]
     #[Assert\PositiveOrZero(message: 'Le stock ne peut pas être négatif')]
     #[Groups(['produit:read', 'produit:write'])]
@@ -59,13 +54,17 @@ class Produit
     #[Groups(['produit:read', 'produit:write'])]
     private ?bool $actif = null;
 
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    #[Assert\PositiveOrZero(message: 'Le prix de vente ne peut pas être négatif')]
+    private ?string $prixVente = null;
+
     #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'produits', fetch: 'LAZY')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['produit:read_minimal', 'produit:write'])]
     #[MaxDepth(1)]
     private ?Categorie $sousCategorie = null;
 
-    #[ORM\Column(length: 255)] // longueur définie pour photo
+    #[ORM\Column(length: 255)]
     #[Groups(['produit:read', 'produit:write'])]
     private ?string $photo = null;
 
@@ -86,6 +85,13 @@ class Produit
         $this->commandeProduits = new ArrayCollection();
     }
 
+    // Méthode pour calculer le prix TTC en fonction du coefficient et de la TVA
+    public function calculerPrixVenteTTC(float $tauxTVA = 0.2): string
+    {
+        $prixAvecTVA = bcmul($this->prixVente, (string)(1 + $tauxTVA), 2);
+        return $prixAvecTVA;
+    }
+    
     // Getters et Setters
     public function getId(): ?int
     {
@@ -140,12 +146,12 @@ class Produit
         return $this;
     }
 
-    public function getPrixVente(): ?float
+    public function getPrixVente(): ?string
     {
         return $this->prixVente;
     }
 
-    public function setPrixVente(float $prixVente): self
+    public function setPrixVente(string $prixVente): self
     {
         $this->prixVente = $prixVente;
 

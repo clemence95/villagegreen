@@ -33,19 +33,26 @@ class CommandeController extends AbstractController
         $totalTTC = 0;
         $tva = 0.2;
 
+        if (empty($panier)) {
+            $this->addFlash('error', 'Votre panier est vide.');
+            return $this->redirectToRoute('panier');
+        }
         foreach ($panier as $id => $quantite) {
             $produit = $entityManager->getRepository(Produit::class)->find($id);
             if ($produit) {
+                // Passer le taux de TVA de 20% (0.2) à la méthode
+                $prixVenteTTC = $produit->calculerPrixVenteTTC(0.2);
+        
                 $produits[] = [
                     'produit' => $produit,
                     'quantite' => $quantite,
-                    'totalHT' => $produit->getPrixVente() * $quantite,
-                    'totalTTC' => $produit->getPrixVente() * $quantite * (1 + $tva)
+                    'totalHT' => $produit->getPrixAchat() * $quantite,
+                    'totalTTC' => $prixVenteTTC * $quantite,
                 ];
-                $totalHT += $produit->getPrixVente() * $quantite;
+                $totalHT += $produit->getPrixAchat() * $quantite;
+                $totalTTC += $prixVenteTTC * $quantite;
             }
         }
-        $totalTTC = $totalHT * (1 + $tva);
 
         $commande = new Commande();
         $user = $this->getUser();
@@ -175,18 +182,4 @@ class CommandeController extends AbstractController
         return $fileName;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

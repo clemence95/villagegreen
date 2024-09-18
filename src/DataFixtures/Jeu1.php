@@ -50,8 +50,9 @@ class Jeu1 extends Fixture
                     $produit->setLibelleCourt("$subCatName $k");
                     $produit->setLibelleLong("Description détaillée du $subCatName $k");
                     $produit->setReferenceFournisseur("REF-$catName-$subCatName-$k");
-                    $produit->setPrixAchat(100.0 * $k);
-                    $produit->setPrixVente(150.0 * $k);
+                    $produit->setPrixAchat(100.0 * $k);  // Par exemple, un prix d'achat basé sur $k
+                    $prixVente = bcmul(100.0 * $k, '1.5', 2);  // Exemple : on applique un coefficient de 1.5 pour calculer le prix de vente
+                    $produit->setPrixVente($prixVente);
                     $produit->setStock(10 + $k);
                     $produit->setActif(true);
                     $produit->setSousCategorie($sousCategorie);
@@ -70,18 +71,4 @@ class Jeu1 extends Fixture
         // URL à partir du répertoire public
         return '/build/images/corde.jpg';
     }
-    
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
