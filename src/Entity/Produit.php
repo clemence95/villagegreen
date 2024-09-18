@@ -27,7 +27,7 @@ class Produit
     #[Groups(['produit:read_minimal', 'produit:read', 'categorie:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 50)] // longueur réduite à 50 pour libelleCourt
     #[Groups(['produit:read_minimal', 'produit:write', 'categorie:read'])]
     private ?string $libelleCourt = null;
 
@@ -35,18 +35,18 @@ class Produit
     #[Groups(['produit:read', 'produit:write'])]
     private ?string $libelleLong = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50)] // longueur définie pour referenceFournisseur
     #[Groups(['produit:read', 'produit:write'])]
     private ?string $referenceFournisseur = null;
 
-    #[ORM\Column(type: 'float')]
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     #[Groups(['produit:read', 'produit:write'])]
-    private ?float $prixAchat = null;
-
-    #[ORM\Column(type: 'float')]
+    private ?string $prixAchat = null;
+    
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     #[Groups(['produit:read', 'produit:write'])]
-    private ?float $prixVente = null;
-
+    private ?string $prixVente = null;
+    
     #[ORM\Column(type: 'integer')]
     #[Groups(['produit:read', 'produit:write'])]
     private ?int $stock = null;
@@ -61,7 +61,7 @@ class Produit
     #[MaxDepth(1)]
     private ?Categorie $sousCategorie = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255)] // longueur définie pour photo
     #[Groups(['produit:read', 'produit:write'])]
     private ?string $photo = null;
 
