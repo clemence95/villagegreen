@@ -1,4 +1,4 @@
-@startuml
+@startuml classe
 
 !define table(x) entity x << (T, white) >>
 !define primary_key(x) <b><&key> x</b>
