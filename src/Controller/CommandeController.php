@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Dompdf\Dompdf;
 use App\Entity\Client;
-use App\Entity\Employe;
 use App\Entity\Produit;
 use App\Entity\Commande;
 use App\Entity\Document;
@@ -37,26 +36,45 @@ class CommandeController extends AbstractController
             $this->addFlash('error', 'Votre panier est vide.');
             return $this->redirectToRoute('panier');
         }
+
+        // Récupération du client connecté et vérification que c'est bien un objet Client
+        $client = $this->getUser();
+        if (!$client instanceof Client) {
+            throw new \Exception('L\'utilisateur connecté n\'est pas un client.');
+        }
+
+        // Récupération du coefficient du client et vérification
+        $coefficient = $client->getCoefficient();
+        if (is_null($coefficient) || $coefficient === '') {
+            throw new \Exception('Le coefficient du client est invalide ou manquant.');
+        }
+
+        $coefficient = (float)$coefficient; // Conversion en float pour éviter les erreurs lors des calculs
+
+        // Calcul des prix pour chaque produit dans le panier
         foreach ($panier as $id => $quantite) {
             $produit = $entityManager->getRepository(Produit::class)->find($id);
             if ($produit) {
-                // Passer le taux de TVA de 20% (0.2) à la méthode
-                $prixVenteTTC = $produit->calculerPrixVenteTTC(0.2);
-        
+                // Calcul du prix de vente HT en utilisant le coefficient du client
+                $prixVenteHT = bcmul($produit->getPrixAchat(), $coefficient, 2);
+
+                // Calcul du prix TTC en utilisant la TVA
+                $prixVenteTTC = bcmul($prixVenteHT, (string)(1 + $tva), 2);
+
                 $produits[] = [
                     'produit' => $produit,
                     'quantite' => $quantite,
-                    'totalHT' => $produit->getPrixAchat() * $quantite,
+                    'totalHT' => $prixVenteHT * $quantite,
                     'totalTTC' => $prixVenteTTC * $quantite,
                 ];
-                $totalHT += $produit->getPrixAchat() * $quantite;
+                $totalHT += $prixVenteHT * $quantite;
                 $totalTTC += $prixVenteTTC * $quantite;
             }
         }
 
+        // Créer la commande et la persister dans la base de données avant de générer les documents
         $commande = new Commande();
-        $user = $this->getUser();
-        $form = $this->createForm(CommandeType::class, $commande, ['user' => $user]);
+        $form = $this->createForm(CommandeType::class, $commande, ['user' => $client]);
 
         $form->handleRequest($request);
 
@@ -69,21 +87,15 @@ class CommandeController extends AbstractController
 
             $commande->setAdresseLivraison($livraison);
             $commande->setAdresseFacturation($facturation);
-
-            if ($user instanceof Client) {
-                $commande->setClient($user);
-            } elseif ($user instanceof Employe) {
-                $commande->setEmploye($user);
-            } else {
-                throw new \Exception('L’utilisateur doit être soit un client, soit un employé.');
-            }
+            $commande->setClient($client); // Associer la commande au client connecté
 
             $commande->setDateCommande(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
             $commande->setStatut('En attente');
             $commande->setMontantTotal($totalTTC);
             $entityManager->persist($commande);
-            $entityManager->flush();  // Persist the Commande first to get its ID
+            $entityManager->flush();  // Persist la commande et obtenir son ID
 
+            // Insérer les produits commandés
             foreach ($panier as $id => $quantite) {
                 $produit = $entityManager->getRepository(Produit::class)->find($id);
                 if ($produit) {
@@ -96,12 +108,9 @@ class CommandeController extends AbstractController
                 }
             }
 
-            $entityManager->flush();  // Persist the CommandeProduits
+            $entityManager->flush();  // Persist les CommandeProduits
 
-            // Re-fetch the Commande entity to ensure it has the latest data
-            $entityManager->refresh($commande);
-
-            // Generate and persist Bon de Livraison document
+            // Maintenant, on génère les documents après la commande
             $bonLivraisonFileName = $this->generateBonLivraison($commande);
             $bonLivraisonDocument = new Document();
             $bonLivraisonDocument->setType(Document::TYPE_BON_LIVRAISON);
@@ -111,7 +120,6 @@ class CommandeController extends AbstractController
 
             $entityManager->persist($bonLivraisonDocument);
 
-            // Generate and persist Facture document
             $factureFileName = $this->generateFacture($commande);
             $factureDocument = new Document();
             $factureDocument->setType(Document::TYPE_FACTURE);
@@ -121,9 +129,9 @@ class CommandeController extends AbstractController
 
             $entityManager->persist($factureDocument);
 
-            $entityManager->flush();
+            $entityManager->flush(); // Enregistrer les documents dans la base de données
 
-            $session->remove('panier');
+            $session->remove('panier'); // Vider le panier après la commande
 
             return $this->redirectToRoute('commande_success');
         }
@@ -150,36 +158,42 @@ class CommandeController extends AbstractController
         $currentDateTime = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
         $html = $this->renderView('pdf/bon_livraison.html.twig', [
             'commande' => $commande,
+            'commandeProduits' => $commande->getCommandeProduits(), // Ajouter les produits ici
             'currentDateTime' => $currentDateTime,
         ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-
+    
         $fileName = 'bon_de_livraison_' . $commande->getId() . '.pdf';
         $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/documents/' . $fileName;
         file_put_contents($filePath, $dompdf->output());
-
+    
         return $fileName;
     }
-
+    
     private function generateFacture(Commande $commande): string
     {
         $dompdf = new Dompdf();
         $currentDateTime = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
         $html = $this->renderView('pdf/facture.html.twig', [
             'commande' => $commande,
+            'commandeProduits' => $commande->getCommandeProduits(), // Ajouter les produits ici
             'currentDateTime' => $currentDateTime,
         ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-
+    
         $fileName = 'facture_' . $commande->getId() . '.pdf';
         $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/documents/' . $fileName;
         file_put_contents($filePath, $dompdf->output());
-
+    
         return $fileName;
     }
 }
+
+
+
+
 

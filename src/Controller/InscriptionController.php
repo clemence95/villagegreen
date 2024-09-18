@@ -37,11 +37,9 @@ class InscriptionController extends AbstractController
 
             // Set default values for coefficients based on client type
             if ($form->get('type_client')->getData() === 'particulier') {
-                $client->setCoefficientParticulier(1.0); // or any other default value
-                $client->setCoefficientProfessionnel(null);
+                $client->setCoefficient('1.0'); // Coefficient par défaut pour un particulier
             } elseif ($form->get('type_client')->getData() === 'professionnel') {
-                $client->setCoefficientProfessionnel(2.0); // or any other default value
-                $client->setCoefficientParticulier(null);
+                $client->setCoefficient('2.0'); // Coefficient par défaut pour un professionnel
             }
 
             // Set a unique reference client
@@ -107,7 +105,3 @@ class InscriptionController extends AbstractController
 // php bin/console messenger:consume async
 // MailHog
 // symfony serve
-
-
-
-

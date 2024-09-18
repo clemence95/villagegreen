@@ -69,13 +69,9 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['client:read', 'client:write'])]
     private ?string $reference_client = null;
 
-    #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2,)]
     #[Groups(['client:read', 'client:write'])]
-    private ?string $coefficientParticulier = null;
-
-    #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
-    #[Groups(['client:read', 'client:write'])]
-    private ?string $coefficientProfessionnel = null;
+    private ?string $coefficient = null;  // Champ pour le coefficient global
 
     #[ORM\Column(type: 'string', length: 50)]
     #[Groups(['client:read', 'client:write'])]
@@ -259,26 +255,14 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCoefficientParticulier(): ?float
+    public function getCoefficient(): ?string
     {
-        return $this->coefficientParticulier;
+        return $this->coefficient;
     }
 
-    public function setCoefficientParticulier(?float $coefficientParticulier): self
+    public function setCoefficient(string $coefficient): self
     {
-        $this->coefficientParticulier = $coefficientParticulier;
-
-        return $this;
-    }
-
-    public function getCoefficientProfessionnel(): ?float
-    {
-        return $this->coefficientProfessionnel;
-    }
-
-    public function setCoefficientProfessionnel(?float $coefficientProfessionnel): self
-    {
-        $this->coefficientProfessionnel = $coefficientProfessionnel;
+        $this->coefficient = $coefficient;
 
         return $this;
     }

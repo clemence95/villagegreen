@@ -41,7 +41,7 @@ class AppFixtures extends Fixture
         $clientParticulier->setReferenceClient('REF123456');
         $clientParticulier->setTelephone('0123456789');
         $clientParticulier->setTypeClient('particulier');
-        $clientParticulier->setCoefficientParticulier(1.0); // Coefficient pour un client particulier
+        $clientParticulier->setCoefficient(1.0); // Coefficient pour un client particulier
         $manager->persist($clientParticulier);
 
         // Création d'un client professionnel (Client)
@@ -56,7 +56,7 @@ class AppFixtures extends Fixture
         $clientProfessionnel->setReferenceClient('REF987654');
         $clientProfessionnel->setTelephone('0123456789');
         $clientProfessionnel->setTypeClient('professionnel');
-        $clientProfessionnel->setCoefficientProfessionnel(2.0); // Coefficient pour un client professionnel
+        $clientProfessionnel->setCoefficient(2.0); // Coefficient pour un client professionnel
         $manager->persist($clientProfessionnel);
 
         // Vérification des champs obligatoires avant de persister

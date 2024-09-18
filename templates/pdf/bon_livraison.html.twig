@@ -19,20 +19,19 @@
     <p>{{ commande.adresseLivraison.pays }}</p>
     <h2>Produits</h2>
     <table>
-        <thead>
-            <tr>
-                <th>Produit</th>
-                <th>Quantité</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for commandeProduit in commande.commandeProduits %}
-                <tr>
-                    <td>{{ commandeProduit.produit.libelleCourt }}</td>
-                    <td>{{ commandeProduit.quantite }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
+<tbody>
+    {% for commandeProduit in commande.commandeProduits %}
+        <tr>
+            <td>{{ commandeProduit.produit.libelleCourt }}</td>
+            <td>{{ commandeProduit.quantite }}</td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="2">Aucun produit dans cette commande.</td>
+        </tr>
+    {% endfor %}
+</tbody>
+
     </table>
 </body>
 </html>

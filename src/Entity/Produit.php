@@ -86,12 +86,13 @@ class Produit
     }
 
     // Méthode pour calculer le prix TTC en fonction du coefficient et de la TVA
-    public function calculerPrixVenteTTC(float $tauxTVA = 0.2): string
+    public function calculerPrixVenteTTC(string $tauxTVA = '0.2'): string
     {
-        $prixAvecTVA = bcmul($this->prixVente, (string)(1 + $tauxTVA), 2);
+        // Le prix TTC est calculé à partir du prix de vente et du taux de TVA
+        $prixAvecTVA = bcmul($this->prixVente, (string)(1 + (float)$tauxTVA), 2);
         return $prixAvecTVA;
     }
-    
+
     // Getters et Setters
     public function getId(): ?int
     {
@@ -244,12 +245,3 @@ class Produit
         return $this;
     }
 }
-
-
-
-
-
-
-
-
-
