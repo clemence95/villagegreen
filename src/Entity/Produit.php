@@ -85,12 +85,36 @@ class Produit
         $this->commandeProduits = new ArrayCollection();
     }
 
-    // Méthode pour calculer le prix TTC en fonction du coefficient et de la TVA
-    public function calculerPrixVenteTTC(string $tauxTVA = '0.2'): string
+    // Méthode pour calculer le prix HT (Hors Taxes) en fonction du client
+    public function calculerPrixVenteHT(Client $client): string
     {
-        // Le prix TTC est calculé à partir du prix de vente et du taux de TVA
-        $prixAvecTVA = bcmul($this->prixVente, (string)(1 + (float)$tauxTVA), 2);
-        return $prixAvecTVA;
+        // Vérifier que le prix d'achat est défini
+        if ($this->prixAchat === null) {
+            throw new \Exception("Le prix d'achat doit être défini pour calculer le prix de vente HT.");
+        }
+
+        // Récupérer le coefficient du client
+        $coefficient = $client->getCoefficient(); // Récupérer le coefficient depuis l'objet Client
+
+        // Calcul du prix de vente HT
+        $prixVente = bcmul($this->prixAchat, (string)$coefficient, 2);
+
+        // Mettre à jour le prix de vente HT
+        $this->setPrixVente($prixVente);
+
+        return $prixVente;
+    }
+
+    // Méthode pour calculer le prix TTC en fonction du prix HT et de la TVA
+    public function calculerPrixVenteTTC(Client $client, string $tauxTVA = '0.2'): string
+    {
+        // Calculer le prix HT en passant l'objet Client à la méthode calculerPrixVenteHT
+        $prixVente = $this->calculerPrixVenteHT($client);
+
+        // Calculer le prix TTC en appliquant la TVA
+        $prixVenteTTC = bcmul($prixVente, (string)(1 + (float)$tauxTVA), 2);
+
+        return $prixVenteTTC;
     }
 
     // Getters et Setters
