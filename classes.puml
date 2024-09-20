@@ -1,4 +1,4 @@
-@startuml classe
+@startuml
 
 !define table(x) entity x << (T, white) >>
 !define primary_key(x) <b><&key> x</b>
@@ -21,10 +21,10 @@ class Produit {
   -libelleCourt : string 
   -libelleLong : string 
   -referenceFournisseur : string 
-  -prixAchat : float 
-  -prixVente : float 
+  -prixAchat : string 
   -stock : int 
   -actif : bool 
+  -prixVente : string 
   -photo : string 
 }
 
@@ -73,8 +73,7 @@ class Client {
   -siret : string 
   -entreprise : string 
   -reference_client : string UNIQUE
-  -coefficientParticulier : string 
-  -coefficientProfessionnel : string 
+  -coefficient : string 
   -telephone : string 
   -type_client : string 
   -confirmationToken : string 

@@ -12,6 +12,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Client;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 #[ApiResource(
@@ -85,25 +86,27 @@ class Produit
         $this->commandeProduits = new ArrayCollection();
     }
 
-    // Méthode pour calculer le prix HT (Hors Taxes) en fonction du client
     public function calculerPrixVenteHT(Client $client): string
     {
-        // Vérifier que le prix d'achat est défini
         if ($this->prixAchat === null) {
             throw new \Exception("Le prix d'achat doit être défini pour calculer le prix de vente HT.");
         }
-
-        // Récupérer le coefficient du client
-        $coefficient = $client->getCoefficient(); // Récupérer le coefficient depuis l'objet Client
-
+    
+        $coefficient = $client->getCoefficient();
+    
+        // Vérification que le coefficient est défini
+        if ($coefficient === null) {
+            throw new \Exception("Le coefficient du client doit être défini.");
+        }
+    
         // Calcul du prix de vente HT
         $prixVente = bcmul($this->prixAchat, (string)$coefficient, 2);
-
-        // Mettre à jour le prix de vente HT
+    
         $this->setPrixVente($prixVente);
-
+    
         return $prixVente;
     }
+    
 
     // Méthode pour calculer le prix TTC en fonction du prix HT et de la TVA
     public function calculerPrixVenteTTC(Client $client, string $tauxTVA = '0.2'): string
