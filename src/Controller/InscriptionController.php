@@ -37,9 +37,9 @@ class InscriptionController extends AbstractController
 
             // Set default values for coefficients based on client type
             if ($form->get('type_client')->getData() === 'particulier') {
-                $client->setCoefficient('1.0'); // Coefficient par défaut pour un particulier
+                $client->setCoefficient('2.0'); // Coefficient par défaut pour un particulier
             } elseif ($form->get('type_client')->getData() === 'professionnel') {
-                $client->setCoefficient('2.0'); // Coefficient par défaut pour un professionnel
+                $client->setCoefficient('1.0'); // Coefficient par défaut pour un professionnel
             }
 
             // Set a unique reference client

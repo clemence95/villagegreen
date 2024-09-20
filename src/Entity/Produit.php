@@ -86,18 +86,14 @@ class Produit
         $this->commandeProduits = new ArrayCollection();
     }
 
-    public function calculerPrixVenteHT(Client $client): string
+    public function calculerPrixVenteHT(?Client $client): string
     {
         if ($this->prixAchat === null) {
             throw new \Exception("Le prix d'achat doit être défini pour calculer le prix de vente HT.");
         }
     
-        $coefficient = $client->getCoefficient();
-    
-        // Vérification que le coefficient est défini
-        if ($coefficient === null) {
-            throw new \Exception("Le coefficient du client doit être défini.");
-        }
+        // Si le client n'est pas défini ou si son coefficient est nul, on applique un coefficient par défaut de 1
+        $coefficient = $client !== null && $client->getCoefficient() !== null ? $client->getCoefficient() : '2.0';
     
         // Calcul du prix de vente HT
         $prixVente = bcmul($this->prixAchat, (string)$coefficient, 2);
@@ -107,7 +103,6 @@ class Produit
         return $prixVente;
     }
     
-
     // Méthode pour calculer le prix TTC en fonction du prix HT et de la TVA
     public function calculerPrixVenteTTC(Client $client, string $tauxTVA = '0.2'): string
     {

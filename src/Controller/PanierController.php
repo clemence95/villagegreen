@@ -28,26 +28,35 @@ class PanierController extends AbstractController
         $produits = [];
         $totalPrix = 0;
         $totalQuantite = 0;
-
+    
+        // Récupérer le client actuel ou null si non connecté
+        $client = $this->getUser();
+    
         foreach ($panier as $id => $quantite) {
             $produit = $this->entityManager->getRepository(Produit::class)->find($id);
             if ($produit) {
+                // Calculer le prix de vente HT en utilisant la méthode avec gestion du coefficient par défaut
+                $prixVenteHT = $produit->calculerPrixVenteHT($client);
+    
                 $produits[] = [
                     'produit' => $produit,
-                    'quantite' => $quantite
+                    'quantite' => $quantite,
+                    'prixVenteHT' => $prixVenteHT
                 ];
-                $totalPrix += $produit->getPrixVente() * $quantite;
+    
+                // Utiliser le prix de vente HT pour calculer le total
+                $totalPrix += $prixVenteHT * $quantite;
                 $totalQuantite += $quantite;
             }
         }
-
+    
         return $this->render('panier/index.html.twig', [
             'produits' => $produits,
             'totalPrix' => $totalPrix,
             'totalQuantite' => $totalQuantite,
         ]);
     }
-
+    
     #[Route('/panier/ajouter/{id}', name: 'panier_ajouter')]
     public function ajouterAuPanier(int $id, SessionInterface $session): Response
     {
